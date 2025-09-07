@@ -1,0 +1,245 @@
+/* ===== 可展开式分类页面样式 ===== */
+.categories-content {
+  margin-top: var(--spacing-lg);
+}
+
+/* 分类手风琴布局 */
+.categories-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 分类区块 */
+.category-section {
+  background: var(--card-background);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  width: 100%;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.category-section--small {
+  margin-bottom: var(--spacing-sm);
+}
+
+.category-section--medium {
+  margin-bottom: var(--spacing-md);
+}
+
+.category-section--large {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* 分类头部 - 可点击区域 */
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  user-select: none; /* 防止文本选择 */
+}
+
+.category-header:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.category-info h2 {
+  margin: 0 0 var(--spacing-xs) 0;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.category-section--medium .category-info h2 {
+  font-size: 1.3rem;
+}
+
+.category-section--large .category-info h2 {
+  font-size: 1.4rem;
+}
+
+.category-info h2 i {
+  margin-right: var(--spacing-sm);
+  color: var(--accent-color);
+}
+
+.category-description {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+}
+
+.category-toggle {
+  color: var(--secondary-color);
+  transition: transform var(--transition-normal);
+}
+
+.category-section.active .category-toggle {
+  transform: rotate(180deg);
+}
+
+/* 分类文章列表 */
+.category-posts {
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.category-posts[style*="display: none"] {
+  opacity: 0 !important;
+}
+
+/* 文章卡片列表 - 使用瀑布流布局 */
+.category-posts .post-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-auto-rows: masonry;
+  gap: 1.5rem;
+  margin-top: var(--spacing-md);
+}
+
+/* 大屏幕多列布局 */
+@media (min-width: 992px) {
+  .category-posts .post-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 超大屏幕更多列布局 */
+@media (min-width: 1400px) {
+  .category-posts .post-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 空状态 */
+.no-posts {
+  text-align: center;
+  padding: var(--spacing-xl);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.no-posts[style*="display: none"] {
+  opacity: 0 !important;
+}
+
+.no-posts .empty-state {
+  padding: var(--spacing-lg);
+}
+
+.no-posts .empty-state i {
+  font-size: 2rem;
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.no-posts .empty-state h3 {
+  font-size: 1.2rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.no-posts .empty-state p {
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-md);
+  font-size: 0.9rem;
+}
+
+.no-posts .empty-state .button {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--accent-color);
+  color: white;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--transition-fast);
+  font-size: 0.9rem;
+}
+
+.no-posts .empty-state .button:hover {
+  background: var(--primary-color);
+}
+
+/* 无分类状态 */
+.no-categories {
+  text-align: center;
+  padding: var(--spacing-3xl);
+}
+
+.no-categories .empty-state i {
+  font-size: 3rem;
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.no-categories .empty-state h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.no-categories .empty-state p {
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.no-categories .empty-state .button {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--accent-color);
+  color: white;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.no-categories .empty-state .button:hover {
+  background: var(--primary-color);
+}
+
+/* 深色模式 */
+body.dark-mode .category-section {
+  background: var(--card-background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .category-header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .category-info h2 i {
+  color: var(--accent-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .category-posts .post-list {
+    grid-template-columns: 1fr;
+  }
+
+  .category-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .category-info h2 {
+    font-size: 1.1rem;
+  }
+
+  .category-section--medium .category-info h2,
+  .category-section--large .category-info h2 {
+    font-size: 1.1rem;
+  }
+
+  .category-posts {
+    padding: 0 var(--spacing-md) var(--spacing-md);
+  }
+}

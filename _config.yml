@@ -1,0 +1,212 @@
+
+# Site Settings
+favicon:    # /favicon.ico
+logo: /images/0.gif
+# 首页图
+# Hero Section
+hero:
+  enable: false  # 是否开启首页图片
+  background_image: # /images/11.webp
+  typing_text: 欢迎来到我的博客
+  typing_speed: 100
+  delete_speed: 50
+  pause_duration: 2000
+  scroll_hint: 向下滚动探索更多
+
+# Article List 首页文章卡片大小
+article_list:
+  card_size: normal  # normal or large
+
+# Colors 颜色配置
+colors:
+  primary: '#1a1a1a'
+  secondary: '#666666'
+  accent: '#ff6b6b'
+  background: '#ffffff'
+  text: '#333333'
+  overlay: 'rgba(0, 0, 0, 0.7)'
+  tag_background: '#ffffff'
+  card_background: '#ffffff'
+
+# Typography 字体配置
+fonts:
+  primary: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+  secondary: 'Playfair Display, Georgia, serif'
+  monospace: 'Fira Code, Monaco, Consolas, monospace'
+
+# Layout 布局配置
+layout:
+  max_width: 1400px
+  sidebar_width: 300px
+  content_padding: 2rem
+
+# Social Links 社交链接
+social:
+  github: https://github.com/forever218
+#  twitter: https://twitter.com/yourusername
+#  instagram: https://instagram.com/yourusername
+#  linkedin: https://linkedin.com/in/yourusername
+  email: mailto:3316703158@qq.com
+  bilibili: https://space.bilibili.com/82657269
+
+# Navigation Menu 导航菜单
+menu:
+  首页: /
+  关于: /about/
+  归档: /archives/
+  分类: /categories/
+  标签: /tags/
+
+# Footer 页脚
+footer:
+  copyright: © 2025 李思然. All rights reserved.
+  custom_html: ""
+  # Footer centered image with link (页脚居中图片及链接)
+  image:
+    enable: true  # 是否显示图片，设为true显示
+    src: "https://s21.ax1x.com/2024/08/23/pAFm0cq.png"  # 图片URL
+    link: "https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"  # 图片链接地址
+    alt: "Footer Image"  # 图片替代文本
+  badges:
+      - link: https://hexo.io/ #徽标指向网站链接
+        shields: https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Frame-Hexo.svg #徽标API
+        message: 博客框架为Hexo_v5.4.0 #徽标提示语
+      - link: https://beian.miit.gov.cn/
+        shields: https://img.shields.io/badge/粤ICP备-2022157092号-yellow.svg?logo=data:image/png;base64,UklGRjgCAABXRUJQVlA4WAoAAAAQAAAAEwAAEwAAQUxQSJgAAAABgKpt//nn+RvZ89KuNVcbR6C6pBNYW12zl61oO23Vtu2/v59TiIgJILircnOrKgLlzL4Pj8fj+RkuUTB7FE0hIuZVxs1B4r88yudxAakeYQIQsSiZiYVaj7ge2mS9cCbbgTfZIYzJmmFVtgQ/slsolaUB5Y9qtzkAmRdqN0EmPMKBAGvjq8pRnTYAbBVdK9unpytTDQVaAFZQOCB6AQAAEAgAnQEqFAAUAD6RQJhJpaOiISgKqLASCWwAnTKEeZ+Z8UG4b3S8Uuxj0APK49jD9jvRsJlHSAAk4peJdT29v1IEVadPwR6oAAD+BVzylNKb2DP80JoQLtKM1HYe/A2NwP2FBXtSNypNu+PttP+EadMJsrmm/ULTvb6jEqpziSt//sRMcbrAVYftaY1KNWWudr1AdlUv5D5HRoEfwcV0Pu9dhsXZ3ojpXwjGWWBJfv4puUOV9aczt7uvE8SHYSo33C18yNeqL9sZ211bKOY/rjT8Wzi9Wg+hj7Xvi/3NC1proBfzmpWysW6y3/63VcYMlVBx6v5o9WNvzL1XLvbR7wTooDXtSEjt6rJoaazbMoXie0mzg0G+evKLZ8vz/yKv/u4RDK0EF+ejNfOOU0ZhepG6b/Ewbk1BofcYZC8JB4a2NPUtwhHtqE3tVT8PlHEvlf+xYFbG7Wms4JVHiSMfc36K5LOwcwC89RYMLn0jFD1wQF2/QrJAAAAA
+        message: 本站已在粤网管局备案   
+      - link: http://creativecommons.org/licenses/by-nc-sa/4.0/
+        shields: https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/Copyright-BY-NC-SA.svg
+        message: 本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可
+
+
+
+# Features (功能)
+features:
+  dark_mode: true
+  smooth_scroll: true
+  back_to_top: true
+
+# Code Block Settings (代码高亮)
+code_block:
+  shrink: true  # 默认折叠代码块
+  height_limit: 200  # 代码块高度限制，超过此高度显示展开按钮
+  enable_folding: true  # 启用代码折叠功能
+  max_height: 300px  # 代码块最大高度（像素）
+
+
+# Author Card (作者卡片)
+author_card:
+  enable: true
+  avatar:  /images/0.gif
+  name: 然
+  bio: 人生而自由，却无往不在枷锁之中
+  button_text: 关于我
+  button_link: /about/
+  background_image: "/images/13.jpg"
+  width: large # normal or large
+  # 作者卡片背景动画
+  background_animation:
+    enable: false  # 默认为false，启用后会在没有背景图片时显示动态背景
+    type: geometric  # 背景动画类型：particles, geometric, gradient
+    color_scheme: auto  # 颜色方案：auto（自动跟随主题）、light、dark
+    interactive: true  # 是否启用鼠标交互效果
+    density: high  # 动画元素密度：low, medium, high
+
+
+
+# Comments (optional)
+comments:
+  enable: false
+  type: twikoo  # disqus, gitalk, valine, twikoo
+  shortname:
+  # Twikoo configuration
+  twikoo:
+    envId:   # Your environment ID
+    region: # Your service region, e.g. ap-guangzhou
+    path: window.location.pathname  # Default is window.location.pathname
+    visitor: true  # Enable visitor count
+    option: # Additional options
+
+# Share buttons (optional)
+share:
+  enable: true
+  options:
+    twitter: true
+    facebook: true
+    linkedin: true
+    copy_link: true
+    wechat: true
+    qq: true
+    weibo: true
+    option: # Additional options
+
+# Theme Configuration
+theme_config:
+  # 文章设置
+  post:
+    excerpt_length: 200  # 文章摘要长度
+    read_more: "阅读更多"  # 阅读更多按钮文字
+
+  # CDN设置
+  cdn:
+    enabled: true
+    provider: "unpkg"  # jsdelivr, cdnjs, unpkg
+
+  # 统计分析
+  analytics:
+    enabled: false
+    google_analytics_id: ""
+    baidu_analytics_id: ""
+
+  # 搜索功能
+  search:
+    enabled: true
+    provider: "local"  # local, algolia
+    algolia_app_id: ""
+    algolia_api_key: ""
+    algolia_index_name: ""
+
+
+
+  # 性能优化
+  performance:
+    # 图片懒加载
+    lazyload: true
+    # 代码压缩
+    minify: true
+    # 缓存
+    cache: true
+
+# Custom code injection
+inject:
+  head:
+    # Custom CSS
+    # - <link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'">
+    - <link rel="stylesheet" href="https://cdn1.tianli0.top/gh/qxchuckle/Post-Summary-AI/chuckle-post-ai.css"> #AI
+  bottom:
+    # Custom JavaScript
+    # - <script src="/js/xxx"></script>
+    - <script src="/js/ai.js"></script> #ai
+    - <script src="/js/postai.js"></script> #ai
+
+
+# AI摘要配置
+ai_summary:
+  enable: true  # 是否启用AI摘要功能，默认关闭
+  api_key: ""  # DeepSeek API密钥
+  summary_directly: false  # 是否直接生成摘要，默认为false（需要点击按钮生成）
+  # 其他可选配置
+  ai_name: "然-AI"  # AI名称
+  ai_introduce: "我是文章辅助AI: 然-AI，一个基于deepseek的强大语言模型，有什么可以帮到您？😊"  # AI介绍语
+  ai_version: "deepseekv3"  # AI版本显示
+  # 按钮文本
+  buttons:
+    - "介绍自己"
+    - "来点灵感"
+    - "生成AI简介"
+
+# Categories Page 分类页样式
+categories:
+  layout: accordion  # accordion (展开式) or page (跳转式)
+  accordion_animation: true  # 是否启用展开/折叠动画
+  show_empty_categories: true  # 是否显示没有文章的分类

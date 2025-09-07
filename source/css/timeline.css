@@ -1,0 +1,70 @@
+/* ===== Timeline Tag Styles for Hexo Timeline Plugin ===== */
+/* 针对纪念Jsdeliver.md文件中的timeline标签格式的特定样式 */
+
+/* 为timeline注释创建样式 */
+.timeline-body > p {
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  margin-left: 20px;
+}
+
+.timeline-body > p::before {
+  content: '';
+  position: absolute;
+  left: -32px;
+  top: 1.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff6b6b;
+  z-index: 1;
+}
+
+.timeline-body > p:last-child {
+  margin-bottom: 0;
+}
+
+/* 为timeline注释中的时间信息添加样式 */
+.timeline-body > p::after {
+  content: attr(data-time);
+  position: absolute;
+  left: -70px;
+  top: 1.25rem;
+  font-size: 0.875rem;
+  color: #666;
+  width: 3rem;
+  text-align: right;
+}
+
+/* Dark mode styles */
+body.dark-mode .timeline-body > p {
+  background: #262626;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .timeline-body > p::after {
+  color: #aaa;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .timeline-body > p {
+    margin-left: 15px;
+  }
+
+  .timeline-body > p::before {
+    left: -27px;
+  }
+
+  .timeline-body > p::after {
+    left: -55px;
+    width: 2rem;
+  }
+}
+
+
+

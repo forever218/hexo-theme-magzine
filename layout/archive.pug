@@ -1,0 +1,37 @@
+//- Archive Page
+.archive-container
+  .archive-header
+    h1.archive-title= page.title || 'Archives'
+  
+  .archive-content
+    .timeline
+      - var posts = site.posts.sort('-date').toArray()
+      - var currentYear = null
+      
+      each post in posts
+        - var postYear = date(post.date, 'YYYY')
+        
+        if postYear !== currentYear
+          - currentYear = postYear
+          .archive-year
+            h2.year-title= postYear
+        
+        .archive-post
+          .archive-date
+            time(datetime=date_xml(post.date))= date(post.date, 'MMM DD')
+          
+          .archive-info
+            h3.archive-post-title
+              a(href=url_for(post.path))= post.title
+            
+            .archive-meta
+              if post.categories && post.categories.length
+                span.archive-category
+                  each category in post.categories.toArray()
+                    if category && category.path && category.name
+                      a(href=url_for(category.path))= category.name
+              
+              if post.tags.length
+                span.archive-tags
+                  each tag in post.tags.toArray().slice(0, 2)
+                    a.tag(href=url_for(tag.path))= tag.name

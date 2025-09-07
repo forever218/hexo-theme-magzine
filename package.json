@@ -1,0 +1,45 @@
+{
+  "name": "hexo-theme-magzine",
+  "version": "1.0.0",
+  "description": "A modern magazine-style Hexo theme with fullscreen hero and dynamic layouts",
+  "main": "index.js",
+  "scripts": {
+    "build": "hexo generate",
+    "serve": "hexo server",
+    "deploy": "hexo deploy",
+    "clean": "hexo clean"
+  },
+  "keywords": [
+    "hexo",
+    "theme",
+    "magazine",
+    "modern",
+    "magzine",
+    "blog"
+  ],
+  "author": "lisiran",
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "hexo": "^7.0.0",
+    "hexo-renderer-pug": "^3.0.0",
+    "hexo-renderer-stylus": "^3.0.0",
+    "hexo-generator-archive": "^2.0.0",
+    "hexo-generator-category": "^2.0.0",
+    "hexo-generator-index": "^3.0.0",
+    "hexo-generator-tag": "^2.0.0",
+    "hexo-server": "^3.0.0",
+    "hexo-deployer-git": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forever218/hexo-theme-magzine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/forever218/hexo-theme-magzine/issues"
+  },
+  "homepage": "https://github.com/forever218/hexo-theme-magzine#readme"
+}

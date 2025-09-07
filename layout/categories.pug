@@ -1,0 +1,115 @@
+//- Categories Page - 支持展开式和跳转式两种布局
+.post-wrapper
+  article.post-container
+    .post-header
+      h1.post-title= page.title || 'Categories'
+      .post-subtitle= theme.categories.layout === 'accordion' ? '所有分类' : '浏览所有分类'
+
+    .categories-content
+      if page.category
+        // 显示特定分类的文章列表 - 跳转式布局
+        .category-posts
+          .category-header
+            .category-info
+              h2.category-name
+                i.fas.fa-folder
+                |  #{page.category}
+              .category-description 共有 #{page.posts ? page.posts.length : 0} 篇文章
+            .category-back
+              a(href="/categories/")
+                i.fas.fa-arrow-left
+                |  返回所有分类
+
+          if page.posts && page.posts.length
+            .post-list
+              each post in page.posts.toArray()
+                .post-item
+                  .post-item-inner
+                    .post-item-title
+                      a(href=url_for(post.path))= post.title
+                    .post-item-meta
+                      .post-meta-left
+                        span.post-date
+                          i.far.fa-calendar
+                          |  #{date(post.date, "YYYY-MM-DD")}
+                      .post-meta-right
+                        a.read-more(href=url_for(post.path))
+                          | 阅读全文
+                          i.fas.fa-arrow-right
+          else
+            .no-posts
+              .empty-state
+                i.fas fa-inbox
+                h3 该分类下暂无文章
+                p 尝试浏览其他分类或返回首页
+                a.button(href="/") 返回首页
+      else if theme.categories.layout === 'accordion'
+        // 展开式分类布局
+        if site.categories && site.categories.length
+          - var sortedCategories = site.categories.toArray().sort(function(a, b) { return (b.posts ? b.posts.length : 0) - (a.posts ? a.posts.length : 0); })
+          .categories-accordion
+            each category, index in sortedCategories
+              // 根据配置决定是否显示没有文章的分类
+              if category.posts && category.posts.length || theme.categories.show_empty_categories
+                - var size = category && category.posts && category.posts.length > 10 ? 'large' : (category && category.posts && category.posts.length > 5 ? 'medium' : 'small')
+                .category-section(class="category-section--" + size, data-category=category.name)
+                  .category-header
+                    .category-info
+                      h2.category-name
+                        i.fas.fa-folder
+                        |  #{category.name}
+                      .category-description 共有 #{category.posts ? category.posts.length : 0} 篇文章
+                    .category-toggle
+                      i.fas.fa-chevron-down
+
+                  if category.posts && category.posts.length
+                    .category-posts(style="display: none;")
+                      .post-list
+                        each post in category.posts.toArray()
+                          .post-item
+                            .post-item-inner
+                              .post-item-title
+                                a(href=url_for(post.path))= post.title
+                              .post-item-meta
+                                .post-meta-left
+                                  span.post-date
+                                    i.far.fa-calendar
+                                    |  #{date(post.date, "YYYY-MM-DD")}
+                                .post-meta-right
+                                  a.read-more(href=url_for(post.path))
+                                    | 阅读全文
+                                    i.fas.fa-arrow-right
+                  else
+                    .no-posts(style="display: none;")
+                      .empty-state
+                        i.fas fa-inbox
+                        h3 该分类下暂无文章
+                        p 尝试浏览其他分类
+        else
+          .no-categories
+            .empty-state
+              i.fas fa-folder
+              h3 暂无分类
+              p 开始为您的文章添加分类
+              a.button(href="/") 返回首页
+      else
+        // 跳转式分类布局 - 显示所有分类的分类云
+        .categories-header
+
+        if site.categories && site.categories.length
+          .categories-cloud
+            - var sortedCategories = site.categories.toArray().sort(function(a, b) { return (b.posts ? b.posts.length : 0) - (a.posts ? a.posts.length : 0); })
+            each category in sortedCategories
+              // 根据配置决定是否显示没有文章的分类
+              if category.posts && category.posts.length || theme.categories.show_empty_categories
+                - var size = category && category.posts && category.posts.length > 10 ? 'large' : (category && category.posts && category.posts.length > 5 ? 'medium' : 'small')
+                a.category-cloud-item(class="category-cloud-item--" + size, href=url_for(category.path))
+                  span.category-name= category.name
+                  span.category-count= category.posts ? category.posts.length : 0
+        else
+          .no-categories
+            .empty-state
+              i.fas fa-folder
+              h3 暂无分类
+              p 开始为您的文章添加分类
+              a.button(href="/") 返回首页

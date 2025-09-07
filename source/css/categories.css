@@ -1,0 +1,153 @@
+/* ===== Categories Page ===== */
+.categories-content {
+  margin-top: var(--spacing-lg);
+}
+
+/* 分类头部 */
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.category-info h2 {
+  margin: 0 0 var(--spacing-sm) 0;
+  display: flex;
+  align-items: center;
+}
+
+.category-info h2 i {
+  margin-right: var(--spacing-sm);
+  color: var(--accent-color);
+}
+
+.category-description {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+}
+
+.category-back a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  color: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.category-back a:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.category-back a i {
+  margin-right: 0.5rem;
+}
+
+/* 分类云 */
+.categories-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-top: var(--spacing-xl);
+}
+
+.category-cloud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  background: var(--card-background);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-normal);
+}
+
+.category-cloud-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.category-cloud-item--small {
+  font-size: 0.9rem;
+}
+
+.category-cloud-item--medium {
+  font-size: 1rem;
+  padding: var(--spacing-md) var(--spacing-xl);
+}
+
+.category-cloud-item--large {
+  font-size: 1.1rem;
+  padding: var(--spacing-lg) var(--spacing-2xl);
+}
+
+.category-name {
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.category-count {
+  font-size: 0.8rem;
+  color: var(--secondary-color);
+}
+
+/* 空状态 */
+.no-categories, .no-posts {
+  text-align: center;
+  padding: var(--spacing-3xl);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.empty-state p {
+  color: var(--secondary-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.empty-state .button {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--accent-color);
+  color: white;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.empty-state .button:hover {
+  background: var(--primary-color);
+}
+
+/* 深色模式 */
+body.dark-mode .category-header,
+body.dark-mode .category-cloud-item {
+  background: var(--card-background);
+}
+
+body.dark-mode .category-name {
+  color: var(--text-color);
+}
+
+body.dark-mode .category-back a:hover {
+  color: var(--accent-color);
+}
+
+body.dark-mode .category-cloud-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}

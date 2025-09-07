@@ -1,0 +1,67 @@
+//- Comments Partial
+if theme.comments && theme.comments.enable
+  case theme.comments.type
+    when 'disqus'
+      #disqus_thread
+      script.
+        var disqus_config = function () {
+          this.page.url = '#{url_for(page.path)}';
+          this.page.identifier = '#{page.path}';
+        };
+        (function() {
+          var d = document, s = d.createElement('script');
+          s.src = 'https://#{theme.comments.shortname}.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+    
+    when 'gitalk'
+      #gitalk-container
+      link(rel="stylesheet", href="https://unpkg.com/gitalk/dist/gitalk.css")
+      script(src="https://unpkg.com/gitalk/dist/gitalk.min.js")
+      script.
+        var gitalk = new Gitalk({
+          clientID: '#{theme.comments.client_id}',
+          clientSecret: '#{theme.comments.client_secret}',
+          repo: '#{theme.comments.repo}',
+          owner: '#{theme.comments.owner}',
+          admin: ['#{theme.comments.admin}'],
+          id: '#{page.path}',
+          distractionFreeMode: false
+        });
+        gitalk.render('gitalk-container');
+    
+    when 'valine'
+      #valine-comments
+      script(src="https://unpkg.com/valine/dist/Valine.min.js")
+      script.
+        new Valine({
+          el: '#valine-comments',
+          appId: '#{theme.comments.app_id}',
+          appKey: '#{theme.comments.app_key}',
+          placeholder: '#{theme.comments.placeholder || "Leave your comments here..."}',
+          avatar: '#{theme.comments.avatar || "mm"}',
+          meta: ['nick', 'mail', 'link'],
+          pageSize: '#{theme.comments.page_size || 10}',
+          lang: '#{theme.comments.lang || "en"}',
+          visitor: #{theme.comments.visitor || false},
+          highlight: #{theme.comments.highlight || true},
+          recordIP: #{theme.comments.record_ip || false},
+          serverURLs: '#{theme.comments.server_urls || ""}'
+        });
+
+    when 'twikoo'
+      #twikoo-comments
+      div(id="twikoo")
+      script(src="https://unpkg.com/twikoo@1.6.39/dist/twikoo.all.min.js")
+      script.
+        twikoo.init({
+          envId: '#{theme.comments.twikoo.envId}',
+          el: '#twikoo',
+          region: '#{theme.comments.twikoo.region}',
+          path: '#{theme.comments.twikoo.path}',
+          visitor: #{theme.comments.twikoo.visitor},
+          onCommentLoaded: function () {
+            console.log('Twikoo评论加载成功');
+          }
+        });

@@ -1,0 +1,144 @@
+doctype html
+html(lang=config.language)
+  head
+    meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
+    meta(name="theme-color", content=theme.colors.primary)
+    meta(name="msapplication-navbutton-color", content=theme.colors.primary)
+    meta(name="apple-mobile-web-app-capable", content="yes")
+    meta(name="apple-mobile-web-app-status-bar-style", content="black-translucent")
+
+    title= page_title ? page_title + ' - ' + config.title : config.title
+
+    //- Dark mode script to prevent flash
+    if theme.features && theme.features.dark_mode
+      script.
+        (function() {
+          // 尽早应用暗色模式，防止闪烁
+          var savedDarkMode = localStorage.getItem('darkMode') === 'true';
+          if (savedDarkMode) {
+            document.documentElement.classList.add('dark-mode');
+          }
+        })();
+
+    //- Fonts
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap", rel="stylesheet")
+
+    //- Font Awesome Icons
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+
+    //- QR Code library for WeChat sharing
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js")
+
+    //- RSS
+    if feed
+      link(rel="alternate", href=feed, title=config.title, type="application/atom+xml")
+
+    //- Favicon
+    link(rel="icon", href=url_for(theme.favicon))
+
+    //- Styles
+    != css('css/main')
+    != css('css/tags')
+    != css('css/categories')
+    != css('css/categories-accordion')
+    != css('css/highlight')
+    != css('css/toc')
+    != css('css/image-zoom')
+    != css('css/share')
+    != css('css/mobile-nav')
+    != css('css/search')
+    != css('css/scrollbar')
+    != css('css/timeline')
+    != css('css/animations')
+    != css('css/ai-theme')
+    // 条件加载关于页面样式
+    if page.path === 'about/index.html'
+      != css('css/about')
+
+    //- Theme color variables from config
+    style.
+      :root {
+        --primary-color: #{theme.colors.primary};
+        --secondary-color: #{theme.colors.secondary};
+        --accent-color: #{theme.colors.accent};
+        --background-color: #{theme.colors.background};
+        --text-color: #{theme.colors.text};
+        --overlay-color: #{theme.colors.overlay};
+        --tag-background-color: #{theme.colors.tag_background};
+        --card-background-color: #{theme.colors.card_background};
+      }
+
+    //- Custom head
+    if theme.custom_head
+      != theme.custom_head
+
+    //- Inject head
+    if theme.inject && theme.inject.head
+      each item in theme.inject.head
+        != item
+
+  body
+    #app
+      != partial('_partial/header')
+      != partial('_partial/search')
+
+      main.main
+        != body
+
+      != partial('_partial/footer')
+
+    // 立即应用暗色模式，避免页面闪烁
+    if theme.features && theme.features.dark_mode
+      script.
+        (function() {
+          // 检查本地存储中的暗色模式设置
+          const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+          // 如果设置为暗色模式，立即应用到body
+          if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+          }
+
+          // 防止页面闪烁，在DOM加载完成前设置一个初始类
+          document.documentElement.style.visibility = 'hidden';
+          document.addEventListener('DOMContentLoaded', function() {
+            document.documentElement.style.visibility = 'visible';
+          });
+        })();
+
+    //- Scripts
+    != js('js/main')
+    != js('js/tags')
+    != js('js/categories-accordion')
+    != js('js/highlight')
+    != js('js/load-more')
+    != js('js/header-scroll')
+    != js('js/toc')
+    != js('js/image-zoom')
+    != js('js/share')
+    != js('js/search')
+    != js('js/hide-inline-interaction')
+    != js('js/hide-toggle-interaction')
+    != js('js/dark-mode-sync')
+    != js('js/animations')
+    != js('js/ai-theme')
+
+    //- Theme configuration for JavaScript
+    script.
+      window.theme = {
+        features: !{JSON.stringify(theme.features)},
+        code_block: !{JSON.stringify(theme.code_block)},
+        ai_summary: !{JSON.stringify(theme.ai_summary)},
+        categories: !{JSON.stringify(theme.categories)}
+      };
+
+    //- Custom scripts
+    if theme.custom_scripts
+      != theme.custom_scripts
+
+    //- Inject bottom
+    if theme.inject && theme.inject.bottom
+      each item in theme.inject.bottom
+        != item

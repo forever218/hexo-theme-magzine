@@ -1,0 +1,190 @@
+/* ===== Post TOC Sidebar ===== */
+.post-wrapper {
+  display: flex;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.toc-sidebar {
+  position: sticky;
+  top: 100px;
+  height: calc(100vh - 120px);
+  width: 220px;
+  flex-shrink: 0;
+  margin-right: 30px;
+  overflow-y: auto;
+  align-self: flex-start;
+  z-index: 10;
+  border-right: 1px solid var(--border-color);
+  padding-right: 20px;
+}
+
+.toc-container {
+  position: relative;
+}
+
+.toc-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  font-family: var(--font-secondary);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.toc-content {
+  font-size: 0.9rem;
+}
+
+.toc-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-content li {
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.toc-content a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  display: block;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  line-height: 1.4;
+}
+
+.toc-content a:hover {
+  color: var(--accent-color);
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.toc-content a.active {
+  color: var(--accent-color);
+  font-weight: 500;
+  background-color: rgba(255, 107, 107, 0.1);
+  border-left: 3px solid var(--accent-color);
+}
+
+/* TOC层级缩进 */
+.toc-content .toc-h1 {
+  padding-left: 0;
+}
+
+.toc-content .toc-h2 {
+  padding-left: 15px;
+}
+
+.toc-content .toc-h3 {
+  padding-left: 30px;
+}
+
+.toc-content .toc-h4 {
+  padding-left: 45px;
+}
+
+.toc-content .toc-h5 {
+  padding-left: 60px;
+}
+
+.toc-content .toc-h6 {
+  padding-left: 75px;
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+  .toc-sidebar {
+    display: none;
+  }
+
+  .post-wrapper {
+    display: block;
+  }
+
+  .post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: calc(var(--spacing-3xl) + var(--spacing-2xl)) var(--content-padding) var(--spacing-3xl);
+  }
+}
+
+/* 移动端TOC按钮 */
+@media (max-width: 1024px) {
+  .mobile-toc-toggle {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-toc-toggle i {
+    font-size: 20px;
+  }
+
+  .mobile-toc-toggle:hover {
+    transform: scale(1.1);
+  }
+
+
+}
+
+  .mobile-toc-panel {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 80%;
+    max-width: 300px;
+    background-color: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    padding: 20px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform var(--transition-normal);
+    visibility: hidden;
+  }
+
+  .mobile-toc-panel.active {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .mobile-toc-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .mobile-toc-overlay.active {
+    display: block;
+  }
+
+
+@media (min-width: 1025px) {
+  .mobile-toc-toggle,
+  .mobile-toc-panel,
+  .mobile-toc-overlay {
+    display: none !important;
+  }
+}

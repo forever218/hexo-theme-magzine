@@ -1,0 +1,47 @@
+//- Author Card Section
+if theme.author_card && theme.author_card.enable
+  section.author-card-section
+    .author-card-container
+      .author-card(
+        class=theme.author_card.background_image ? "author-card--with-bg" : "",
+        style=theme.author_card.background_image ? "background-image: url('" + url_for(theme.author_card.background_image) + "')" : "",
+        class=theme.author_card.width === "large" ? "author-card--large" : "",
+        class=(!theme.author_card.background_image && theme.author_card.background_animation && theme.author_card.background_animation.enable) ? "author-card--animated" : ""
+      )
+        // 动态背景容器
+        if (!theme.author_card.background_image && theme.author_card.background_animation && theme.author_card.background_animation.enable)
+          .author-card-bg(
+            class="author-card-bg--" + (theme.author_card.background_animation.type || "particles"),
+            class=theme.author_card.background_animation.interactive ? "author-card-bg--interactive" : "",
+            class="author-card-bg--" + (theme.author_card.background_animation.density || "medium"),
+            class=theme.author_card.background_animation.color_scheme === "auto" ? "author-card-bg--auto" : ("author-card-bg--" + (theme.author_card.background_animation.color_scheme || "light"))
+          )
+
+        if theme.author_card.avatar
+          .author-avatar
+            img(src=url_for(theme.author_card.avatar), alt="Author Avatar")
+        .author-info
+          h2.author-name= theme.author_card.name || "Author Name"
+          p.author-bio= theme.author_card.bio || "Author bio goes here..."
+          .author-social
+            if theme.social.github
+              a.social-link(href=theme.social.github, target="_blank", rel="noopener", title="GitHub")
+                i.fab.fa-github
+            if theme.social.twitter
+              a.social-link(href=theme.social.twitter, target="_blank", rel="noopener", title="Twitter")
+                i.fab.fa-twitter
+            if theme.social.instagram
+              a.social-link(href=theme.social.instagram, target="_blank", rel="noopener", title="Instagram")
+                i.fab.fa-instagram
+            if theme.social.linkedin
+              a.social-link(href=theme.social.linkedin, target="_blank", rel="noopener", title="LinkedIn")
+                i.fab.fa-linkedin
+            if theme.social.bilibili
+              a.social-link(href=theme.social.bilibili, target="_blank", rel="noopener", title="Bilibili")
+                i.fab.fa-bilibili
+            if theme.social.email
+              a.social-link(href="mailto:" + theme.social.email, title="Email")
+                i.fas.fa-envelope
+          if theme.author_card.button_text && theme.author_card.button_link
+            .author-cta
+              a.author-button(href=url_for(theme.author_card.button_link))= theme.author_card.button_text

@@ -1,0 +1,272 @@
+/* 
+ * AI摘要主题样式增强
+ * 提供更丰富的明暗模式转换效果
+ */
+
+/* AI摘要容器基础样式 */
+#post-ai.post-ai {
+  background: var(--ai-post-bg);
+  border-radius: 12px;
+  padding: 10px 12px 11px;
+  line-height: 1.3;
+  border: var(--ai-border);
+  margin-top: 10px;
+  margin-bottom: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 添加微妙的背景动画效果 */
+#post-ai.post-ai::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), transparent);
+  animation: shimmer 2s infinite;
+  opacity: 0.7;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* AI标题样式 */
+#post-ai .ai-title {
+  display: flex;
+  color: var(--ai-title-color);
+  border-radius: 8px;
+  align-items: center;
+  padding: 0 6px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#post-ai .ai-title:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+#post-ai .ai-title-text {
+  font-weight: bold;
+  margin-left: 8px;
+  font-size: 17px;
+  transition: color 0.3s ease;
+}
+
+#post-ai .ai-tag {
+  font-size: 12px;
+  background-color: var(--ai-tag-bg);
+  color: var(--ai-btn-color);
+  border-radius: 4px;
+  margin-left: auto;
+  line-height: 1;
+  padding: 4px 5px;
+  border: var(--ai-border);
+  transition: all 0.3s ease;
+}
+
+#post-ai .ai-tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* AI内容区域样式 */
+#post-ai .ai-explanation {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--ai-content-bg);
+  border-radius: 8px;
+  border: var(--ai-content-border);
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--ai-font-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 添加内容区域微妙的背景效果 */
+#post-ai .ai-explanation::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top right, var(--accent-color), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+#post-ai .ai-explanation:hover::after {
+  opacity: 0.05;
+}
+
+/* AI光标样式 */
+#post-ai .ai-cursor {
+  display: inline-block;
+  width: 7px;
+  background: var(--ai-cursor);
+  height: 16px;
+  margin-bottom: -2px;
+  opacity: 0.95;
+  margin-left: 3px;
+  transition: all 0.3s ease;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 0.2; }
+}
+
+/* AI按钮区域样式 */
+#post-ai .ai-btn-box {
+  font-size: 15.5px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+#post-ai .ai-btn-item {
+  padding: 5px 10px;
+  margin: 10px 16px 0px 5px;
+  width: fit-content;
+  line-height: 1;
+  background: var(--ai-btn-bg);
+  border: var(--ai-border);
+  color: var(--ai-btn-color);
+  border-radius: 6px 6px 6px 0;
+  user-select: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 按钮悬停效果 */
+#post-ai .ai-btn-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--accent-color);
+  transition: width 0.3s ease;
+  z-index: -1;
+}
+
+#post-ai .ai-btn-item:hover::before {
+  width: 100%;
+}
+
+#post-ai .ai-btn-item:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 按钮点击效果 */
+#post-ai .ai-btn-item:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* SVG图标样式 */
+#post-ai .ai-title > svg {
+  width: 21px;
+  height: fit-content;
+  transition: all 0.3s ease;
+}
+
+#post-ai .ai-title:hover > svg {
+  transform: rotate(10deg);
+}
+
+#post-ai .ai-title > svg path {
+  fill: var(--ai-font-color);
+  transition: fill 0.3s ease;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+  #post-ai .ai-btn-box {
+    justify-content: center;
+  }
+
+  #post-ai .ai-explanation {
+    font-size: 16px;
+  }
+
+  #post-ai .ai-title-text {
+    font-size: 16px;
+  }
+}
+
+/* 明暗模式颜色变量 */
+:root {
+  /* 亮色模式变量 */
+  --ai-font-color: #353535;
+  --ai-post-bg: #f1f3f8;
+  --ai-content-bg: #fff;
+  --ai-content-border: 1px solid #e3e8f7;
+  --ai-border: 1px solid #e3e8f7bd;
+  --ai-tag-bg: rgba(48, 52, 63, 0.80);
+  --ai-cursor: #333;
+  --ai-btn-bg: rgba(48, 52, 63, 0.75);
+  --ai-title-color: #4c4948;
+  --ai-btn-color: #fff;
+  --ai-accent-color: #ff6b6b;
+}
+
+/* 暗色模式变量 */
+html.dark-mode,
+body.dark-mode,
+[data-theme="dark"],
+.theme-dark,
+body.dark,
+body.dark-theme {
+  --ai-font-color: rgba(255, 255, 255, 0.9);
+  --ai-post-bg: #30343f;
+  --ai-content-bg: #1d1e22;
+  --ai-content-border: 1px solid #42444a;
+  --ai-border: 1px solid #3d3d3f;
+  --ai-tag-bg: #1d1e22;
+  --ai-cursor: rgb(255, 255, 255, 0.9);
+  --ai-btn-bg: #1d1e22;
+  --ai-title-color: rgba(255, 255, 255, 0.86);
+  --ai-btn-color: rgb(255, 255, 255, 0.9);
+  --ai-accent-color: #ff6b6b;
+}
+
+/* 主题切换动画 */
+#post-ai.post-ai,
+#post-ai .ai-title,
+#post-ai .ai-explanation,
+#post-ai .ai-btn-item,
+#post-ai .ai-tag {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+/* 特殊效果：明暗模式切换时的渐变动画 */
+@keyframes themeTransition {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(180deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.theme-transition #post-ai.post-ai {
+  animation: themeTransition 0.6s ease;
+}

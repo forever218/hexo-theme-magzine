@@ -1,0 +1,107 @@
+
+/* 文章内容中的图片悬浮效果 */
+.post-content img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 4px;
+}
+
+.post-content img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+/* 图片放大查看器样式 */
+.image-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.image-viewer.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-viewer-container {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.view-image {
+  max-width: 100%;
+  max-height: 90vh;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.close-viewer {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 30px;
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-viewer:hover {
+  color: #ff6b6b;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .post-content img:hover {
+    transform: scale(1.01);
+  }
+
+  .view-image {
+    max-height: 80vh;
+  }
+
+  .close-viewer {
+    top: -30px;
+    font-size: 24px;
+  }
+
+  /* 在更窄屏幕上进一步调整按钮位置 */
+  .mobile-toc-toggle {
+    bottom: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+  }
+
+  .back-to-top {
+    right: 80px !important;
+    bottom: 20px !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+/* 在极窄屏幕上垂直排列按钮 */
+@media (max-width: 480px) {
+  .mobile-toc-toggle {
+    bottom: 80px !important;
+    right: 20px !important;
+  }
+
+  .back-to-top {
+    right: 80px !important;
+    bottom: 20px !important;
+  }
+}

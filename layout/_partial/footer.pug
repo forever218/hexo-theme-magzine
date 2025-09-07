@@ -1,0 +1,21 @@
+//- Footer
+footer.footer
+  .footer-bottom
+    .footer-copyright
+      if theme.footer.copyright
+        != theme.footer.copyright
+      else
+        p= '© ' + new Date().getFullYear() + ' ' + config.title
+    // Footer centered image with link
+    if theme.footer.image && theme.footer.image.enable
+      .footer-image(style="text-align: center; margin: 15px 0;")
+        if theme.footer.image.link
+          a(href=theme.footer.image.link, target="_blank", rel="noopener noreferrer")
+            img(src=theme.footer.image.src, alt=theme.footer.image.alt || "Footer Image", style="max-width: 100%; height: auto;")
+        else
+          img(src=theme.footer.image.src, alt=theme.footer.image.alt || "Footer Image", style="max-width: 100%; height: auto;")
+    if theme.footer.badges && theme.footer.badges.length
+      .footer-badges
+        each badge in theme.footer.badges
+          a(href=badge.link, title=badge.message)
+            img(src=badge.shields, alt=badge.message)

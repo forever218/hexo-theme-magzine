@@ -1,0 +1,545 @@
+/* About Page Styles - 交互式卡片设计 */
+
+/* ===== About Main Container ===== */
+.about-page {
+  min-height: calc(100vh - 60px);
+  background: var(--background-color);
+  padding: 60px 0 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 154, 158, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(161, 196, 253, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(132, 250, 176, 0.05) 0%, transparent 30%);
+  z-index: 0;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== About Header Section ===== */
+.about-header {
+  text-align: center;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.about-avatar {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 25px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid #fff;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-avatar:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.about-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.about-avatar:hover img {
+  transform: scale(1.05);
+}
+
+.about-name {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+.about-name::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+  border-radius: 3px;
+}
+
+.about-bio {
+  font-size: 1.3rem;
+  color: #5d6d7e;
+  max-width: 700px;
+  margin: 15px auto 0;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ===== Interests Showcase Section ===== */
+.interests-showcase {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin: 50px 0;
+  position: relative;
+}
+
+.interest-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  z-index: 1;
+  transform-origin: center bottom;
+}
+
+.interest-card:hover {
+  transform: translateY(-15px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.interest-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7) 100%);
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+.interest-card:hover::before {
+  opacity: 0.8;
+}
+
+/* 横向卡片 */
+.card-landscape {
+  width: 380px;
+  height: 240px;
+}
+
+.card-landscape.card-large {
+  width: 460px;
+  height: 280px;
+}
+
+.card-landscape.card-medium {
+  width: 380px;
+  height: 240px;
+}
+
+.card-landscape.card-small {
+  width: 300px;
+  height: 200px;
+}
+
+/* 纵向卡片 */
+.card-portrait {
+  width: 280px;
+  height: 360px;
+}
+
+.card-portrait.card-large {
+  width: 320px;
+  height: 400px;
+}
+
+.card-portrait.card-medium {
+  width: 280px;
+  height: 340px;
+}
+
+.card-portrait.card-small {
+  width: 240px;
+  height: 300px;
+}
+
+/* 卡片背景 */
+.card-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: all 0.8s ease;
+  z-index: -1;
+}
+
+/* 卡片背景样式通过内联样式从YML文件中读取 */
+
+/* 卡片内容 */
+.card-content {
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.interest-card:hover .card-content {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.card-content h3 {
+  font-size: 2.8rem;
+  margin: 0 0 15px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.card-description {
+  margin-bottom: 20px;
+}
+
+.card-description p {
+  font-size: 1.2rem;
+  margin: 0;
+  line-height: 1.5;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  margin-top: 20px;
+  align-self: flex-end;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.card-hover-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 25px 30px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.interest-card:hover .card-hover-content {
+  transform: translateY(0);
+}
+
+.card-hover-content p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ===== About Details Section ===== */
+.about-details {
+  max-width: 900px;
+  margin: 40px auto 20px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.about-section {
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.about-section h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  position: relative;
+}
+
+.about-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.profile-item {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.profile-label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.profile-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.bio-content {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 25px;
+  border-radius: 12px;
+  line-height: 1.7;
+  color: #34495e;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 200px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contact-item:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.contact-item i {
+  font-size: 1.8rem;
+  margin-right: 15px;
+  color: #3498db;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 50%;
+}
+
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 5px;
+}
+
+.contact-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* ===== About Quote Section ===== */
+.about-quote {
+  max-width: 800px;
+  margin: 50px auto 30px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.about-quote blockquote {
+  font-size: 1.4rem;
+  font-style: italic;
+  color: #5d6d7e;
+  margin: 0;
+  padding: 0 30px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.about-quote blockquote::before {
+  content: '"';
+  font-size: 4rem;
+  color: rgba(255, 154, 158, 0.3);
+  position: absolute;
+  left: -10px;
+  top: -20px;
+}
+
+.about-quote blockquote::after {
+  content: '"';
+  font-size: 4rem;
+  color: rgba(255, 154, 158, 0.3);
+  position: absolute;
+  right: -10px;
+  bottom: -40px;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 992px) {
+  .interests-showcase {
+    gap: 20px;
+  }
+
+  .interest-life, .interest-art, .interest-sport, .interest-create {
+    width: 100%;
+    max-width: 350px;
+    height: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-page {
+    padding: 40px 0 30px;
+  }
+
+  .about-container {
+    padding: 15px;
+  }
+
+  .about-avatar {
+    width: 140px;
+    height: 140px;
+  }
+
+  .about-name {
+    font-size: 2.2rem;
+  }
+
+  .about-bio {
+    font-size: 1.1rem;
+  }
+
+  .interests-showcase {
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 0;
+  }
+
+  .interest-card {
+    width: 100% !important;
+    max-width: 350px;
+    height: 280px !important;
+  }
+
+  .card-content h3 {
+    font-size: 2.2rem;
+  }
+
+  .card-description p {
+    font-size: 1rem;
+  }
+
+  .profile-info {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-info {
+    flex-direction: column;
+  }
+
+  .about-section {
+    padding: 20px;
+    margin-bottom: 25px;
+  }
+
+  .about-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .about-quote blockquote {
+    font-size: 1.2rem;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .about-name {
+    font-size: 2rem;
+  }
+
+  .about-bio {
+    font-size: 1rem;
+  }
+
+  .about-section {
+    padding: 15px;
+  }
+
+  .card-content {
+    padding: 20px;
+  }
+
+  .card-hover-content {
+    padding: 15px 20px;
+  }
+}

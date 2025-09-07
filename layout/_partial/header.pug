@@ -1,0 +1,25 @@
+//- Header
+header.header
+  nav.nav
+    .nav-container
+      .nav-logo
+        a(href=url_for('/'))
+          span.nav-title=config.title
+      
+      .nav-menu
+        - var menu = theme.menu || {}
+        each path, title in menu
+          if path === '/'
+            a.nav-item(href=url_for(path), class=is_home() ? 'active' : '')= title
+          else
+            a.nav-item(href=url_for(path), class=is_current(path) ? 'active' : '')= title
+        
+        // 搜索按钮
+        if theme.theme_config.search && theme.theme_config.search.enabled
+          .search-toggle
+            i.fas.fa-search
+      
+      .nav-toggle
+        span
+        span
+        span

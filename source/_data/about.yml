@@ -1,0 +1,51 @@
+# 关于页面卡片配置
+# 每个卡片包含标题、背景图和描述文本
+
+cards:
+  - title: "生活"
+    background: "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ffecd2 100%)"
+    description: "享受生活中的每一个瞬间，发现平凡中的美好"
+    details: "探索美食、旅行、摄影，记录生活的点点滴滴"
+    icon: "fas fa-heart"
+    layout: "portrait"  # portrait 或 landscape
+    size: "large"       # large, medium 或 small
+
+  - title: "艺术"
+    background: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #a6c0fe 100%)"
+    description: "用艺术表达情感，用创意点亮生活"
+    details: "绘画、设计、音乐，感受艺术的无限可能"
+    icon: "fas fa-palette"
+    layout: "landscape"
+    size: "medium"
+
+  - title: "运动"
+    background: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 50%, #a8e6cf 100%)"
+    description: "挥洒汗水，挑战自我，保持身心健康"
+    details: "跑步、篮球、游泳，享受运动带来的活力"
+    icon: "fas fa-running"
+    layout: "portrait"
+    size: "medium"
+
+  - title: "创造"
+    background: "linear-gradient(135deg, #d4fc79 0%, #96e6a1 50%, #c2e59c 100%)"
+    description: "将想法变为现实，用创造力改变世界"
+    details: "编程、写作、发明，用创造力构建未来"
+    icon: "fas fa-lightbulb"
+    layout: "landscape"
+    size: "large"
+
+  - title: "旅行"
+    background: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)"
+    description: "探索世界，发现未知的美好"
+    details: "走过山川湖海，体验不同文化，收集旅途中的故事"
+    icon: "fas fa-plane"
+    layout: "portrait"
+    size: "small"
+
+  - title: "阅读"
+    background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
+    description: "在书海中遨游，与智者对话"
+    details: "文学、历史、科技，通过阅读拓展视野和思维"
+    icon: "fas fa-book"
+    layout: "landscape"
+    size: "small"

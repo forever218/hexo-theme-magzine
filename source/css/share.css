@@ -1,0 +1,111 @@
+
+/* 分享按钮样式 */
+.post-share {
+  margin: 3rem 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color, #eee);
+}
+
+.share-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-color, #333);
+}
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: var(--background-color, #f5f5f5);
+  color: var(--text-color, #333);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color, #ddd);
+}
+
+.share-btn:hover {
+  background-color: var(--primary-color, #1a1a1a);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn span {
+  margin-left: 0.5rem;
+}
+
+/* 微信分享弹窗样式 */
+.wechat-share-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.wechat-share-container {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.wechat-share-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.wechat-share-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.wechat-share-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+}
+
+.wechat-share-body {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+#wechat-qrcode {
+  margin: 0 auto 1rem;
+  width: 200px;
+  height: 200px;
+}
+
+#wechat-qrcode img {
+  width: 100%;
+  height: 100%;
+}
+
+.wechat-share-body p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+}

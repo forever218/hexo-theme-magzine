@@ -1,0 +1,80 @@
+//- Tags Page
+.post-wrapper
+  article.post-container
+    .post-header
+      h1.post-title= page.title || 'Tags'
+      .post-subtitle #{page.tag ? '探索与 "' + page.tag + '" 相关的所有文章' : ''}
+
+    .tags-content
+      if page.tag
+        // 显示特定标签的文章列表
+        .tag-posts
+          .tag-header
+            .tag-info
+              h2.tag-name 
+                i.fas.fa-tag
+                |  #{page.tag}
+              .tag-description 共有 #{page.posts ? page.posts.length : 0} 篇文章
+            .tag-back
+              a(href="/tags/")
+                i.fas.fa-arrow-left
+                |  返回所有标签
+
+          if page.posts && page.posts.length
+            .post-list
+              each post, index in page.posts.toArray()
+                // 根据索引创建不同大小的卡片
+                - var cardSize = (index % 6 === 0) ? 'large' : (index % 3 === 0) ? 'medium' : 'small'
+                .post-item(class="post-item--" + cardSize)
+                  .post-item-inner
+                    .post-item-title
+                      a(href=url_for(post.path))= post.title
+                    .post-item-excerpt
+                      if post.excerpt
+                        p= post.excerpt
+                      else
+                        // 使用 strip_html 过滤器移除 HTML 标签后再截取文本
+                        p!= strip_html(post.content).substring(0, cardSize === 'large' ? 300 : cardSize === 'medium' ? 200 : 100) + '...'
+                    .post-item-meta
+                      .post-meta-left
+                        span.post-date
+                          i.far.fa-calendar
+                          |  #{date(post.date, "YYYY-MM-DD")}
+                        if post.categories && post.categories.length
+                          span.post-category 
+                            i.fas.fa-folder
+                            a(href=url_for(post.categories.first().path))= post.categories.first().name
+                      .post-meta-right
+                        a.read-more(href=url_for(post.path))
+                          | 阅读全文 
+                          i.fas.fa-arrow-right
+          else
+            .no-posts
+              .empty-state
+                i.fas fa-inbox
+                h3 该标签下暂无文章
+                p 尝试浏览其他标签或返回首页
+                a.button(href="/") 返回首页
+      else
+        // 显示所有标签的标签云
+        .tags-header
+ 
+
+
+
+
+        if site.tags && site.tags.length
+          .tags-cloud
+            - var sortedTags = site.tags.toArray().sort(function(a, b) { return (b.posts ? b.posts.length : 0) - (a.posts ? a.posts.length : 0); })
+            each tag in sortedTags
+              - var size = tag && tag.posts && tag.posts.length > 10 ? 'large' : (tag && tag.posts && tag.posts.length > 5 ? 'medium' : 'small')
+              a.tag-cloud-item(class="tag-cloud-item--" + size, href=url_for(tag.path))
+                span.tag-name= tag.name
+                span.tag-count= tag.posts ? tag.posts.length : 0
+        else
+          .no-tags
+            .empty-state
+              i.fas fa-tags
+              h3 暂无标签
+              p 开始为您的文章添加标签
+              a.button(href="/") 返回首页
