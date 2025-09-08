@@ -146,10 +146,6 @@ theme_config:
     excerpt_length: 200  # 文章摘要长度
     read_more: "阅读更多"  # 阅读更多按钮文字
 
-  # CDN设置
-  cdn:
-    enabled: true
-    provider: "unpkg"  # jsdelivr, cdnjs, unpkg
 
   # 统计分析
   analytics:
@@ -209,3 +205,23 @@ categories:
   layout: accordion  # accordion (展开式) or page (跳转式)
   accordion_animation: true  # 是否启用展开/折叠动画
   show_empty_categories: true  # 是否显示没有文章的分类
+
+
+CDN:
+  # The CDN provider of internal scripts (主题内部 js 的 cdn 配置)
+  # option: local/elemecdn/jsdelivr/unpkg/cdnjs/onmicrosoft/cbd/anheyu/custom
+  # Dev version can only choose. ( dev版的主题只能设置为 local )
+  internal_provider: local
+
+  # The CDN provider of third party scripts (第三方 js 的 cdn 配置)
+  # option: elemecdn/jsdelivr/unpkg/cdnjs/onmicrosoft/cbd/anheyu/custom
+  third_party_provider: unpkg
+
+  # Add version number to CDN, true or false
+  version: true
+
+  # Custom format
+  # For example: https://cdn.staticfile.org/${cdnjs_name}/${version}/${min_cdnjs_file}
+  custom_format: # https://npm.elemecdn.com/${name}@latest/${file}
+
+  option:
