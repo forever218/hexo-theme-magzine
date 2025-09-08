@@ -9,7 +9,13 @@ header.header
       .nav-menu
         - var menu = theme.menu || {}
         each path, title in menu
-          if path === '/'
+          if typeof path === 'object'
+            .nav-item.has-submenu
+              span.nav-link= title
+              .submenu
+                each subPath, subTitle in path
+                  a.submenu-item(href=url_for(subPath))= subTitle
+          else if path === '/'
             a.nav-item(href=url_for(path), class=is_home() ? 'active' : '')= title
           else
             a.nav-item(href=url_for(path), class=is_current(path) ? 'active' : '')= title

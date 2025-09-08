@@ -56,6 +56,11 @@ menu:
   归档: /archives/
   分类: /categories/
   标签: /tags/
+  网站:
+    示例网站: https://example.com
+
+
+# Header 头部
 
 # Footer 页脚
 footer:
