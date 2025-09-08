@@ -85,6 +85,7 @@ features:
   dark_mode: true
   smooth_scroll: true
   back_to_top: true
+  loading_animation: true  # 是否开启加载动画，默认开启
 
 # Code Block Settings (代码高亮)
 code_block:
