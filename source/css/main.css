@@ -864,7 +864,7 @@ p {
 
 .post-content pre {
   background: #282c34;
-  padding: var(--spacing-lg);
+  padding: 0.4rem;
   border-radius: var(--radius-md);
   overflow-x: auto;
   margin: var(--spacing-sm) 0;
@@ -901,7 +901,7 @@ p {
   left: 0;
   right: 0;
   height: 40px;
-  background: linear-gradient(transparent, #282c34);
+  background: linear-gradient(transparent, #F6F8FA);
   pointer-events: none;
 }
 
@@ -2110,7 +2110,7 @@ body.dark-mode .post-content pre code {
 
 /* Dark mode code block folding styles */
 body.dark-mode .code-block-wrapper.collapsed::after {
-  background: linear-gradient(transparent, #1a1a1a);
+  background: linear-gradient(transparent, #292929);
 }
 
 body.dark-mode .code-toggle {
@@ -2540,3 +2540,206 @@ body.dark-mode .label:hover {
 }
 
 
+/* ===== 代码块滚动条修复补丁 ===== */
+
+/* 修复代码块容器的滚动条问题 */
+#article-container figure.highlight {
+  position: relative;
+  overflow: visible; /* 改为 visible 避免不必要的滚动条 */
+  margin: 0 0 1.25rem;
+  padding: 0;
+  background: var(--hl-bg);
+  color: var(--hl-color);
+  line-height: 1.6;
+  border-radius: var(--radius-md);
+}
+
+/* 代码块内部容器的滚动处理 */
+#article-container figure.highlight table {
+  margin: 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+  display: table;
+  background: transparent;
+  overflow: visible; /* 避免额外滚动条 */
+}
+
+/* Pre元素的滚动条样式 */
+#article-container figure.highlight pre,
+#article-container pre {
+  overflow-x: auto; /* 只在需要时显示水平滚动条 */
+  overflow-y: hidden; /* 隐藏垂直滚动条 */
+  margin: 0;
+  padding: 0.8rem;
+  background: var(--hl-bg);
+  color: var(--hl-color);
+  line-height: 1.6;
+  border-radius: var(--radius-md);
+  
+  /* 自定义滚动条样式 */
+  scrollbar-width: thin;
+  scrollbar-color: var(--hlscrollbar-bg) transparent;
+}
+
+/* Webkit 滚动条样式 */
+#article-container figure.highlight pre::-webkit-scrollbar,
+#article-container pre::-webkit-scrollbar {
+  height: 6px; /* 滚动条高度 */
+  width: 6px;
+}
+
+#article-container figure.highlight pre::-webkit-scrollbar-track,
+#article-container pre::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+#article-container figure.highlight pre::-webkit-scrollbar-thumb,
+#article-container pre::-webkit-scrollbar-thumb {
+  background: var(--hlscrollbar-bg);
+  border-radius: 3px;
+}
+
+#article-container figure.highlight pre::-webkit-scrollbar-thumb:hover,
+#article-container pre::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 修复代码表格中的滚动问题 */
+.code {
+  display: table-cell;
+  vertical-align: top;
+  width: 100%;
+  padding: 0;
+  overflow: visible; /* 避免额外滚动条 */
+}
+
+.code pre {
+  padding-right: 0.625rem;
+  padding-left: 0.625rem;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  overflow-x: auto; /* 只在需要时显示水平滚动条 */
+  overflow-y: hidden; /* 隐藏垂直滚动条 */
+}
+
+/* 修复展开按钮相关的样式冲突 */
+.code-expand-btn:not(.expand-done) ~ table {
+  overflow: hidden;
+  max-height: 200px; /* 使用 max-height 而不是 height */
+}
+
+.code-expand-btn:not(.expand-done) ~ pre {
+  overflow: hidden;
+  max-height: 200px; /* 使用 max-height 而不是 height */
+}
+
+.code-expand-btn.expand-done ~ table,
+.code-expand-btn.expand-done ~ pre {
+  margin-bottom: 1.8em;
+  overflow: visible; /* 展开后恢复正常滚动 */
+  max-height: none;
+}
+
+.code-expand-btn.expand-done ~ table .code pre,
+.code-expand-btn.expand-done ~ pre {
+  overflow-x: auto; /* 展开后允许水平滚动 */
+  overflow-y: hidden;
+}
+
+/* 确保行号列不会产生滚动条 */
+.gutter {
+  user-select: none;
+  display: table-cell;
+  vertical-align: top;
+  padding: 0;
+  background: var(--hlnumber-bg);
+  border-right: 1px solid var(--border-color);
+  overflow: hidden; /* 行号列不需要滚动 */
+}
+
+.gutter pre {
+  padding-right: 0.625rem;
+  padding-left: 1.25rem;
+  background: transparent;
+  color: var(--hlnumber-color);
+  text-align: right;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  overflow: hidden; /* 行号不需要滚动 */
+}
+
+/* 修复工具栏样式，确保不影响代码块高度 */
+.highlight-tools {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  min-height: 1.5rem;
+  height: 2.15em;
+  background: var(--hltools-bg);
+  color: var(--hltools-color);
+  font-size: 0.9rem;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  flex-shrink: 0; /* 防止工具栏被压缩 */
+}
+
+/* 确保折叠状态下的正确显示 */
+.highlight-tools.closed ~ table,
+.highlight-tools.closed ~ pre {
+  display: none;
+}
+
+/* 移除可能导致额外空间的样式 */
+#article-container figure.highlight::after,
+#article-container figure.highlight::before {
+  display: none;
+}
+
+/* 确保代码块容器底部没有额外空间 */
+#article-container figure.highlight {
+  border-bottom: none;
+}
+
+#article-container figure.highlight table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 修复可能的容器高度问题 */
+#article-container .highlight-body {
+  overflow: visible;
+}
+
+/* 确保代码内容区域的正确滚动行为 */
+#article-container figure.highlight .code {
+  position: relative;
+}
+
+/* 暗色模式下的滚动条样式调整 */
+body.dark-mode #article-container figure.highlight pre::-webkit-scrollbar-thumb,
+body.dark-mode #article-container pre::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+body.dark-mode #article-container figure.highlight pre::-webkit-scrollbar-thumb:hover,
+body.dark-mode #article-container pre::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  #article-container figure.highlight pre,
+  #article-container pre {
+    padding: 0.6rem;
+  }
+  
+  .code pre {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}

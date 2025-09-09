@@ -2,7 +2,7 @@
 
 :root {
   --hl-color: #8F93A2;
-  --hl-bg: #0F111A;
+  --hl-bg: #2a2a2a;
   --hltools-bg: #0d0f15;
   --hltools-color: #8F93A2;
   --hlnumber-bg: #0F111A;
@@ -11,7 +11,9 @@
   --hlexpand-bg: linear-gradient(180deg, rgba(15, 17, 26, 0.6), rgba(15, 17, 26, 0.9));
 }
 
-[data-theme='light'] {
+/* 亮色模式样式 */
+html:not(.dark-mode),
+body:not(.dark-mode) {
   --hl-color: #90A4AE;
   --hl-bg: #F6F8FA;
   --hltools-bg: #f1f3f5;
@@ -97,7 +99,7 @@
   overflow: hidden;
   min-height: 1.5rem;
   height: 2.15em;
-  background: var(--hltools-bg);
+  background: var(--hl-bg);
   color: var(--hltools-color);
   font-size: 0.9rem;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
@@ -158,21 +160,86 @@
 /* 代码行号 */
 .gutter {
   user-select: none;
+  display: table-cell;
+  vertical-align: top;
+  padding: 0;
+  background: var(--hlnumber-bg);
+  border-right: 1px solid var(--border-color);
 }
 
 .gutter pre {
   padding-right: 0.625rem;
   padding-left: 1.25rem;
-  background: var(--hlnumber-bg);
+  background: transparent;
   color: var(--hlnumber-color);
   text-align: right;
-  border-right: 1px solid var(--border-color);
+  margin: 0;
+  border-radius: 0;
+  border: none;
+}
+
+.code {
+  display: table-cell;
+  vertical-align: top;
+  width: 100%;
+  padding: 0;
 }
 
 .code pre {
   padding-right: 0.625rem;
   padding-left: 0.625rem;
   width: 100%;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+}
+
+/* 正确处理 highlight.js 生成的表格结构 */
+figure.highlight {
+  padding: 0;
+  margin: 0 0 1.25rem;
+  background: var(--hl-bg);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+figure.highlight table {
+  margin: 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+  display: table;
+  background: transparent;
+}
+
+figure.highlight tbody {
+  display: table-row-group;
+  background: transparent;
+}
+
+figure.highlight tr {
+  display: table-row;
+  background: transparent;
+}
+
+figure.highlight td {
+  display: table-cell;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+/* 确保代码块工具栏正确显示 */
+.highlight-tools {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  z-index: 10;
+  position: relative;
+}
+
+/* 修复代码块展开按钮 */
+.code-expand-btn {
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 
 /* 标记行 */
