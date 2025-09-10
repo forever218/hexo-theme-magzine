@@ -19,8 +19,41 @@ document.addEventListener('DOMContentLoaded', function() {
   // 获取所有标题元素
   const headings = postContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
-  // 如果没有标题，则不生成目录
-  if (headings.length === 0) return;
+  // 如果没有标题，则隐藏整个目录侧边栏
+  if (headings.length === 0) {
+    const tocSidebar = document.querySelector('.toc-sidebar');
+    if (tocSidebar) {
+      // 获取配置选项，默认为hide
+      const emptyTocBehavior = typeof tocConfig !== 'undefined' && tocConfig.empty_toc_behavior 
+        ? tocConfig.empty_toc_behavior 
+        : 'hide';
+
+      if (emptyTocBehavior === 'hide') {
+        // 隐藏目录侧边栏，并调整主内容区域宽度为全屏
+        tocSidebar.style.display = 'none';
+      
+        // 调整主内容区域的宽度，使其占据全部空间
+        const postContainer = document.querySelector('.post-container');
+        if (postContainer) {
+          postContainer.style.marginLeft = '0';
+          postContainer.style.maxWidth = '100%';
+        }
+      } else if (emptyTocBehavior === 'placeholder') {
+        // 保持目录侧边栏占位，但隐藏目录内容
+        const tocContent = tocSidebar.querySelector('.toc-content');
+        if (tocContent) {
+          tocContent.style.display = 'none';
+        }
+
+        // 显示"无目录"提示
+        const tocTitle = tocSidebar.querySelector('.toc-title');
+        if (tocTitle) {
+          tocTitle.textContent = '无目录';
+        }
+      }
+    }
+    return;
+  }
 
   // 创建目录列表
   const tocList = document.createElement('ul');

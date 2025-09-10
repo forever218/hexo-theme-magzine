@@ -72,6 +72,13 @@
           }
         });
 
+    // 传递TOC配置给前端
+    script.
+      // 创建全局TOC配置对象
+      window.tocConfig = {
+        empty_toc_behavior: "#{theme.toc && theme.toc.empty_toc_behavior || 'hide'}"
+      };
+
     .post-navigation
       if page.prev
         .post-nav.prev

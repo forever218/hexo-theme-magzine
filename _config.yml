@@ -213,6 +213,13 @@ categories:
   accordion_animation: true  # 是否启用展开/折叠动画
   show_empty_categories: true  # 是否显示没有文章的分类
 
+# Table of Contents (目录) 设置
+toc:
+  # 当没有目录时的显示方式
+  # hide: 隐藏目录侧边栏，并调整主内容区域宽度为全屏
+  # placeholder: 保持目录侧边栏占位，但隐藏目录内容
+  empty_toc_behavior: placeholder  # hide 或 placeholder
+
 
 CDN:
   # The CDN provider of internal scripts (主题内部 js 的 cdn 配置)
