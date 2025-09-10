@@ -97,6 +97,7 @@ code_block:
   height_limit: 200  # 代码块高度限制，超过此高度显示展开按钮
   enable_folding: true  # 启用代码折叠功能
   max_height: 300px  # 代码块最大高度（像素）
+  show_lang: true  # 是否在代码块上方工具栏显示代码语言（默认true）
 
 
 

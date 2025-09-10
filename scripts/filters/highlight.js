@@ -13,7 +13,7 @@ hexo.extend.filter.register('after_post_render', function(data) {
 
   // 获取配置
   const highlightCopy = theme.code_block.copy !== false;
-  const highlightLang = theme.code_block.lang !== false;
+  const highlightLang = theme.code_block.lang !== false && theme.code_block.show_lang !== false;
   const highlightShrink = theme.code_block.shrink === true;
   const highlightHeightLimit = theme.code_block.height_limit || 200;
 

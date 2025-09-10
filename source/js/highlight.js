@@ -115,6 +115,15 @@ function fixLineNumbersCodeBlocks() {
         langSpan.className = 'code-lang';
         langSpan.textContent = lang;
         tools.appendChild(langSpan);
+      } else {
+        // 如果没有caption，尝试从class中获取语言
+        const langClass = Array.from(figure.classList).find(cls => cls !== 'highlight');
+        if (langClass && langClass !== 'plain') {
+          const langSpan = document.createElement('span');
+          langSpan.className = 'code-lang';
+          langSpan.textContent = langClass;
+          tools.appendChild(langSpan);
+        }
       }
       
       // 添加复制按钮
