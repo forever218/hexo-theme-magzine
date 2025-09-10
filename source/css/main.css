@@ -120,6 +120,37 @@ p {
   transform: translateY(-100%);
 }
 
+/* 气泡样式导航栏 */
+.header.navbar-bubble {
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  padding: 0;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.header.navbar-bubble .nav {
+  padding: 0;
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  max-width: 100%;
+}
+
+.header.navbar-bubble .nav-container {
+  max-width: calc(var(--max-width) - 4rem);
+  margin: 0 auto;
+  background: var(--card-background-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 0.75rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
 .nav {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -1988,6 +2019,44 @@ body.dark-mode {
 body.dark-mode .header {
   background-color: rgba(26, 26, 26, 0.98) !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 暗色模式下气泡样式导航栏 */
+body.dark-mode .header.navbar-bubble {
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 手机端暗色模式下导航栏样式 */
+@media (max-width: 768px) {
+  body.dark-mode .nav-menu {
+    background: rgba(26, 26, 26, 0.98) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* 手机端暗色模式下目录栏样式 */
+@media (max-width: 1024px) {
+  body.dark-mode .mobile-toc-panel {
+    background-color: #262626 !important;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  body.dark-mode .toc-title {
+    color: var(--primary-color);
+  }
+
+  body.dark-mode .toc-content a {
+    color: var(--secondary-color);
+  }
+
+  body.dark-mode .toc-content a:hover,
+  body.dark-mode .toc-content a.active {
+    color: var(--accent-color);
+    background-color: rgba(255, 107, 107, 0.1);
+  }
 }
 
 body.dark-mode .nav-title {

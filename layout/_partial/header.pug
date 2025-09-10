@@ -1,5 +1,6 @@
 //- Header
-header.header
+- var navbarStyle = theme.navbar && theme.navbar.style ? theme.navbar.style : 'fill'
+header.header(class=navbarStyle === 'bubble' ? 'navbar-bubble' : '')
   nav.nav
     .nav-container
       .nav-logo

@@ -26,6 +26,7 @@ function initTypingEffect() {
   const typingSpeed = parseInt(typingElement.getAttribute('data-speed')) || 100;
   const deleteSpeed = parseInt(typingElement.getAttribute('data-delete-speed')) || 50;
   const pauseDuration = parseInt(typingElement.getAttribute('data-pause')) || 2000;
+  const shouldLoop = typingElement.getAttribute('data-loop') === 'true';
 
   let i = 0;
   let isDeleting = false;
@@ -45,8 +46,10 @@ function initTypingEffect() {
       if (i === typingText.length) {
         isPaused = true;
         setTimeout(() => {
-          isDeleting = true;
-          typeWriter();
+          if (shouldLoop) {
+            isDeleting = true;
+            typeWriter();
+          }
         }, pauseDuration);
         return;
       }
@@ -57,6 +60,12 @@ function initTypingEffect() {
       if (i === 0) {
         isDeleting = false;
         isPaused = true;
+        setTimeout(() => {
+          if (shouldLoop) {
+            typeWriter();
+          }
+        }, pauseDuration / 2);
+        return;
       }
     }
 

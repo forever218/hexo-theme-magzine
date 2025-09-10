@@ -6,8 +6,8 @@ logo: /images/0.gif
 # Hero Section
 hero:
   enable: false  # 是否开启首页图片
-  background_image: # /images/11.webp
-  typing_text: 欢迎来到我的博客
+  background_image: /images/11.webp
+  typing_text: 天接云涛连晓雾，星河欲转千帆舞
   typing_speed: 100
   delete_speed: 50
   pause_duration: 2000
@@ -61,6 +61,9 @@ menu:
 
 
 # Header 头部
+# Navigation Bar Style (导航栏样式)
+navbar:
+  style: "bubble"  # fill (填充样式) 或 bubble (气泡样式，两边不填充，带圆角)
 
 # Footer 页脚
 footer:

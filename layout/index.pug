@@ -9,7 +9,7 @@ if theme.hero && theme.hero.enable
       .hero-overlay
     .hero-content
       .hero-typing
-        #typing-text
+        #typing-text(data-text=theme.hero.typing_text || 'Welcome to my blog', data-speed=theme.hero.typing_speed || 100, data-delete-speed=theme.hero.delete_speed || 50, data-pause=theme.hero.pause_duration || 2000, data-loop=theme.hero.typing_loop !== false)
       .hero-scroll
         .scroll-indicator
           .scroll-mouse
