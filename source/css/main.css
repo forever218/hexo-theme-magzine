@@ -864,7 +864,7 @@ p {
 
 .post-content pre {
   background: #282c34;
-  padding: 0.4rem;
+  padding: 0.6rem;
   border-radius: var(--radius-md);
   overflow-x: auto;
   margin: var(--spacing-sm) 0;
