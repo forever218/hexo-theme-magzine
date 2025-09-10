@@ -21,12 +21,12 @@ article_list:
 colors:
   primary: '#1a1a1a'
   secondary: '#666666'
-  accent: '#ff6b6b'
+  accent: '#ff6b6b' # 主题色
   background: '#ffffff'
   text: '#333333'
   overlay: 'rgba(0, 0, 0, 0.7)'
-  tag_background: '#ffffff'
-  card_background: '#ffffff'
+  tag_background: '#ffffff'  # 首页标签背景色
+  card_background: '#ffffff'  # 首页文章卡片背景色
 
 # Typography 字体配置
 fonts:
@@ -63,7 +63,7 @@ menu:
 # Header 头部
 # Navigation Bar Style (导航栏样式)
 navbar:
-  style: "bubble"  # fill (填充样式) 或 bubble (气泡样式，两边不填充，带圆角)
+  style: "bubble"  # "fill" (填充样式) 或 "bubble" (气泡样式，两边不填充，带圆角)
 
 # Footer 页脚
 footer:
@@ -90,9 +90,9 @@ footer:
 
 # Features (功能)
 features:
-  dark_mode: true
+  dark_mode: true  # 是否开启暗黑模式
   smooth_scroll: true
-  back_to_top: true
+  back_to_top: true  # 是否开启返回顶部按钮
   loading_animation: true  # 是否开启加载动画，默认开启
 
 # Code Block Settings (代码高亮)
