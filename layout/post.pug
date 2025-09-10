@@ -10,13 +10,14 @@
   //- Main Post Content
   article.post-container
     .post-header
-      if page.cover
+      if page.cover || (theme.theme_config.post && theme.theme_config.post.use_default_cover)
         .post-cover
           - function getCoverPath(cover, path) {
           -   if (cover.startsWith('/')) return cover;
           -   return path.replace(/\\/g, '/').split('/').slice(0, -1).join('/') + '/' + cover;
           - }
-          - var coverPath = getCoverPath(page.cover, page.path)
+          - var defaultCover = theme.theme_config.post && theme.theme_config.post.default_cover ? theme.theme_config.post.default_cover : '/images/19.png'
+          - var coverPath = page.cover ? getCoverPath(page.cover, page.path) : defaultCover
           img(src=url_for(coverPath), alt=page.title)
 
       .post-meta
@@ -134,14 +135,15 @@ if page.related_posts && page.related_posts.length
       .related-grid
         each post in page.related_posts.slice(0, 3)
           .related-card
-            if post.cover
+            if post.cover || (theme.theme_config.post && theme.theme_config.post.use_default_cover)
               .related-image
                 a(href=url_for(post.path))
                   - function getCoverPath(cover, path) {
                   -   if (cover.startsWith('/')) return cover;
                   -   return path.replace(/\\/g, '/').split('/').slice(0, -1).join('/') + '/' + cover;
                   - }
-                  - var coverPath = getCoverPath(post.cover, post.path)
+                  - var defaultCover = theme.theme_config.post && theme.theme_config.post.default_cover ? theme.theme_config.post.default_cover : '/images/19.png'
+                  - var coverPath = post.cover ? getCoverPath(post.cover, post.path) : defaultCover
                   img(src=url_for(coverPath), alt=post.title)
             .related-content
               h4.related-title

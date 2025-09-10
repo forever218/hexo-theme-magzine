@@ -37,14 +37,15 @@ section.articles-section
       each article, index in articles
         - var size = sizes[index % sizes.length]
         article.article-card(class="article-card--" + size)
-          if article.cover
+          if article.cover || (theme.theme_config.post && theme.theme_config.post.use_default_cover)
             .article-image
               a(href=url_for(article.path))
                 - function getCoverPath(cover, path) {
                 -   if (cover.startsWith('/')) return cover;
                 -   return path.replace(/\\/g, '/').split('/').slice(0, -1).join('/') + '/' + cover;
                 - }
-                - var coverPath = getCoverPath(article.cover, article.path)
+                - var defaultCover = theme.theme_config.post && theme.theme_config.post.default_cover ? theme.theme_config.post.default_cover : '/images/19.png'
+                - var coverPath = article.cover ? getCoverPath(article.cover, article.path) : defaultCover
                 img(src=url_for(coverPath), alt=article.title, loading="lazy")
           .article-content
             .article-meta

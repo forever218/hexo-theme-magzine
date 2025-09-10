@@ -152,6 +152,8 @@ theme_config:
   post:
     excerpt_length: 200  # 文章摘要长度
     read_more: "阅读更多"  # 阅读更多按钮文字
+    use_default_cover: true  # 当文章未设置封面时是否使用默认封面
+    default_cover: "/images/19.png"  # 默认封面图片路径
 
 
   # 统计分析
