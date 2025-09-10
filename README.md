@@ -1,6 +1,17 @@
-# Magzine主题
+# Magzine主题   
 
 一款现代化的杂志风格 Hexo 主题，大屏支持，简洁、优雅、快速。
+
+-----------------------------------------------------
+## 预览  
+查看我的[博客](https://2am.top)或是预览快照：   
+ 
+
+<img width="2544" height="1326" alt="image" src="https://github.com/user-attachments/assets/a614374a-9d15-4fc9-b570-27dd86bd731f" />  
+<img width="2545" height="1307" alt="image" src="https://github.com/user-attachments/assets/73373035-e3b4-468c-aeed-ed61cd7af0b9" />
+<img width="2546" height="1325" alt="image" src="https://github.com/user-attachments/assets/f44855aa-4ac4-4d9b-b988-6341547f34bc" />
+
+
 
 
 ## 功能特性
@@ -75,16 +86,16 @@ npm install
 
 1.  查看 [文档](docs/)\
 2.  搜索已有
-    [Issues](https://github.com/yourusername/hexo-theme-magzine/issues)\
+    [Issues](https://github.com/forever218/hexo-theme-magzine/issues)  
 3.  必要时提交新 Issue
 
 ------------------------------------------------------------------------
 
 ## 致谢
 
--   [Hexo](https://hexo.io/) --- 静态博客框架\
--   [Pug](https://pugjs.org/) --- 模板引擎\
--   [Font Awesome](https://fontawesome.com/) --- 图标（可选）
+-   [Hexo](https://hexo.io/)静态博客框架  
+-   [Pug](https://pugjs.org/)模板引擎  
+-   [Font Awesome](https://fontawesome.com/)图标
 
 
 
