@@ -1,5 +1,5 @@
 ﻿if (!window.hasOwnProperty("aiExecuted")) {
-    console.log(`%cPost-Summary-AI 文章摘要AI生成工具:%chttps://github.com/qxchuckle/Post-Summary-AI%c`, "border:1px #888 solid;border-right:0;border-radius:5px 0 0 5px;padding: 5px 10px;color:white;background:#4976f5;margin:10px 0", "border:1px #888 solid;border-left:0;border-radius:0 5px 5px 0;padding: 5px 10px;", "");
+    console.log(`%cPost-Summary-AI 文章摘要AI生成工具,魔改自：%chttps://github.com/qxchuckle/Post-Summary-AI%c`, "border:1px #888 solid;border-right:0;border-radius:5px 0 0 5px;padding: 5px 10px;color:white;background:#4976f5;margin:10px 0", "border:1px #888 solid;border-left:0;border-radius:0 5px 5px 0;padding: 5px 10px;", "");
     window.aiExecuted = "chuckle";
 }
 
@@ -97,9 +97,7 @@ function ChucklePostAI(AI_option) {
 
         // DeepSeek API配置
         // 从主题配置中获取API密钥，如果没有配置则使用默认值（实际使用时应配置有效密钥）
-        const apiKey = window.theme && window.theme.ai_summary && window.theme.ai_summary.api_key 
-          ? window.theme.ai_summary.api_key 
-          : "";
+
 
         // 打字机动画
         const animate = (timestamp) => {
@@ -230,15 +228,14 @@ function ChucklePostAI(AI_option) {
             controller = new AbortController();
             signal = controller.signal;
 
-            const apiUrl = "https://api.deepseek.com/v1/chat/completions";
+            const apiUrl = "https://deepseek.example.com";
 
             try {
                 const response = await fetch(apiUrl, {
                     signal: signal,
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${apiKey}`
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
                         model: "deepseek-chat",

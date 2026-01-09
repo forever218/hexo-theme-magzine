@@ -1,3 +1,4 @@
+
 /* Newspaper Theme - Main Stylesheet */
 
 /* ===== Variables ===== */
@@ -529,12 +530,24 @@ p {
 .article-card {
   background: var(--card-background-color);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  /* overflow: hidden;  <--- 修改：去掉 hidden，解决边缘抖动问题 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all var(--transition-normal);
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+/* 新增：给卡片底部增加一个透明的“下巴”，防止鼠标悬停时因卡片上移而脱离 */
+.article-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px; /* 延伸判定区域，覆盖上移产生的空隙 */
+  height: 20px;
+  background: transparent;
+  z-index: -1;
 }
 
 .article-card:hover {
@@ -573,6 +586,9 @@ p {
   position: relative;
   overflow: hidden;
   flex: 7; /* 使用flex比例来控制图片区域占比 */
+  /* 新增：手动添加圆角，替代父级 overflow: hidden 的效果 */
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
 }
 
 /* 大卡片的图片样式 - 保持7:3的占比 */

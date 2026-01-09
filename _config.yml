@@ -16,6 +16,7 @@ hero:
 # Article List 首页文章卡片大小
 article_list:
   card_size: normal  # normal or large
+  view_mode: "modal"  # 文章浏览方式: "redirect"(跳转模式) 或 "modal"(模态窗口模式)
 
 # Colors 颜色配置
 colors:
@@ -56,6 +57,7 @@ menu:
   归档: /archives/
   分类: /categories/
   标签: /tags/
+  友链: /link/
   网站:
     示例网站: https://example.com
 
@@ -191,6 +193,7 @@ inject:
     # Custom CSS
     # - <link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'">
     - <link rel="stylesheet" href="https://cdn1.tianli0.top/gh/qxchuckle/Post-Summary-AI/chuckle-post-ai.css"> #AI
+    - <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   bottom:
     # Custom JavaScript
     # - <script src="/js/xxx"></script>

@@ -28,7 +28,18 @@ body:not(.dark-mode) {
 #article-container pre,
 #article-container code {
   font-size: 0.9rem;
-  font-family: 'Fira Code', Monaco, Consolas, monospace !important;
+  /* 
+   * === 关键修改 ===
+   * 1. 删除了 'Fira Code' (它是罪魁祸首)
+   * 2. 改用 Monaco (Mac) 或 Consolas (Windows) 优先
+   */
+  font-family: Monaco, Consolas, 'Courier New', monospace !important;
+  
+  /* === 双重保险：强制禁用所有形式的连字 === */
+  font-variant-ligatures: none !important;
+  font-feature-settings: "liga" 0, "calt" 0 !important;
+  -webkit-font-variant-ligatures: none !important;
+  text-rendering: optimizeSpeed !important;
 }
 
 #article-container code {

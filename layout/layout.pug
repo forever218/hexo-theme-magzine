@@ -55,6 +55,7 @@ html(lang=config.language)
     != css('css/animations')
     != css('css/ai-theme')
     != css('css/loading-animation')
+    != css('css/article-modal')
     // 条件加载关于页面样式
     if page.path === 'about/index.html'
       != css('css/about')
@@ -126,6 +127,7 @@ html(lang=config.language)
     != js('js/animations')
     != js('js/ai-theme')
     != js('js/loading-animation')
+    != js('js/article-modal')
 
     //- Theme configuration for JavaScript
     script.
@@ -133,7 +135,8 @@ html(lang=config.language)
         features: !{JSON.stringify(theme.features)},
         code_block: !{JSON.stringify(theme.code_block)},
         ai_summary: !{JSON.stringify(theme.ai_summary)},
-        categories: !{JSON.stringify(theme.categories)}
+        categories: !{JSON.stringify(theme.categories)},
+        article_list: !{JSON.stringify(theme.article_list)}
       };
 
     //- Custom scripts

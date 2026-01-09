@@ -1,0 +1,309 @@
+//- Link Page Layout
+//- 友链页面设计，展示友情链接
+
+main.link-page
+  .link-header
+    h1 友情链接
+    p.link-description 春江潮水连海平，海上明月共潮生
+
+  .link-categories
+    if site.data.link
+      .link-grid
+        each item in site.data.link
+          .link-card
+            .link-avatar
+              img(src=item.avatar, alt=item.name)
+            .link-info
+              h3.link-name
+                a(href=item.link, target="_blank")= item.name
+            .link-tooltip
+              .tooltip-content
+                h4= item.name
+                p= item.description
+    else
+      .no-links
+        p 暂无友链数据，请在 source/_data/link.yml 中添加友链信息
+
+    // 添加友链板块
+    .add-link-section
+      .add-link-card
+        h3.add-link-title 添加友链
+        .add-link-content
+          p 欢迎互换友链！您需要遵循以下规则：
+          ol.add-link-rules
+            li 已在贵站添加我的友链，信息：
+            pre.code-block
+              code.
+                - name: 未来的回忆
+                  link: https://2am.top
+                  avatar: https://2am.top/images/0.gif
+                  description: 人生而自由，却无往不在枷锁之中
+            li 贵站没有违法内容
+            li 您可以使用以下模板在评论区申请：
+            pre.code-block
+              code.
+                - name: 
+                  link: 
+                  avatar: 
+                  description: 
+          p 我会常去串门的😊~
+
+    // 评论区域
+    .comments-section
+      include _partial/comments
+
+// 友链页面样式
+style.
+  .link-page {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--content-padding);
+    padding-top: 5rem;
+  }
+
+  .link-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .link-header h1 {
+    font-family: var(--font-secondary);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  .link-description {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .link-categories {
+    margin-top: 2rem;
+  }
+
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .link-card {
+    background-color: var(--card-background-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+  }
+
+  .link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .link-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+
+  .link-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .link-info {
+    flex-grow: 1;
+  }
+
+  .link-name {
+    margin-bottom: 0.8rem;
+  }
+
+  .link-name a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .link-name a:hover {
+    color: var(--accent-color);
+  }
+
+
+
+  .link-tooltip {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+    z-index: 10;
+    width: 250px;
+  }
+
+  .link-card:hover .link-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .tooltip-content {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+  }
+
+  .tooltip-content:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--primary-color);
+  }
+
+  /* 暗色模式适配 */
+  @media (prefers-color-scheme: dark) {
+    .tooltip-content {
+      background-color: #444;
+      color: #fff;
+    }
+
+    .tooltip-content:after {
+      border-top-color: #444;
+    }
+  }
+
+  /* 主题暗色模式适配 */
+  body.dark-mode .tooltip-content {
+    background-color: #444;
+    color: #fff;
+  }
+
+  body.dark-mode .tooltip-content:after {
+    border-top-color: #444;
+  }
+
+  .tooltip-content h4 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .tooltip-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .no-links {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--secondary-color);
+  }
+
+  .add-link-section {
+    margin-top: 4rem;
+    margin-bottom: 3rem;
+  }
+
+  .add-link-card {
+    background-color: var(--card-background-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .add-link-title {
+    font-family: var(--font-secondary);
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+  }
+
+  .add-link-content p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+  }
+
+  .add-link-rules {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .add-link-rules li {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.6;
+  }
+
+  .code-block {
+    background-color: #f6f8fa;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    font-family: var(--font-monospace);
+    font-size: 0.9rem;
+    color: var(--text-color);
+    line-height: 1.5;
+  }
+
+  /* 暗色模式适配 */
+  @media (prefers-color-scheme: dark) {
+    .code-block {
+      background-color: #2d2d2d;
+    }
+
+    .code-block code {
+      color: #e6e6e6;
+    }
+  }
+
+  /* 主题暗色模式适配 */
+  body.dark-mode .code-block {
+    background-color: #2d2d2d;
+  }
+
+  body.dark-mode .code-block code {
+    color: #e6e6e6;
+  }
+
+  .comments-section {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  @media (max-width: 768px) {
+    .link-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .link-header h1 {
+      font-size: 2rem;
+    }
+  }
