@@ -97,5 +97,17 @@ npm install
 -   [Pug](https://pugjs.org/)模板引擎  
 -   [Font Awesome](https://fontawesome.com/)图标
 
+## 贡献者
 
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/forever218">
+        <img src="https://avatars.githubusercontent.com/huyangpahuo" width="80px;" alt="forever218"/>
+        <br /><sub><b>huyangpahuo</b></sub>
+      </a>
+      <br />
+    </td>
+  </tr>
+</table>
 
