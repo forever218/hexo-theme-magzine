@@ -102,7 +102,7 @@ npm install
 <table>
   <tr>
     <td align="center">
-      <a href="https://github.com/forever218">
+      <a href="https://github.com/huyangpahuo">
         <img src="https://avatars.githubusercontent.com/huyangpahuo" width="80px;" alt="forever218"/>
         <br /><sub><b>huyangpahuo</b></sub>
       </a>
