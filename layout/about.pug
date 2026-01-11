@@ -1,363 +1,137 @@
-//- About Page Layout
-//- 交互式卡片设计，体现设计感和张力
+doctype html
+html(lang=config.language)
+  head
+    meta(charset='UTF-8')
+    title= (page.title || '关于我') + ' | ' + config.title
+    link(rel='stylesheet', href=url_for('/css/about.css'))
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css')
 
-main.about-page
-  .about-container
-    .about-header
-      .about-avatar
-        img(src=url_for(theme.author_card.avatar), alt="个人头像")
-      h1.about-name= theme.author_card.name
-      p.about-bio= theme.author_card.bio
+  body
+    main.about-page
+      .about-container
+        .about-header
+          .about-avatar
+            img(src=url_for(theme.author_card && theme.author_card.avatar ? theme.author_card.avatar : '/img/avatar.png'), alt="Avatar")
+          h1.about-name= theme.author_card && theme.author_card.name ? theme.author_card.name : 'Your Name'
+          p.about-bio= theme.author_card && theme.author_card.bio ? theme.author_card.bio : 'Your Bio'
 
-    .interests-showcase
-      if site.data.about && site.data.about.cards
-        each card in site.data.about.cards
-          - var cardClass = 'interest-card interest-' + card.title.toLowerCase()
-          - if (card.layout === 'landscape') cardClass += ' card-landscape'
-          - if (card.layout === 'portrait') cardClass += ' card-portrait'
-          - if (card.size === 'large') cardClass += ' card-large'
-          - if (card.size === 'medium') cardClass += ' card-medium'
-          - if (card.size === 'small') cardClass += ' card-small'
+        .interests-showcase
+          if site.data.about && site.data.about.cards
+            each card in site.data.about.cards
+              - var cardClass = 'interest-card'
+              - if (card.layout) cardClass += ' card-' + card.layout
+              - if (card.size) cardClass += ' card-' + card.size
+              
+              a(class=cardClass, href=card.link || '#', target="_blank")
+                - var bgStyle = card.image ? `background-image: url(${url_for(card.image)});` : `background: ${card.background};`
+                .card-bg(style=`${bgStyle} background-size: cover; background-position: center;`)
+                
+                .card-content
+                  h3.card-title= card.title
+                  .card-description
+                    p= card.description
+                  .card-icon
+                    i(class=card.icon)
+                  .card-hover-content
+                    p= card.details
+          else
+             p(style="text-align:center") 暂无数据
+
+        .about-details
+          .about-section
+            h2 关于我
+            .profile-info
+              .profile-item
+                .profile-label 称呼
+                .profile-value 然
+              .profile-item
+                .profile-label 家乡
+                .profile-value 广东广州
+              .profile-item
+                .profile-label 大学
+                .profile-value 中北大学
+              .profile-item
+                .profile-label 现居地
+                .profile-value 山西太原
+              .profile-item
+                .profile-label 教育
+                .profile-value 大四在读
+              .profile-item
+                .profile-label 身份
+                .profile-value 程序员 
+
+          .about-section
+            h2 兴趣点
+            .bio-content
+              .skills-list
+                span.skill-tag 摄影
+                span.skill-tag 羽毛球
+                span.skill-tag 油画
+                span.skill-tag 设计
+                span.skill-tag 代码
+                span.skill-tag 哲学
+                span.skill-tag 生活
+                span.skill-tag 艺术
+                span.skill-tag 运动
+                span.skill-tag 创造
+                span.skill-tag 游戏
+                span.skill-tag 阅读
+                span.skill-tag 骑行
+                span.skill-tag 爬山
+                span.skill-tag 长跑
+                span.skill-tag 旅行
+
+          .about-section
+            h2 自我介绍
+            .bio-content(style="white-space: pre-wrap;")
+              != page.content
+
+          .about-section
+            h2 联系方式
+            .contact-info
+              a.contact-item(href="mailto:3316703158@qq.com")
+                i.fas.fa-envelope
+                div
+                  .contact-label 邮箱
+                  .contact-value 3316703158@qq.com
+              a.contact-item(href="https://github.com/forever218")
+                i.fab.fa-github
+                div
+                  .contact-label GitHub
+                  .contact-value forever218
+              a.contact-item(href="https://space.bilibili.com/82657269")
+                i.fas.fa-tv
+                div
+                  .contact-label 哔哩哔哩
+                  .contact-value 凛冬亦夏
+
+    
+    //- 【JS 修改】降低灵敏度 + 增加角度限制
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.interest-card');
+        
+        cards.forEach(card => {
+          card.addEventListener('mousemove', function(e) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            // 【修正 1】降低灵敏度：除数从 20 改为 60，动效更微小细腻
+            let rotateY = x / 60; 
+            let rotateX = -y / 60;
+            
+            // 【修正 2】角度限制：限制在 ±8 度以内，防止太歪
+            rotateY = Math.max(-8, Math.min(8, rotateY));
+            rotateX = Math.max(-8, Math.min(8, rotateX));
+            
+            // 保持上浮 -16px
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02) translateY(-16px)`;
+          });
           
-          div(class=cardClass data-interest=card.title.toLowerCase())
-            .card-bg(style="background: " + card.background)
-            .card-content
-              h3.card-title= card.title
-              .card-description
-                p= card.description
-              .card-icon
-                i(class=card.icon)
-              .card-hover-content
-                p= card.details
-
-    .about-details
-      .about-section
-        h2 关于我
-        .profile-info
-          .profile-item
-            .profile-label 称呼
-            .profile-value 然
-          .profile-item
-            .profile-label 家乡
-            .profile-value 广东广州
-          .profile-item
-            .profile-label 现居地
-            .profile-value 山西太原
-          .profile-item
-            .profile-label 教育
-            .profile-value 中北大学 · 大四在读
-
-      .about-section
-        h2 兴趣点
-        .bio-content
-          p 摄影，羽毛球，油画，设计，代码，哲学，生活，艺术，运动，创造，游戏，阅读，骑行，爬山，长跑
-
-      .about-section
-        h2 联系方式
-        .contact-info
-          a.contact-item(href="mailto:3316703158@qq.com")
-            i.fas.fa-envelope
-            .contact-detail
-              .contact-label 邮箱
-              .contact-value 3316703158@qq.com
-          a.contact-item(href="https://github.com/forever218")
-            i.fab.fa-github
-            .contact-detail
-              .contact-label GitHub
-              .contact-value forever218
-          a.contact-item(href="https://space.bilibili.com/82657269")
-            i.fas.fa-tv
-            .contact-detail
-              .contact-label 哔哩哔哩
-              .contact-value 凛冬亦夏
-
-
-
-// 添加交互式卡片样式
-style.
-  .interests-showcase {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-    margin: 40px 0;
-    position: relative;
-  }
-
-  .interest-card {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
-    z-index: 1;
-  }
-
-  .interest-card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    z-index: 10;
-  }
-
-  // 不同卡片的大小
-  .interest-life {
-    width: 320px;
-    height: 380px;
-  }
-
-  .interest-art {
-    width: 280px;
-    height: 340px;
-  }
-
-  .interest-sport {
-    width: 300px;
-    height: 360px;
-  }
-
-  .interest-create {
-    width: 340px;
-    height: 400px;
-  }
-
-  // 卡片背景
-  .card-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    transition: all 0.5s ease;
-    z-index: -1;
-  }
-
-  .interest-life .card-bg {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-  }
-
-  .interest-art .card-bg {
-    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-  }
-
-  .interest-sport .card-bg {
-    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-  }
-
-  .interest-create .card-bg {
-    background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
-  }
-
-  // 卡片内容
-  .card-content {
-    padding: 30px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: #fff;
-    position: relative;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-  }
-
-  .interest-card:hover .card-content {
-    background: rgba(0, 0, 0, 0.4);
-  }
-
-  .card-content h3 {
-    font-size: 2.5rem;
-    margin: 0 0 15px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  .card-description {
-    margin-bottom: 20px;
-  }
-
-  .card-description p {
-    font-size: 1.1rem;
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  .card-icon {
-    font-size: 2rem;
-    margin-top: 20px;
-    align-self: flex-end;
-  }
-
-  .card-hover-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px 30px;
-    background: rgba(0, 0, 0, 0.7);
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-  }
-
-  .interest-card:hover .card-hover-content {
-    transform: translateY(0);
-  }
-
-  .card-hover-content p {
-    margin: 0;
-    font-size: 0.95rem;
-  }
-
-  // 其他部分样式
-  .about-details {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  .about-section {
-    margin-bottom: 30px;
-  }
-
-  .about-section h2 {
-    color: #333;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #f0f0f0;
-  }
-
-  .profile-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-  }
-
-  .profile-item {
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
-
-  .profile-label {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 5px;
-  }
-
-  .profile-value {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .bio-content {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    line-height: 1.6;
-  }
-
-  .contact-info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .contact-item {
-    display: flex;
-    align-items: center;
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #333;
-    transition: all 0.3s ease;
-    flex: 1;
-    min-width: 200px;
-  }
-
-  .contact-item:hover {
-    background: #f0f0f0;
-    transform: translateY(-3px);
-  }
-
-  .contact-item i {
-    font-size: 1.5rem;
-    margin-right: 15px;
-    color: #555;
-  }
-
-  .contact-detail {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .contact-label {
-    font-size: 0.9rem;
-    color: #666;
-  }
-
-  .contact-value {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .about-quote {
-    max-width: 800px;
-    margin: 40px auto 20px;
-    text-align: center;
-  }
-
-  .about-quote blockquote {
-    font-size: 1.2rem;
-    font-style: italic;
-    color: #666;
-    margin: 0;
-    padding: 0 20px;
-    position: relative;
-  }
-
-  .about-quote blockquote:before {
-    content: '"';
-    font-size: 3rem;
-    color: #ddd;
-    position: absolute;
-    left: -10px;
-    top: -10px;
-  }
-
-  .about-quote blockquote:after {
-    content: '"';
-    font-size: 3rem;
-    color: #ddd;
-    position: absolute;
-    right: -10px;
-    bottom: -30px;
-  }
-
-  // 响应式设计
-  @media (max-width: 768px) {
-    .interests-showcase {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .interest-card {
-      width: 100% !important;
-      max-width: 350px;
-      height: 300px !important;
-    }
-
-    .profile-info {
-      grid-template-columns: 1fr;
-    }
-
-    .contact-info {
-      flex-direction: column;
-    }
-  }
+          card.addEventListener('mouseleave', function() {
+            // 复原
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1) translateY(0)';
+          });
+        });
+      });
