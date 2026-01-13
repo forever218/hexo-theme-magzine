@@ -15,6 +15,7 @@ cards:
   - title: "艺术"
     image: "/images/14.png"
     link: "https://github.com/forever218/hexo-theme-magzine"
+    background: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #a6c0fe 100%)"
     description: "用艺术表达情感，用创意点亮生活"
     details: "绘画、设计、音乐，感受艺术的无限可能"
     icon: "fas fa-palette"
