@@ -1,4 +1,3 @@
-
 /* 文章内容中的图片悬浮效果 */
 .post-content img {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -26,6 +25,7 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow: hidden; /* 防止放大后的图片撑大容器出现滚动条 */
 }
 
 .image-viewer.active {
@@ -37,6 +37,10 @@
   position: relative;
   max-width: 90%;
   max-height: 90%;
+  /* 移除 overflow:hidden，让图片可以溢出容器显示 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .view-image {
@@ -46,6 +50,19 @@
   margin: 0 auto;
   border: 2px solid #fff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  
+  /* 新增/修改的关键属性 */
+  transform-origin: center center; /* 确保缩放从中心开始，JS中可能会动态修改这个值 */
+  cursor: grab; /* 默认显示手型，提示可拖拽 */
+  user-select: none; /* 防止拖拽时选中图片 */
+  -webkit-user-drag: none; /* 防止原生拖拽图片行为 */
+  transition: transform 0.1s ease-out; /* 缩放时更平滑，但拖拽时可能需要移除此过渡以免延迟 */
+}
+
+/* 当处于拖拽状态时的样式（需要在JS中配合 mousedown 添加此类） */
+.view-image.grabbing {
+  cursor: grabbing;
+  transition: none; /* 拖拽时取消过渡，实现跟手效果 */
 }
 
 .close-viewer {
@@ -56,6 +73,7 @@
   color: #fff;
   cursor: pointer;
   transition: color 0.3s ease;
+  z-index: 10000; /* 确保关闭按钮在最上层 */
 }
 
 .close-viewer:hover {
