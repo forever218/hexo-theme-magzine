@@ -145,6 +145,7 @@
   border: var(--ai-border);
   color: var(--ai-btn-color);
   border-radius: 6px 6px 6px 0;
+  -webkit-user-select: none;
   user-select: none;
   transition: all 0.3s ease;
   cursor: pointer;

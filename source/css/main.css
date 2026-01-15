@@ -1,4 +1,3 @@
-
 /* Newspaper Theme - Main Stylesheet */
 
 /* ===== Variables ===== */
@@ -112,6 +111,7 @@ p {
   right: 0;
   z-index: 1000;
   background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-color);
   transition: transform var(--transition-normal);
@@ -128,6 +128,7 @@ p {
   border: none !important;
   border-bottom: none !important;
   padding: 0;
+  -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   box-shadow: none !important;
 }
@@ -170,6 +171,8 @@ p {
 
 .nav-menu {
   margin-left: auto;
+  display: flex;
+  gap: var(--spacing-lg);
 }
 
 .nav-logo {
@@ -185,13 +188,6 @@ p {
   height: 40px;
   width: auto;
   display: none;
-}
-
-
-
-.nav-menu {
-  display: flex;
-  gap: var(--spacing-lg);
 }
 
 .nav-item {
@@ -1197,12 +1193,23 @@ p {
 }
 
 .social-link {
-  color: rgba(255, 255, 255, 0.8);
-  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
 }
 
 .social-link:hover {
   color: var(--accent-color);
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: translateY(-3px);
 }
 
 .footer-bottom {
@@ -1248,43 +1255,11 @@ p {
 }
 
 .timeline {
-  position: relative;
   padding-left: var(--spacing-lg);
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--border-color);
-}
-
-.archive-year {
-  position: relative;
-  margin-bottom: var(--spacing-xl);
-}
-
-.year-title {
-  position: relative;
-  display: inline-block;
-  margin-bottom: var(--spacing-lg);
-  margin-left: 0;
-  background: var(--accent-color);
-  color: white;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-md);
-  font-size: 1.25rem;
-  white-space: nowrap;
-  z-index: 10;
-}
-
-.timeline {
-  position: relative;
   padding-left: 2rem;
   overflow: visible;
+  margin: var(--spacing-2xl) 0;
+  position: relative;
 }
 
 .timeline::before {
@@ -1302,6 +1277,21 @@ p {
   margin-bottom: var(--spacing-xl);
   padding-left: 0;
 }
+
+.year-title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--spacing-lg);
+  margin-left: 0;
+  background: var(--accent-color);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 1.25rem;
+  white-space: nowrap;
+  z-index: 10;
+}
+
 
 .archive-post {
   position: relative;
@@ -1430,10 +1420,6 @@ p {
   background: var(--background-color);
 }
 
-.post-date {
-  color: var(--secondary-color);
-  font-size: 0.875rem;
-}
 
 /* ===== Tags Page ===== */
 .tags-container {
@@ -1628,10 +1614,6 @@ p {
   }
 }
 
-/* ===== Smooth Scroll ===== */
-html {
-  scroll-behavior: smooth;
-}
 
 /* ===== Selection ===== */
 ::selection {
@@ -1960,25 +1942,6 @@ html {
   margin-bottom: var(--spacing-lg);
 }
 
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--background-color);
-  color: var(--secondary-color);
-  border: 1px solid var(--border-color);
-  transition: all var(--transition-fast);
-}
-
-.social-link:hover {
-  background-color: var(--accent-color);
-  color: white;
-  border-color: var(--accent-color);
-  transform: translateY(-3px);
-}
 
 .author-cta {
   margin-top: var(--spacing-md);
@@ -2207,9 +2170,6 @@ body.dark-mode .code-toggle:hover {
   background: #555555;
 }
 
-body.dark-mode .post-content pre {
-  background-color: #2a2a2a;
-}
 
 body.dark-mode .post-content table {
   border-color: var(--border-color);
@@ -2409,6 +2369,7 @@ body.dark-mode .hide-inline::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  -webkit-user-select: none;
   user-select: none;
   transition: background-color var(--transition-normal);
 }
@@ -2459,12 +2420,7 @@ body.dark-mode .hide-toggle-content {
   color: var(--text-color);
 }
 
-
-/* ===== Timeline Tag Styles ===== */
-.timeline {
-  margin: var(--spacing-2xl) 0;
-  position: relative;
-}
+/* ===== Timeline Styles ===== */
 
 .timeline-title {
   font-size: 1.5rem;
@@ -2637,6 +2593,7 @@ body.dark-mode .label:hover {
   color: var(--hl-color);
   line-height: 1.6;
   border-radius: var(--radius-md);
+  border-bottom: none;
 }
 
 /* 代码块内部容器的滚动处理 */
@@ -2661,10 +2618,15 @@ body.dark-mode .label:hover {
   color: var(--hl-color);
   line-height: 1.6;
   border-radius: var(--radius-md);
-  
-  /* 自定义滚动条样式 */
-  scrollbar-width: thin;
-  scrollbar-color: var(--hlscrollbar-bg) transparent;
+}
+
+/* 自定义滚动条样式 - 仅在支持的浏览器中应用 */
+@supports (scrollbar-width: thin) {
+  #article-container figure.highlight pre,
+  #article-container pre {
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+  }
 }
 
 /* Webkit 滚动条样式 */
@@ -2738,7 +2700,8 @@ body.dark-mode .label:hover {
 
 /* 确保行号列不会产生滚动条 */
 .gutter {
-  user-select: none;
+  -webkit-user-select: none;
+   user-select: none;
   display: table-cell;
   vertical-align: top;
   padding: 0;
@@ -2786,10 +2749,6 @@ body.dark-mode .label:hover {
   display: none;
 }
 
-/* 确保代码块容器底部没有额外空间 */
-#article-container figure.highlight {
-  border-bottom: none;
-}
 
 #article-container figure.highlight table tbody tr:last-child td {
   border-bottom: none;

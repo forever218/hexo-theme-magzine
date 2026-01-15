@@ -44,6 +44,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  -webkit-user-select: none; /* 防止文本选择 */
   user-select: none; /* 防止文本选择 */
 }
 
