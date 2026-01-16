@@ -1,4 +1,4 @@
-/* About Page Styles - 3D 完美贴合版*/
+/* About Page Styles - Steam 3D 完美贴合版 (v18) */
 
 .about-page {
   min-height: calc(100vh - 60px);
@@ -177,6 +177,8 @@
     #000000 100%
   );
   
+  
+  -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   transition: background 0.3s ease;
   

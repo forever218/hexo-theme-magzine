@@ -20,7 +20,9 @@
 }
 
 /* Firefox滚动条 */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent-color) transparent;
+@supports (scrollbar-width: thin) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+  }
 }

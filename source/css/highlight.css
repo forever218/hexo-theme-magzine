@@ -36,9 +36,9 @@ body:not(.dark-mode) {
   font-family: Monaco, Consolas, 'Courier New', monospace !important;
   
   /* === 双重保险：强制禁用所有形式的连字 === */
+  -webkit-font-variant-ligatures: none !important;
   font-variant-ligatures: none !important;
   font-feature-settings: "liga" 0, "calt" 0 !important;
-  -webkit-font-variant-ligatures: none !important;
   text-rendering: optimizeSpeed !important;
 }
 
@@ -104,8 +104,6 @@ body:not(.dark-mode) {
 
 /* 代码高亮工具栏 */
 .highlight-tools {
-  position: relative;
-  display: flex;
   align-items: center;
   overflow: hidden;
   min-height: 1.5rem;
@@ -114,6 +112,8 @@ body:not(.dark-mode) {
   color: var(--hltools-color);
   font-size: 0.9rem;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
+  z-index: 10;
+  position: relative;
 }
 
 .highlight-tools.closed {
@@ -147,7 +147,9 @@ body:not(.dark-mode) {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 0.9em;
+  -webkit-user-select: none;
   user-select: none;
+  
 }
 
 .highlight-tools .copy-notice {
@@ -170,6 +172,7 @@ body:not(.dark-mode) {
 
 /* 代码行号 */
 .gutter {
+  -webkit-user-select: none;
   user-select: none;
   display: table-cell;
   vertical-align: top;
@@ -241,17 +244,6 @@ figure.highlight td {
   background: transparent;
 }
 
-/* 确保代码块工具栏正确显示 */
-.highlight-tools {
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  z-index: 10;
-  position: relative;
-}
-
-/* 修复代码块展开按钮 */
-.code-expand-btn {
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-}
 
 /* 标记行 */
 .line.marked {
@@ -382,6 +374,7 @@ figure.highlight td {
   border-radius: 0.5rem;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
   -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .mac-style .highlight-tools:after {

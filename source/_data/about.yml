@@ -3,7 +3,7 @@
 
 cards:
   - title: "生活"
-    image: "/images/13.png"
+    image: "/images/13.jpg"
     link: "https://github.com/forever218/hexo-theme-magzine"
     background: "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ffecd2 100%)"
     description: "享受生活中的每一个瞬间，发现平凡中的美好"

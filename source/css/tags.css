@@ -250,6 +250,7 @@ img.inline {
   background-color: #f5f5f5;
   cursor: pointer;
   font-weight: 500;
+  -webkit-user-select: none;
   user-select: none;
   transition: var(--transition-normal);
 }
