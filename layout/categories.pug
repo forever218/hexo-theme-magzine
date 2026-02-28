@@ -14,7 +14,11 @@
               h2.category-name
                 i.fas.fa-folder
                 |  #{page.category}
-              .category-description 共有 #{page.posts ? page.posts.length : 0} 篇文章
+              //- 第一处 (特定分类头):
+              .category-description 
+              span 共有
+              |  #{page.posts ? page.posts.length : 0} 
+              span 篇文章
             .category-back
               a(href="/categories/")
                 i.fas.fa-arrow-left
@@ -58,7 +62,11 @@
                       h2.category-name
                         i.fas.fa-folder
                         |  #{category.name}
-                      .category-description 共有 #{category.posts ? category.posts.length : 0} 篇文章
+                      //- 第二处 (Accordion 列表里):
+                      .category-description
+                        span 共有
+                        |  #{category.posts ? category.posts.length : 0} 
+                        span 篇文章
                     .category-toggle
                       i.fas.fa-chevron-down
 

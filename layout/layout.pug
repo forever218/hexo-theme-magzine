@@ -14,9 +14,11 @@ html(lang=config.language)
     if theme.features && theme.features.dark_mode
       script.
         (function() {
-          // 尽早应用暗色模式，防止闪烁
-          var savedDarkMode = localStorage.getItem('darkMode') === 'true';
-          if (savedDarkMode) {
+          // 【修改点 1】头部脚本：如果本地存储为空(从未设置过)，默认开启暗色(true)
+          var savedDarkMode = localStorage.getItem('darkMode');
+          var shouldBeDark = savedDarkMode === null ? true : savedDarkMode === 'true';
+          
+          if (shouldBeDark) {
             document.documentElement.classList.add('dark-mode');
           }
         })();
@@ -96,10 +98,11 @@ html(lang=config.language)
     if theme.features && theme.features.dark_mode
       script.
         (function() {
-          // 检查本地存储中的暗色模式设置
-          const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-          // 如果设置为暗色模式，立即应用到body
-          if (savedDarkMode) {
+          // 【修改点 2】底部脚本：同样逻辑，默认为 true
+          var savedDarkMode = localStorage.getItem('darkMode');
+          var shouldBeDark = savedDarkMode === null ? true : savedDarkMode === 'true';
+
+          if (shouldBeDark) {
             document.body.classList.add('dark-mode');
           }
 

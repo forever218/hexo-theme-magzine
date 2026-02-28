@@ -3,12 +3,20 @@
   article.post-container
     .post-header
       h1.post-title= page.title || 'Category'
-      .post-subtitle 探索与 "#{page.category}" 相关的所有文章
+      //- 修改后:
+      .post-subtitle
+      span 探索与
+      |  "#{page.category}" 
+      span 相关的所有文章
 
     .category-content
       if page.posts && page.posts.length
         .category-info
-          .category-description 共有 #{page.posts.length} 篇文章
+          //- 修改后:
+          .category-description
+          span 共有
+          |  #{page.posts.length} 
+          span 篇文章
           .category-back
             a(href="/categories/")
               i.fas.fa-arrow-left

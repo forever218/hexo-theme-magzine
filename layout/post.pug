@@ -13,7 +13,7 @@
       if page.cover || (theme.theme_config.post && theme.theme_config.post.use_default_cover)
         .post-cover
           - function getCoverPath(cover, path) {
-          -   if (cover.startsWith('/')) return cover;
+          -   if (cover && cover.startsWith('/')) return cover;
           -   return path.replace(/\\/g, '/').split('/').slice(0, -1).join('/') + '/' + cover;
           - }
           - var defaultCover = theme.theme_config.post && theme.theme_config.post.default_cover ? theme.theme_config.post.default_cover : '/images/19.png'
@@ -21,25 +21,53 @@
           img(src=url_for(coverPath), alt=page.title)
 
       .post-meta
-        .post-category
-          if page.categories && page.categories.length
+        //- 分类
+        if page.categories && page.categories.length
+          .post-category
+            i.fas.fa-folder-open(style="margin-right: 5px")
             a(href=url_for(page.categories.first().path))= page.categories.first().name
 
+        //- 日期
         .post-date
-          time(datetime=date_xml(page.date))= date(page.date, "MMMM DD, YYYY")
+          i.far.fa-calendar-alt(style="margin-right: 5px")
+          time(datetime=date_xml(page.date))= date(page.date, "YYYY-MM-DD")
 
+        //- 作者
         .post-author
+          i.fas.fa-user(style="margin-right: 5px")
           if page.author
-            span By #{page.author}
+            span #{page.author}
           else
-            span By #{config.author}
+            span #{config.author}
+            
+        //- 【安全检查】字数统计
+        - var hasWordCount = typeof wordcount === 'function';
+        if hasWordCount
+          .post-wordcount
+            i.fas.fa-file-word(style="margin-right: 5px")
+            //- 修改前: span= wordcount(page.content) + ' 字'
+            //- 修改后: 拆分数字和单位
+            span= wordcount(page.content)
+            span(style="margin-left: 3px") 字
+        
+        //- 【安全检查】阅读时长
+        - var hasMin2Read = typeof min2read === 'function';
+        if hasMin2Read
+          .post-readtime
+            i.fas.fa-clock(style="margin-right: 5px")
+            //- 修改前: span= min2read(page.content) + ' 分钟'
+            //- 修改后: 拆分数字和单位
+            span= min2read(page.content)
+            span(style="margin-left: 3px") 分钟
 
       h1.post-title= page.title
 
       .post-tags
         if page.tags && page.tags.length
           each tag in page.tags.toArray()
-            a.tag(href=url_for(tag.path))= tag.name
+            a.tag(href=url_for(tag.path))
+              i.fas.fa-tag(style="margin-right: 3px") 
+              | #{tag.name}
 
     // AI摘要模块容器
     #post-ai-container
@@ -84,28 +112,28 @@
       if page.prev
         .post-nav.prev
           a(href=url_for(page.prev.path))
-            span.nav-label ← Previous
+            span.nav-label ← 上一篇
             span.nav-title= page.prev.title
 
       if page.next
         .post-nav.next
           a(href=url_for(page.next.path))
-            span.nav-label Next →
+            span.nav-label 下一篇 →
             span.nav-title= page.next.title
 
     if theme.share && theme.share.enable
       .post-share
-        h3.share-title Share this article
+        h3.share-title 分享这篇文章到
         .share-buttons
           if theme.share.options.twitter
             a.share-btn.twitter(href="https://twitter.com/intent/tweet?text=" + encodeURIComponent(page.title) + "&url=" + encodeURIComponent(url_for(page.path)), target="_blank", rel="noopener")
-              span Twitter
+              span 推特
           if theme.share.options.facebook
             a.share-btn.facebook(href="https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url_for(page.path)), target="_blank", rel="noopener")
-              span Facebook
+              span 脸书
           if theme.share.options.linkedin
             a.share-btn.linkedin(href="https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url_for(page.path)), target="_blank", rel="noopener")
-              span LinkedIn
+              span 领英
           if theme.share.options.wechat
             a.share-btn.wechat(href="#", data-wechat=url_for(page.path))
               span 微信
@@ -117,13 +145,13 @@
               span 微博
           if theme.share.options.copy_link
             a.share-btn.copy(href="#", data-copy=url_for(page.path))
-              span Copy Link
+              span 点击复制链接
 
 //- Comments Section
 if theme.comments && theme.comments.enable
   section.comments-section
     .comments-container
-      h2.comments-title Comments
+      h2.comments-title 评论区
       .comments-content
         != partial('_partial/comments', { page: page })
 
@@ -139,7 +167,7 @@ if page.related_posts && page.related_posts.length
               .related-image
                 a(href=url_for(post.path))
                   - function getCoverPath(cover, path) {
-                  -   if (cover.startsWith('/')) return cover;
+                  -   if (cover && cover.startsWith('/')) return cover;
                   -   return path.replace(/\\/g, '/').split('/').slice(0, -1).join('/') + '/' + cover;
                   - }
                   - var defaultCover = theme.theme_config.post && theme.theme_config.post.default_cover ? theme.theme_config.post.default_cover : '/images/19.png'
@@ -149,4 +177,5 @@ if page.related_posts && page.related_posts.length
               h4.related-title
                 a(href=url_for(post.path))= post.title
               .related-date
+
                 time(datetime=date_xml(post.date))= date(post.date, "MMM DD, YYYY")

@@ -4,17 +4,21 @@ html(lang=config.language)
     meta(charset='UTF-8')
     title= (page.title || '关于我') + ' | ' + config.title
     link(rel='stylesheet', href=url_for('/css/about.css'))
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
 
   body
     main.about-page
+      #background-shapes
+
       .about-container
+        //- 头部 
         .about-header
           .about-avatar
             img(src=url_for(theme.author_card && theme.author_card.avatar ? theme.author_card.avatar : '/img/avatar.png'), alt="Avatar")
           h1.about-name= theme.author_card && theme.author_card.name ? theme.author_card.name : 'Your Name'
           p.about-bio= theme.author_card && theme.author_card.bio ? theme.author_card.bio : 'Your Bio'
 
+        //- 卡片展示区 (保持不变)
         .interests-showcase
           if site.data.about && site.data.about.cards
             each card in site.data.about.cards
@@ -35,57 +39,57 @@ html(lang=config.language)
                   .card-hover-content
                     p= card.details
           else
-             p(style="text-align:center") 暂无数据
-
+             p(style="text-align:center; opacity:0.6") 暂无数据
+        //- 详情区域
         .about-details
+          
+          //- 1. 关于我
+          //- 1. 关于我 (自适应贴纸布局)
           .about-section
             h2 关于我
-            .profile-info
-              .profile-item
-                .profile-label 称呼
-                .profile-value 然
-              .profile-item
-                .profile-label 家乡
-                .profile-value 广东广州
-              .profile-item
-                .profile-label 大学
-                .profile-value 中北大学
-              .profile-item
-                .profile-label 现居地
-                .profile-value 山西太原
-              .profile-item
-                .profile-label 教育
-                .profile-value 大四在读
-              .profile-item
-                .profile-label 身份
-                .profile-value 程序员 
+            .intro-card-wrapper
+              //- 背景图片层
+              .intro-banner-bg
+                img(src=url_for('/images/1.jpg'), alt="Banner", onerror="this.style.display='none'")
+                .banner-overlay
+    
+              //- 内容层：现在由它来撑开高度
+              .profile-info-content
+                .profile-item(data-label="称呼") 然
+                .profile-item(data-label="家乡") 广东广州
+                .profile-item(data-label="大学") 中北大学
+                .profile-item(data-label="现居地") 山西太原
+                .profile-item(data-label="教育") 大四在读
+                .profile-item(data-label="身份") 程序员
 
+          //- 2. 我的技能点
           .about-section
             h2 兴趣点
-            .bio-content
-              .skills-list
-                span.skill-tag 摄影
-                span.skill-tag 羽毛球
-                span.skill-tag 油画
-                span.skill-tag 设计
-                span.skill-tag 代码
-                span.skill-tag 哲学
-                span.skill-tag 生活
-                span.skill-tag 艺术
-                span.skill-tag 运动
-                span.skill-tag 创造
-                span.skill-tag 游戏
-                span.skill-tag 阅读
-                span.skill-tag 骑行
-                span.skill-tag 爬山
-                span.skill-tag 长跑
-                span.skill-tag 旅行
+            .interest-cloud
+              span.tag 摄影
+              span.tag 羽毛球
+              span.tag 油画
+              span.tag 设计
+              span.tag 代码
+              span.tag 哲学
+              span.tag 生活
+              span.tag 艺术
+              span.tag 运动
+              span.tag 创造
+              span.tag 游戏
+              span.tag 阅读
+              span.tag 骑行
+              span.tag 爬山
+              span.tag 长跑
+              span.tag 旅行
 
+          //- 3. 自我介绍
           .about-section
             h2 自我介绍
             .bio-content(style="white-space: pre-wrap;")
               != page.content
 
+          //- 4. 联系方式
           .about-section
             h2 联系方式
             .contact-info
@@ -105,32 +109,65 @@ html(lang=config.language)
                   .contact-label 哔哩哔哩
                   .contact-value 凛冬亦夏
 
-    
-    //- 【JS 修改】降低灵敏度 + 增加角度限制
     script.
       document.addEventListener('DOMContentLoaded', function() {
+        // === 背景几何图形漫游 ===
+        const shapeContainer = document.getElementById('background-shapes');
+        if(shapeContainer) {
+          shapeContainer.innerHTML = '';
+          const shapeCount = 15;
+          const shapes = [];
+
+          for (let i = 0; i < shapeCount; i++) {
+            const shape = document.createElement('div');
+            shape.classList.add('shape');
+            const type = Math.random();
+            if (type < 0.33) shape.classList.add('shape-circle');
+            else if (type < 0.66) shape.classList.add('shape-square');
+            else shape.classList.add('shape-triangle');
+
+            const size = Math.random() * 70 + 30;
+            shape.style.width = `${size}px`;
+            shape.style.height = `${size}px`;
+            shape.style.opacity = Math.random() * 0.25 + 0.05;
+
+            let x = Math.random() * window.innerWidth;
+            let y = Math.random() * window.innerHeight;
+            let vx = (Math.random() - 0.5) * 1.5;
+            let vy = (Math.random() - 0.5) * 1.5;
+            let r = Math.random() * 360;
+            let vr = (Math.random() - 0.5) * 0.5;
+
+            shapeContainer.appendChild(shape);
+            shapes.push({ el: shape, x, y, vx, vy, r, vr });
+          }
+
+          function animateShapes() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            shapes.forEach(s => {
+              s.x += s.vx; s.y += s.vy; s.r += s.vr;
+              if (s.x <= -50 || s.x >= w + 50) s.vx *= -1;
+              if (s.y <= -50 || s.y >= h + 50) s.vy *= -1;
+              s.el.style.transform = `translate3d(${s.x}px, ${s.y}px, 0) rotate(${s.r}deg)`;
+            });
+            requestAnimationFrame(animateShapes);
+          }
+          animateShapes();
+        }
+
+        // === 卡片 3D ===
         const cards = document.querySelectorAll('.interest-card');
-        
         cards.forEach(card => {
           card.addEventListener('mousemove', function(e) {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
-            
-            // 【修正 1】降低灵敏度：除数从 20 改为 60，动效更微小细腻
-            let rotateY = x / 60; 
-            let rotateX = -y / 60;
-            
-            // 【修正 2】角度限制：限制在 ±8 度以内，防止太歪
-            rotateY = Math.max(-8, Math.min(8, rotateY));
-            rotateX = Math.max(-8, Math.min(8, rotateX));
-            
-            // 保持上浮 -16px
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02) translateY(-16px)`;
+            let rotateY = x / 40; 
+            let rotateX = -y / 40;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02) translateY(-10px)`;
           });
-          
           card.addEventListener('mouseleave', function() {
-            // 复原
             card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1) translateY(0)';
           });
         });
