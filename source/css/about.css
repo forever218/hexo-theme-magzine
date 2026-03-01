@@ -1,38 +1,64 @@
-/* About Page Styles - Steam 3D 完美贴合版 (v18) */
+/* About Page Styles v5.0 (Final Fix)
+   修复布局溢出 + 优化粉色悬停透明度
+*/
 
+/* === 全局容器 === */
 .about-page {
   min-height: calc(100vh - 60px);
-  background: var(--background-color, #fff);
-  padding: 60px 0 40px;
+  background-color: var(--background-color, #ffffff);
+  color: var(--text-color, #333333);
+  padding: 80px 0 60px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  /* 防止横向滚动条 */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  z-index: 1;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.about-page::before {
-  content: '';
-  position: absolute;
+/* === 背景漫游几何体 === */
+#background-shapes {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255, 154, 158, 0.05) 0%, transparent 20%),
-    radial-gradient(circle at 90% 80%, rgba(161, 196, 253, 0.05) 0%, transparent 20%);
   z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
 }
 
+.shape {
+  position: absolute;
+  background: rgba(255, 107, 107, 1);
+  border: none;
+}
+
+.shape-circle {
+  border-radius: 50%;
+}
+
+.shape-square {
+  border-radius: 12px;
+}
+
+.shape-triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* === 头部 === */
 .about-container {
-  max-width: 1200px;
+  max-width: 1000px;
+  /* 稍微限制最大宽度，防止内容太散 */
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* Header */
 .about-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 }
 
 .about-avatar {
@@ -41,13 +67,14 @@
   margin: 0 auto 25px;
   border-radius: 50%;
   overflow: hidden;
-  border: 5px solid #fff;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease;
+  border: 4px solid var(--card-bg, #eee);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.5s;
 }
 
 .about-avatar:hover {
-  transform: translateY(-5px);
+  transform: scale(1.1) rotate(5deg);
+  border-color: #ff6b6b;
 }
 
 .about-avatar img {
@@ -57,83 +84,97 @@
 }
 
 .about-name {
-  font-size: 2.8rem;
-  margin-bottom: 15px;
-  font-weight: 700;
-  color: #2c3e50;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 800;
+  color: var(--text-color, #333);
 }
 
 .about-bio {
-  font-size: 1.3rem;
-  color: #5d6d7e;
-  max-width: 700px;
+  font-size: 1.2rem;
+  color: var(--text-color, #666);
+  opacity: 0.8;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-/* Interests Cards */
+/* === 卡片区域 (Steam 3D) === */
 .interests-showcase {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 30px;
-  margin: 50px 0;
-  
-  /* 3D 空间 */
-  perspective: 1000px; 
+  margin: 60px 0 100px;
+  perspective: 1000px;
+  width: 100%;
 }
 
 .interest-card {
-  display: block; 
-  text-decoration: none;
-  color: inherit;
-  
+  display: block;
   position: relative;
-  border-radius: 20px;
-  
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  
-  /* 针对 JS 变换使用快速响应 */
+  text-decoration: none;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   transition: transform 0.1s ease-out, box-shadow 0.3s ease;
-  
   cursor: pointer;
   z-index: 1;
-
-  /* 开启 3D，但内容不分层 */
   transform-style: preserve-3d;
-  /* 确保中心旋转 */
-  transform-origin: center center;
+  background: var(--card-bg, #ffffff);
 }
 
-/* 防抖动补丁 */
-.interest-card::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -40px; 
-  height: 40px;
-  background: transparent;
-  z-index: -1;
+/* 尺寸类 */
+.card-landscape {
+  width: 380px;
+  height: 240px;
 }
 
-/* 悬停时的基础样式 (位移和旋转交由 JS 控制) */
-.interest-card:hover {
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); 
-  z-index: 100;
+.card-landscape.card-large {
+  width: 460px;
+  height: 280px;
 }
 
-/* 尺寸定义 */
-.card-landscape { width: 380px; height: 240px; }
-.card-landscape.card-large { width: 460px; height: 280px; }
-.card-landscape.card-medium { width: 380px; height: 240px; }
-.card-landscape.card-small { width: 300px; height: 200px; }
+.card-landscape.card-medium {
+  width: 380px;
+  height: 240px;
+}
 
-.card-portrait { width: 280px; height: 360px; }
-.card-portrait.card-large { width: 320px; height: 400px; }
-.card-portrait.card-medium { width: 280px; height: 340px; }
-.card-portrait.card-small { width: 240px; height: 300px; }
+.card-landscape.card-small {
+  width: 300px;
+  height: 200px;
+}
 
-/* 背景图片样式 */
+.card-portrait {
+  width: 280px;
+  height: 360px;
+}
+
+.card-portrait.card-large {
+  width: 320px;
+  height: 400px;
+}
+
+.card-portrait.card-medium {
+  width: 280px;
+  height: 340px;
+}
+
+.card-portrait.card-small {
+  width: 240px;
+  height: 300px;
+}
+
+@media (max-width: 768px) {
+
+  .interest-card,
+  .card-landscape,
+  .card-portrait,
+  .card-landscape.card-large,
+  .card-portrait.card-large {
+    width: 100% !important;
+    height: 260px !important;
+  }
+}
+
 .card-bg {
   position: absolute;
   top: 0;
@@ -142,119 +183,489 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  transition: all 0.5s ease;
   z-index: -1;
-  border-radius: 20px;
-  
-  /* 【修正】移除 Z 轴位移，确保严丝合缝 */
-  transform: translateZ(0); 
 }
 
 .interest-card:hover .card-bg {
-  filter: blur(8px);
-  /* 仅放大，不位移 */
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 
-/* 内容层 */
-.card-content {
-  padding: 30px;
+.interest-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: #fff;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 60%);
+  border-radius: 16px;
+  z-index: 0;
+}
+
+.card-content {
   position: relative;
   z-index: 2;
-  border-radius: 20px;
-  overflow: hidden;
-  
-  /* 完美渐变 */
-  background: linear-gradient(
-    to bottom, 
-    rgba(0, 0, 0, 0) 0%, 
-    rgba(0, 0, 0, 0.6) 50%, 
-    #000000 100%
-  );
-  
-  
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
-  transition: background 0.3s ease;
-  
-  /* 【修正】移除 Z 轴位移，确保严丝合缝 */
-  transform: translateZ(0);
-}
-
-.interest-card:hover .card-content {
-  background: linear-gradient(
-    to bottom, 
-    rgba(0, 0, 0, 0.2) 0%, 
-    rgba(0, 0, 0, 0.7) 50%, 
-    #000000 100%
-  );
+  height: 100%;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  transform: translateZ(30px);
 }
 
 .card-title {
-  font-size: 2.2rem;
-  margin: 0 0 10px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-  /* 文字可以稍微突起一点点，不会影响蒙版对齐 */
-  transform: translateZ(20px);
+  font-size: 1.8rem;
+  margin: 0 0 5px;
+  font-weight: 700;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
 .card-description p {
-  font-size: 1.1rem;
-  line-height: 1.4;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-  transform: translateZ(10px);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
 .card-icon {
-  font-size: 2rem;
-  align-self: flex-end;
-  transform: translateZ(10px);
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* 黑条 */
 .card-hover-content {
-  position: absolute;
-  width: 102%;
-  left: -1%;
-  bottom: -1px;
-  padding: 20px 30px;
-  
-  background: rgba(0, 0, 0, 0.8);
-  
-  /* 【修正】移除 Z 轴大位移，只保留 1px 防止穿模 */
-  transform: translateY(100%) translateZ(1px);
-  transition: transform 0.3s ease;
-  
-  box-sizing: border-box; 
-  border-radius: 0 0 20px 20px;
-  z-index: 3;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  margin-top: 0;
 }
 
 .interest-card:hover .card-hover-content {
-  transform: translateY(0) translateZ(1px);
+  max-height: 50px;
+  margin-top: 8px;
 }
 
-.card-hover-content p {
-  margin: 0;
-  color: #fff;
+
+/* === 详情区域通用样式 === */
+.about-details {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-/* 个人信息区 (保持不变) */
-.about-details { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-.about-section { background: rgba(255, 255, 255, 0.8); border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-.about-section h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: #333; }
-.profile-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-.profile-item { background: #f9f9f9; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s ease; cursor: default; }
-.profile-item:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #fff; }
-.contact-info { display: flex; flex-wrap: wrap; gap: 15px; }
-.contact-item { flex: 1; min-width: 200px; display: flex; align-items: center; background: #f9f9f9; padding: 15px; border-radius: 8px; text-decoration: none; color: #333; transition: all 0.3s ease; }
-.contact-item:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #fff; }
-.contact-item i { margin-right: 15px; font-size: 1.5rem; }
-@media (max-width: 768px) { .interest-card { width: 100% !important; max-width: 350px; height: 300px !important; } }
-.skill-tag { display: inline-block; background: #f0f2f5; padding: 4px 12px; margin: 5px; border-radius: 20px; font-size: 0.9rem; color: #4a4a4a; border: 1px solid #e1e4e8; transition: all 0.3s ease; }
-.skill-tag:hover { background: #e1e4e8; transform: translateY(-2px); }
+.about-section {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  /* 关键：允许子元素溢出一点点阴影，但不允许溢出内容 */
+  overflow: visible;
+  box-sizing: border-box;
+  /* 确保 padding 不会撑大宽度 */
+}
+
+.about-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: var(--text-color, #333);
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.about-section h2::before {
+  display: none;
+}
+
+/* === UI 1: 关于我 (Intro Banner + Grid) === */
+/* 
+   ---------------------------
+   默认模式 (Light Mode) 
+   ---------------------------
+*/
+
+/* 外层容器：亮色模式下使用浅灰背景，增加内阴影 */
+.intro-card-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #f5f5f7;
+  /* 类似 Apple 的浅灰 */
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 背景图层：亮色模式下，作为淡淡的纹理存在 */
+.intro-banner-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.intro-banner-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 关键：亮色模式下降低不透明度，不抢文字 */
+  opacity: 0.1;
+  filter: grayscale(100%);
+  /* 变为黑白，显得更干净 */
+  transition: transform 0.8s ease;
+}
+
+/* 遮罩层：亮色模式下改为白色渐变，让中间的文字更清晰 */
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+/* 内容层 */
+.profile-info-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 60px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* 贴纸卡片样式：���色模式 (磨砂白) */
+.profile-item {
+  background: rgba(255, 255, 255, 0.75);
+  /* 更不透明一点，保证文字清晰 */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  padding: 15px 25px;
+  border-radius: 16px;
+
+  /* 文字颜色：深灰 */
+  color: #333;
+  font-weight: 600;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 小标题颜色：亮色模式 */
+.profile-item::before {
+  content: attr(data-label);
+  font-size: 0.75rem;
+  color: #888;
+  /* 浅灰 */
+  opacity: 1;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+/* 错落的旋转角度 (保持不变) */
+.profile-item:nth-child(3n+1) {
+  transform: rotate(-2deg);
+}
+
+.profile-item:nth-child(3n+2) {
+  transform: rotate(1.5deg);
+}
+
+.profile-item:nth-child(3n+3) {
+  transform: rotate(-1deg);
+}
+
+/* 悬停效果：保持粉色，文字变白 */
+.profile-item:hover {
+  transform: scale(1.15) rotate(0deg) !important;
+  background: #ff6b6b !important;
+  border-color: #ff6b6b !important;
+  color: #fff !important;
+  z-index: 10;
+  box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3) !important;
+}
+
+.profile-item:hover::before {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 
+   ---------------------------
+   暗色模式 (Dark Mode) - 完美还原
+   ---------------------------
+*/
+
+/* 1. 容器恢复深黑背景 */
+html.dark-mode .intro-card-wrapper,
+html[data-theme='dark'] .intro-card-wrapper {
+  background: #1a1a1a !important;
+  box-shadow: none !important;
+}
+
+/* 2. 背景图恢复显示、压暗 */
+html.dark-mode .intro-banner-bg img,
+html[data-theme='dark'] .intro-banner-bg img {
+  opacity: 1 !important;
+  /* 恢复完全不透明 */
+  filter: brightness(0.7) !important;
+  /* 压暗 */
+}
+
+/* 3. 遮罩层恢复黑色渐变 */
+html.dark-mode .banner-overlay,
+html[data-theme='dark'] .banner-overlay {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, transparent 100%) !important;
+}
+
+/* 4. 卡片恢复半透明白字风格 */
+html.dark-mode .profile-item,
+html[data-theme='dark'] .profile-item {
+  background: rgba(255, 255, 255, 0.12) !important;
+  /* 半透明白 */
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  /* 白字 */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 5. 小标题恢复原来的颜色 */
+html.dark-mode .profile-item::before,
+html[data-theme='dark'] .profile-item::before {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 6. 悬停效果在暗色下微调 (可选，防止粉色太刺眼，或者保持原样) */
+html.dark-mode .profile-item:hover,
+html[data-theme='dark'] .profile-item:hover {
+  background: rgba(255, 107, 107, 0.85) !important;
+  /* 稍微透明一点的粉色 */
+  color: #fff !important;
+}
+
+/* === UI 2: 我的技能点 (优化悬停效果) === 
+*/
+.interest-cloud {
+  background: transparent;
+  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 20px 35px;
+  line-height: 1.6;
+}
+
+.tag {
+  display: inline-block;
+  background: transparent;
+  border: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: bold;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: default;
+  -webkit-user-select: none;
+  user-select: none;
+  color: #555;
+  padding: 5px 10px;
+  /* 给悬停背景留点位置 */
+  border-radius: 8px;
+  /* 悬停背景圆角 */
+}
+
+.tag:hover {
+  transform: scale(1.15) rotate(-2deg);
+  /* 【关键修改】粉色背景方块，30%透明度
+     rgba(255, 107, 107, 0.3)
+  */
+  background-color: rgba(255, 107, 107, 0.3) !important;
+  color: #000;
+  /* 悬停时文字变黑，增加对比度 */
+  text-shadow: none;
+  /* 移除阴影，保持干净 */
+  z-index: 10;
+}
+
+/* 随机大小算法 */
+.tag:nth-child(3n+1) {
+  font-size: 1.6rem;
+  opacity: 1;
+}
+
+.tag:nth-child(4n+2) {
+  font-size: 1.2rem;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.tag:nth-child(5n+3) {
+  font-size: 1.9rem;
+  opacity: 1;
+}
+
+.tag:nth-child(7n) {
+  font-size: 1.0rem;
+  opacity: 0.75;
+  letter-spacing: 1px;
+}
+
+.tag:nth-child(2n) {
+  font-size: 1.4rem;
+}
+
+/* 协调配色方案 (莫兰迪/Material 混合) */
+.tag:nth-child(5n+1) {
+  color: #3f51b5;
+}
+
+.tag:nth-child(5n+2) {
+  color: #2e7d32;
+}
+
+.tag:nth-child(5n+3) {
+  color: #c62828;
+}
+
+.tag:nth-child(5n+4) {
+  color: #7b1fa2;
+}
+
+.tag:nth-child(5n+5) {
+  color: #ef6c00;
+}
+
+.tag:nth-child(8n) {
+  color: #546e7a;
+}
+
+/* 碎碎念 */
+.bio-content {
+  line-height: 1.8;
+  color: var(--text-color, #333);
+  font-size: 1.05rem;
+  background: transparent;
+}
+
+/* 联系方式 */
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.contact-item {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: rgba(125, 125, 125, 0.05);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: var(--text-color, #333);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  background: rgba(125, 125, 125, 0.1);
+  transform: translateY(-3px);
+  border-color: #ff6b6b;
+}
+
+.contact-item i {
+  font-size: 1.5rem;
+  margin-right: 15px;
+  color: #ff6b6b;
+}
+
+.contact-label {
+  font-size: 0.8rem;
+  color: var(--text-color, #666);
+  opacity: 0.7;
+}
+
+.contact-value {
+  font-weight: 600;
+}
+
+/* =========================================
+   === 暗色模式 (Dark Mode) ===
+   ========================================= 
+*/
+
+/* 1. 触发条件 */
+html.dark-mode .about-page,
+body.dark-mode .about-page,
+html[data-theme='dark'] .about-page {
+  background-color: #121212 !important;
+}
+
+/* 2. 容器去背景 */
+html.dark-mode .about-section,
+body.dark-mode .about-section,
+html[data-theme='dark'] .about-section {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 20px 0;
+}
+
+/* 3. 卡片暗色化 */
+html.dark-mode .profile-item,
+html.dark-mode .contact-item,
+html.dark-mode .intro-banner,
+/* Banner 容器也变黑一点 */
+body.dark-mode .profile-item,
+html[data-theme='dark'] .profile-item {
+  background: #1e1e1e !important;
+  border: 1px solid #333 !important;
+  color: #ccc !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 4. 文字颜色 */
+html.dark-mode h2,
+html[data-theme='dark'] h2 {
+  color: #eee !important;
+}
+
+html.dark-mode .bio-content,
+html[data-theme='dark'] .bio-content {
+  color: #bbb !important;
+}
+
+/* 5. 彩虹云 暗色适配 */
+html.dark-mode .tag,
+html[data-theme='dark'] .tag {
+  filter: brightness(1.4) saturate(0.9);
+}
+
+/* 暗色模式下的悬停背景也要调整一下，防止太亮 */
+html.dark-mode .tag:hover,
+html[data-theme='dark'] .tag:hover {
+  background-color: rgba(255, 107, 107, 0.2) !important;
+  /* 稍微再淡一点 */
+  color: #fff !important;
+}

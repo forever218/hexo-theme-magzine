@@ -3,7 +3,12 @@
   article.post-container
     .post-header
       h1.post-title= page.title || 'Tags'
-      .post-subtitle #{page.tag ? '探索与 "' + page.tag + '" 相关的所有文章' : ''}
+      //- 修改后:
+      .post-subtitle
+        if page.tag
+          span 探索与
+          |  "#{page.tag}" 
+          span 相关的所有文章
 
     .tags-content
       if page.tag
@@ -14,7 +19,11 @@
               h2.tag-name 
                 i.fas.fa-tag
                 |  #{page.tag}
-              .tag-description 共有 #{page.posts ? page.posts.length : 0} 篇文章
+              //- 修改后:
+              .tag-description 
+                span 共有
+                |  #{page.posts ? page.posts.length : 0} 
+                span 篇文章
             .tag-back
               a(href="/tags/")
                 i.fas.fa-arrow-left

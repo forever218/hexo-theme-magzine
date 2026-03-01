@@ -18,7 +18,8 @@
         
         .archive-post
           .archive-date
-            time(datetime=date_xml(post.date))= date(post.date, 'MMM DD')
+            //- ★★★ 改动：设置格式为 'M月D日' (显示为 2月22日)，并添加标准日期属性供翻译脚本使用
+            time(datetime=date_xml(post.date), data-date-standard=date(post.date, 'YYYY-MM-DD'))= date(post.date, 'M月D日')
           
           .archive-info
             h3.archive-post-title
