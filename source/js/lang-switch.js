@@ -190,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
     微博: "Weibo",
     点击复制链接: "Copy Link",
     "已复制!": "Copied!",
+    "链接已复制到剪切板!": "Link copied to clipboard!",
     微信扫一扫分享: "WeChat Scan to Share",
     '打开微信，点击底部的"发现"，使用"扫一扫"即可将网页分享至朋友圈。':
       "Open WeChat, tap 'Discover', use 'Scan' to share this page to Moments.",
