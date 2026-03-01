@@ -2981,3 +2981,143 @@ body.dark-mode #article-container pre::-webkit-scrollbar-thumb:hover {
     transform: scale(1.1) rotate(0deg);
   }
 }
+
+/* ===== Waves Animation (清新白粉版) ===== */
+
+/* 1. 波浪容器 */
+#waves-container {
+  width: 100%;
+  height: 100px;
+  margin-bottom: -1px;
+  /* 消除缝隙 */
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  pointer-events: none;
+}
+
+.waves {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-bottom: -7px;
+  min-height: 100px;
+  max-height: 150px;
+}
+
+/* 2. 动画定义 */
+.parallax>use {
+  animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
+}
+
+@keyframes move-forever {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
+/* =========================================
+   3. 亮色模式 (Light Mode) - 白底 + 淡粉波浪
+   ========================================= */
+
+/* 第一层（最远）：淡粉色 (255, 214, 214) */
+.parallax>use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+  fill: rgba(255, 214, 214, 0.7);
+}
+
+/* 第二层：半透明白色 (用来间隔，制造层次) */
+.parallax>use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+  fill: rgba(255, 214, 214, 0.5);
+}
+
+/* 第三层：较深的粉色，或者是半透明的白色覆盖在粉色上 */
+.parallax>use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+  /* 这里用稍深一点点的粉或者保持淡粉，增加厚度感 */
+  fill: rgba(255, 214, 214, 0.3);
+}
+
+/* 第四层（最底）：【关键】必须是白色，以衔接页脚 */
+.parallax>use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+  fill: #ffffff;
+  /* 纯白色 */
+}
+
+/* --- 亮色模式 Footer 设置 --- */
+.footer {
+  /* 【关键】背景色回归白色 */
+  background-color: #ffffff !important;
+
+  /* 布局调整 */
+  margin-top: 0 !important;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-top: none !important;
+  position: relative;
+  z-index: 2;
+}
+
+/* 确保文字颜色在白底上清晰 (使用深灰) */
+.footer,
+.footer-copyright,
+.footer-text,
+.footer a {
+  color: #666 !important;
+}
+
+/* =========================================
+   4. 暗色模式 (Dark Mode) - 保持原样 (深邃黑)
+   ========================================= */
+
+body.dark-mode .parallax>use:nth-child(1) {
+  fill: rgba(255, 107, 107, 0.1);
+}
+
+body.dark-mode .parallax>use:nth-child(2) {
+  fill: rgba(255, 107, 107, 0.05);
+}
+
+body.dark-mode .parallax>use:nth-child(3) {
+  fill: rgba(26, 26, 26, 0.5);
+}
+
+body.dark-mode .parallax>use:nth-child(4) {
+  fill: #1a1a1a;
+}
+
+/* 黑色底 */
+
+/* 暗色模式 Footer */
+body.dark-mode .footer {
+  background-color: #1a1a1a !important;
+  border-top: none !important;
+  color: #888 !important;
+}
+
+body.dark-mode .footer a {
+  color: #888 !important;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  #waves-container {
+    height: 60px;
+    min-height: 60px;
+  }
+
+  .waves {
+    height: 60px;
+    min-height: 60px;
+  }
+}
