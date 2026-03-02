@@ -47,22 +47,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 微信分享功能
+  // ================= 微信分享功能 (样式还原版) =================
   const wechatButtons = document.querySelectorAll(".share-btn.wechat");
 
-  // 定义关闭弹窗的函数，避免代码重复
+  // 1. 定义关闭函数
   function closeWechatModal() {
     const existingModal = document.querySelector(".wechat-share-modal");
     if (existingModal) {
-      existingModal.remove(); // 现代浏览器直接支持 remove()
+      existingModal.remove();
+      // 移除全局监听器，防止内存泄漏
+      document.removeEventListener("click", handleGlobalClick);
+      document.removeEventListener("keydown", handleEscKey);
+    }
+  }
+
+  // 2. 处理全局点击的函数 (核心修复逻辑)
+  function handleGlobalClick(event) {
+    const modal = document.querySelector(".wechat-share-modal");
+    if (!modal) return;
+
+    const container = modal.querySelector(".wechat-share-container");
+
+    // A. 如果点击的是关闭按钮 (或其子元素)
+    if (event.target.closest(".wechat-share-close")) {
+      closeWechatModal();
+      return;
+    }
+
+    // B. 如果点击的目标 **不在** 内容容器内部 (说明点到了背景遮罩)
+    // 且 content 存在
+    if (container && !container.contains(event.target)) {
+      closeWechatModal();
+    }
+  }
+
+  // 3. 处理 ESC 键的函数
+  function handleEscKey(event) {
+    if (event.key === "Escape") {
+      closeWechatModal();
     }
   }
 
   wechatButtons.forEach((button) => {
     button.addEventListener("click", function (e) {
       e.preventDefault();
+      e.stopPropagation(); // 阻止冒泡
 
-      // 先关闭可能已经存在的弹窗，防止叠加
+      // 先关闭可能存在的旧弹窗
       closeWechatModal();
 
       const urlPath = this.getAttribute("data-wechat");
@@ -70,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ? urlPath
         : window.location.origin + urlPath;
 
-      // 创建弹窗容器
+      // 创建弹窗 (不带强制内联样式，使用你原来的 CSS 类)
       const modal = document.createElement("div");
       modal.className = "wechat-share-modal";
 
@@ -80,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
         '打开微信，点击底部的"发现"，使用"扫一扫"即可将网页分享至朋友圈。',
       );
 
+      // 恢复原本的 HTML 结构，不加 style 属性
       modal.innerHTML = `
         <div class="wechat-share-container">
           <div class="wechat-share-header">
@@ -96,34 +128,30 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.appendChild(modal);
 
       // 生成二维码
-      const qrContainer = modal.querySelector("#wechat-qrcode"); // 限制在 modal 内查找，更安全
-      if (typeof QRCode !== "undefined") {
-        new QRCode(qrContainer, {
-          text: url,
-          width: 200,
-          height: 200,
-          colorDark: "#000000",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H,
-        });
-      } else {
-        qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}" alt="QR Code">`;
-      }
-
-      // ★★★ 核心修复：使用事件委托处理关闭逻辑 ★★★
-      // 将点击事件绑定在 modal 最外层，处理所有内部点击
-      modal.addEventListener("click", function (event) {
-        // 情况1: 点击了关闭按钮 (或者关闭按钮内部的图标)
-        if (event.target.closest(".wechat-share-close")) {
-          closeWechatModal();
-          return;
+      // 使用 setTimeout 0 确保 DOM 插入后再生成，避免某些情况下获取不到容器
+      setTimeout(() => {
+        const qrContainer = modal.querySelector("#wechat-qrcode");
+        if (qrContainer) {
+          if (typeof QRCode !== "undefined") {
+            new QRCode(qrContainer, {
+              text: url,
+              width: 200,
+              height: 200,
+              colorDark: "#000000",
+              colorLight: "#ffffff",
+              correctLevel: QRCode.CorrectLevel.H,
+            });
+          } else {
+            qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}" alt="QR Code">`;
+          }
         }
+      }, 0);
 
-        // 情况2: 点击了遮罩层背景 (modal 本身)
-        if (event.target === modal) {
-          closeWechatModal();
-        }
-      });
+      // ★ 绑定全局关闭事件 (延迟 100ms 绑定，避开当前点击)
+      setTimeout(() => {
+        document.addEventListener("click", handleGlobalClick);
+        document.addEventListener("keydown", handleEscKey);
+      }, 100);
     });
   });
 });
