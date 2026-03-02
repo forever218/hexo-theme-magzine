@@ -1,14 +1,87 @@
-// ===== Load More Articles (多语言适配 + 智能去重版) =====
+// ===== Load More Articles (多语言适配 + 智能去重 + 全局随机排版版) =====
+
+/**
+ * 核心排版函数：为文章列表应用随机大小样式
+ * @param {NodeList|Array} articles - 要处理的文章元素列表
+ * @param {number} startIndex - 起始索引（用于保持排版规律的连续性）
+ */
+function applyRandomLayout(articles, startIndex = 0) {
+  // 获取当前屏幕宽度，确定列数
+  let columns = 3; // 默认3列
+  const width = window.innerWidth;
+
+  if (width <= 480) columns = 1;
+  else if (width <= 768) columns = 2;
+  else if (width <= 1200) columns = 3;
+  else columns = 4; // 大屏4列
+
+  articles.forEach((article, index) => {
+    // 移除可能已存在的尺寸类，防止冲突
+    article.className = article.className
+      .replace(/\barticle-card--(large|medium|small|wide|tall)\b/g, "")
+      .trim();
+
+    // 如果是单列布局，不需要复杂排版，统一 medium 即可
+    if (columns === 1) {
+      article.classList.add("article-card--medium");
+      return;
+    }
+
+    // 计算全局位置索引（基于总文章列表的连续性）
+    const globalIndex = startIndex + index;
+    const positionInRow = globalIndex % columns;
+
+    let sizeClass = "article-card--medium"; // 默认值
+
+    // 随机排版逻辑
+    if (columns === 2) {
+      // 双列布局：每行的第一个元素有概率变大或变高
+      if (positionInRow === 0) {
+        sizeClass =
+          Math.random() > 0.5 ? "article-card--large" : "article-card--tall";
+      }
+    } else if (columns === 3) {
+      // 三列布局：每行的第一个元素有概率变宽或变大
+      if (positionInRow === 0) {
+        sizeClass =
+          Math.random() > 0.5 ? "article-card--wide" : "article-card--large";
+      }
+    } else {
+      // 四列及以上
+      if (positionInRow === 0) {
+        sizeClass = "article-card--large";
+      } else if (positionInRow === 1) {
+        sizeClass =
+          Math.random() > 0.5 ? "article-card--tall" : "article-card--wide";
+      }
+    }
+
+    // 添加计算出的尺寸类
+    article.classList.add(sizeClass);
+  });
+}
+
 function initLoadMore() {
+  const articlesGrid = document.querySelector(".articles-grid");
   const loadMoreBtn = document.querySelector(".load-more-btn");
+
+  // 1. === 初始化排版（针对页面已有文章）===
+  if (articlesGrid) {
+    const initialArticles = articlesGrid.querySelectorAll(".article-card");
+    if (initialArticles.length > 0) {
+      applyRandomLayout(initialArticles, 0);
+    }
+  }
+
+  // 如果没有按钮，说明不需要加载更多逻辑，直接返回
   if (!loadMoreBtn) return;
 
-  // 1. 获取当前语言状态 (从 localStorage 读取)
+  // 2. 获取当前语言状态 (从 localStorage 读取)
   function isEnglish() {
     return localStorage.getItem("site_lang") === "en";
   }
 
-  // 2. 定义多语言文本
+  // 3. 定义多语言文本
   const texts = {
     loading: {
       zh: '<span class="loading"></span> 加载中...',
@@ -59,11 +132,9 @@ function initLoadMore() {
 
     // 构建下一页URL (适配 /page/2/ 结构)
     let currentPath = window.location.pathname;
-    // 去掉尾部斜杠，去掉已有的 /page/xx
     currentPath = currentPath.replace(/\/$/, "").replace(/\/page\/\d+$/, "");
-    // 如果是根路径空字符串，补全为 /
     if (currentPath === "") currentPath = "";
-    
+
     const nextPageUrl = currentPath + "/page/" + nextPage + "/";
 
     // 获取下一页内容
@@ -75,58 +146,67 @@ function initLoadMore() {
       .then((html) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, "text/html");
-        
+
         // 获取新页面的文章
         const newArticles = doc.querySelectorAll(".article-card");
-        const articlesGrid = document.querySelector(".articles-grid");
 
         if (newArticles.length > 0 && articlesGrid) {
-          // ★★★ 核心去重步骤 1：获取当前页面所有已存在的文章链接 ★★★
-          const existingLinks = Array.from(articlesGrid.querySelectorAll(".article-title a"))
-            .map(a => a.getAttribute("href"));
+          // 获取当前页面已有文章数量，作为新文章排版的起始索引
+          // 这保证了随机规律是连续的，不会因为分页而断层
+          const currentCount =
+            articlesGrid.querySelectorAll(".article-card").length;
 
-          let addedCount = 0;
+          // 准备��个数组来存放真正要插入的（去重后的）新文章元素
+          const articlesToInsert = [];
+
+          // ★★★ 核心去重 ★★★
+          const existingLinks = Array.from(
+            articlesGrid.querySelectorAll(".article-title a"),
+          ).map((a) => a.getAttribute("href"));
 
           newArticles.forEach((article) => {
-            // ★★★ 核心去重步骤 2：判断新文章是否已存在 ★★★
             const newLinkTag = article.querySelector(".article-title a");
             const newLink = newLinkTag ? newLinkTag.getAttribute("href") : null;
 
-            // 如果链接不存在，才执行插入
+            // 如果链接不存在，才放入待插入列表
             if (newLink && !existingLinks.includes(newLink)) {
-              
-              // 1. 处理英文模式下的静态文本翻译
+              // 处理英文模式下的静态文本翻译
               if (isEnglish()) {
                 const readMore = article.querySelector(".read-more");
                 if (readMore && readMore.innerText.includes("阅读更多")) {
                   readMore.innerText = "Read More →";
                 }
-                
-                // 处理遮罩层文字 "点击阅读->" -> "Click to Read ->"
                 const readOverlay = article.querySelector(".read-text");
                 if (readOverlay && readOverlay.innerText.includes("点击阅读")) {
                   readOverlay.innerText = "Click to Read ->";
                 }
               }
 
-              // 2. 插入文章
               // 设置初始透明度为0，用于动画
-              article.style.opacity = "0"; 
-              article.classList.add("fade-in"); // 确保有 fade-in 类
-              articlesGrid.appendChild(article);
-              
-              // 3. 简单的淡入动画
-              setTimeout(() => {
-                article.style.opacity = "1";
-              }, 10 + (addedCount * 100)); // 依次延迟显示
+              article.style.opacity = "0";
+              article.classList.add("fade-in");
 
-              addedCount++;
+              articlesToInsert.push(article);
+              articlesGrid.appendChild(article);
             }
           });
 
-          // 如果没有新文章被添加（都在这页了），说明可能到底了或者重复了
-          if (addedCount === 0 && nextPage < totalPages) {
-             console.warn("未添加新文章，可能是重复内容");
+          // ★★★ 对新插入的文章应用随机排版 ★★★
+          // 传入 currentCount 作为起始索引，确保排版逻辑接续上一页
+          if (articlesToInsert.length > 0) {
+            applyRandomLayout(articlesToInsert, currentCount);
+
+            // 简单的淡入动画
+            articlesToInsert.forEach((article, idx) => {
+              setTimeout(
+                () => {
+                  article.style.opacity = "1";
+                },
+                10 + idx * 100,
+              );
+            });
+          } else if (nextPage < totalPages) {
+            console.warn("未添加新文章，可能是重复内容");
           }
 
           // ★★★ 更新按钮状态 ★★★
@@ -137,20 +217,18 @@ function initLoadMore() {
           } else {
             btn.innerHTML = getText("loadMore");
             btn.disabled = false;
-            // 重要：更新 data 属性，否则下次还会请求第2页
-            btn.setAttribute("data-current-page", nextPage); 
-          }
-          
-          // ★★★ 触发事件：让 article-modal.js 重新绑定点击事件 ★★★
-          // article-modal.js 使用了 MutationObserver，会自动检测到 DOM 变化并绑定事件，无需额外操作
-          
-          // 如果有全局翻译插件，触发它
-          if (window.i18n && typeof window.i18n.translateNode === 'function' && isEnglish()) {
-             window.i18n.translateNode(articlesGrid);
+            btn.setAttribute("data-current-page", nextPage);
           }
 
+          // 如果有全局翻译插件，触发它
+          if (
+            window.i18n &&
+            typeof window.i18n.translateNode === "function" &&
+            isEnglish()
+          ) {
+            window.i18n.translateNode(articlesGrid);
+          }
         } else {
-          // 没找到文章容器
           btn.innerHTML = getText("noMore");
           btn.style.opacity = "0.6";
           btn.disabled = true;
@@ -160,7 +238,7 @@ function initLoadMore() {
         console.error("Error:", error);
         btn.innerHTML = getText("error");
         btn.style.opacity = "0.6";
-        btn.disabled = false; // 允许重试
+        btn.disabled = false;
       });
   });
 }
