@@ -49,19 +49,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 微信分享功能
   const wechatButtons = document.querySelectorAll(".share-btn.wechat");
+
+  // 定义关闭弹窗的函数，避免代码重复
+  function closeWechatModal() {
+    const existingModal = document.querySelector(".wechat-share-modal");
+    if (existingModal) {
+      existingModal.remove(); // 现代浏览器直接支持 remove()
+    }
+  }
+
   wechatButtons.forEach((button) => {
     button.addEventListener("click", function (e) {
       e.preventDefault();
+
+      // 先关闭可能已经存在的弹窗，防止叠加
+      closeWechatModal();
+
       const urlPath = this.getAttribute("data-wechat");
       const url = urlPath.startsWith("http")
         ? urlPath
         : window.location.origin + urlPath;
 
-      // 创建二维码弹窗
+      // 创建弹窗容器
       const modal = document.createElement("div");
       modal.className = "wechat-share-modal";
 
-      // ★★★ 修改点 2：翻译微信弹窗内容 ★★★
+      // 翻译文本
       const titleText = t("微信扫一扫分享");
       const descText = t(
         '打开微信，点击底部的"发现"，使用"扫一扫"即可将网页分享至朋友圈。',
@@ -71,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="wechat-share-container">
           <div class="wechat-share-header">
             <h3>${titleText}</h3>
-            <button class="wechat-share-close">&times;</button>
+            <button class="wechat-share-close" type="button">&times;</button>
           </div>
           <div class="wechat-share-body">
             <div id="wechat-qrcode"></div>
@@ -82,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.body.appendChild(modal);
 
-      // 生成二维码逻辑 (保持不变)
-      const qrContainer = document.getElementById("wechat-qrcode");
+      // 生成二维码
+      const qrContainer = modal.querySelector("#wechat-qrcode"); // 限制在 modal 内查找，更安全
       if (typeof QRCode !== "undefined") {
         new QRCode(qrContainer, {
           text: url,
@@ -97,19 +110,18 @@ document.addEventListener("DOMContentLoaded", function () {
         qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}" alt="QR Code">`;
       }
 
-      // 关闭弹窗逻辑 (保持不变)
-      const closeButton = modal.querySelector(".wechat-share-close");
-      closeButton.addEventListener("click", function () {
-        if (document.body.contains(modal)) {
-          document.body.removeChild(modal);
+      // ★★★ 核心修复：使用事件委托处理关闭逻辑 ★★★
+      // 将点击事件绑定在 modal 最外层，处理所有内部点击
+      modal.addEventListener("click", function (event) {
+        // 情况1: 点击了关闭按钮 (或者关闭按钮内部的图标)
+        if (event.target.closest(".wechat-share-close")) {
+          closeWechatModal();
+          return;
         }
-      });
 
-      modal.addEventListener("click", function (e) {
-        if (e.target === modal) {
-          if (document.body.contains(modal)) {
-            document.body.removeChild(modal);
-          }
+        // 情况2: 点击了遮罩层背景 (modal 本身)
+        if (event.target === modal) {
+          closeWechatModal();
         }
       });
     });
