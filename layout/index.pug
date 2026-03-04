@@ -47,12 +47,16 @@ section.articles-section
                 - var defaultCover = theme.theme_config.post && theme.theme_config.post.default_cover ? theme.theme_config.post.default_cover : '/images/19.png'
                 - var coverPath = article.cover ? getCoverPath(article.cover, article.path) : defaultCover
                 img(src=url_for(coverPath), alt=article.title, loading="lazy")
+                //- ★★★ 新增：悬停遮罩层 ★★★
+                .read-overlay
+                  span.read-text(data-label="点击阅读->") 点击阅读->
           .article-content
             .article-meta
               if article.categories.length
                 span.article-category
                   a(href=url_for(article.categories.first().path))= article.categories.first().name
-              time.article-date(datetime=date_xml(article.date))= date(article.date, "MMM DD, YYYY")
+              //- 日期 (保持之前的 data-date-standard 设置)
+              time.article-date(datetime=date_xml(article.date), data-date-standard=date(article.date, 'YYYY-MM-DD'))= date(article.date, "MMM DD, YYYY")
             
             h3.article-title
               a(href=url_for(article.path))= article.title
@@ -70,4 +74,4 @@ section.articles-section
 //- Load More Button
 if page.total > 1
   .load-more-container
-    button.load-more-btn(data-current-page=1, data-total-pages=page.total) Load More Articles
+    button.load-more-btn(data-current-page=1, data-total-pages=page.total) 加载更多文章
