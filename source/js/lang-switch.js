@@ -76,6 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
     返回首页: "Back to Home",
     共有: "Total",
     篇文章: "Posts",
+    相关分类: "Category",
+    返回所有分类: "Back to All Categories",
 
     // 标签
     标签: "Tags",
@@ -128,6 +130,9 @@ document.addEventListener("DOMContentLoaded", function () {
     爬山: "Hiking",
     长跑: "Running",
     旅行: "Traveling",
+
+    // 自我介绍
+    自我介绍: "Self Introduction",
 
     // 评论区
     评论区: "Comments",
