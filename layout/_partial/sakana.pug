@@ -1,0 +1,133 @@
+if theme.sakana && theme.sakana.enable
+  #sakana-widget-wrapper
+    .sakana-switch-btn 切换角色
+    .sakana-box#sakana-box-inner
+
+  style.
+    #sakana-widget-wrapper {
+      position: fixed;
+      bottom: 40px; 
+      left: 30px; 
+      z-index: 9998;
+      pointer-events: none;
+      transform: scale(0.3);
+      transform-origin: left bottom;
+    }
+    
+    @media (max-width: 768px) {
+      #sakana-widget-wrapper { display: none !important; }
+    }
+
+    .sakana-switch-btn {
+      position: absolute;
+      bottom: 0px; 
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-color, #ff6b6b);
+      color: #fff;
+      padding: 15px 40px;
+      border-radius: 40px;
+      font-size: 45px; 
+      font-weight: bold;
+      letter-spacing: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: -1;
+    }
+
+    .sakana-switch-btn::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 0;
+      width: 100%;
+      height: 80px;
+    }
+
+    #sakana-widget-wrapper:hover .sakana-switch-btn {
+      opacity: 1;
+      bottom: -100px;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .sakana-switch-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .sakana-box {
+      width: 500px; height: 800px; position: relative;
+      transform-origin: 50% 100%; pointer-events: none;
+    }
+    .sakana-box canvas {
+      position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none;
+    }
+    .sakana-box .sakana-character {
+      width: 300px; height: 300px; position: absolute; left: 0; right: 0;
+      margin: 0 auto; bottom: 260px; cursor: pointer; pointer-events: auto;
+      transform-origin: 50% 400px; background: no-repeat 50% 50%; background-size: cover;
+    }
+    .sakana-box .sakana-character[data-character="chisato"] {
+      background-image: url('https://raw.githubusercontent.com/itorr/sakana/main/html/chisato.png');
+    }
+    .sakana-box .sakana-character[data-character="takina"] {
+      background-image: url('https://raw.githubusercontent.com/itorr/sakana/main/html/takina.png');
+    }
+    .sakana-box .sakana-bed {
+      width: 160px; height: 20px; position: absolute; left: 0; right: 0;
+      margin: 0 auto; bottom: 0; background: rgba(255,255,255,.5) no-repeat 50% 50%;
+      border-radius: 2px; cursor: pointer; pointer-events: auto;
+      background-image: url('https://raw.githubusercontent.com/itorr/sakana/main/html/blue00f4.png');
+      background-size: 20px 20px; box-shadow: 0 0 0 2px rgba(0,0,0,.05);
+    }
+
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. 移动端禁用
+      if (window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
+      
+      // 2. ★★★ 关键修复：如果处于 iframe（文章模态窗口）中，直接销毁，不加载第二个 Sakana ★★★
+      if (window.self !== window.top) {
+        var wrapper = document.getElementById('sakana-widget-wrapper');
+        if (wrapper) wrapper.style.display = 'none';
+        return;
+      }
+
+      if (window.sakanaInitialized) return;
+      window.sakanaInitialized = true;
+
+      const script = document.createElement('script');
+      script.src = '/js/sakana.min.js';
+      script.async = true;
+      
+      script.onload = function() {
+        if (typeof Sakana !== 'undefined') {
+          const savedChar = localStorage.getItem('sakanaCharacter') || 'chisato';
+          const sakanaBox = document.getElementById('sakana-box-inner');
+          
+          const sakanaInstance = Sakana.init({
+            el: sakanaBox,
+            character: savedChar,
+            canSwitchCharacter: false
+          });
+          
+          Sakana.setMute(true);
+
+          const switchBtn = document.querySelector('.sakana-switch-btn');
+          if (switchBtn) {
+            switchBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              let current = sakanaBox.querySelector('.sakana-character').getAttribute('data-character');
+              let nextChar = current === 'chisato' ? 'takina' : 'chisato';
+              sakanaInstance.setCharacter(nextChar);
+              localStorage.setItem('sakanaCharacter', nextChar);
+            });
+          }
+        }
+      };
+      
+      document.body.appendChild(script);
+    });

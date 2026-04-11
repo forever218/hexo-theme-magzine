@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initGoToComments();
   initCodeBlockFolding();
   initAuthorCardAnimation();
+  initCodeBlockScroll();
 });
 
 // ===== Typing Effect =====
@@ -692,3 +693,46 @@ window.newspaperTheme = {
   initCodeBlockFolding: initCodeBlockFolding,
   initAuthorCardAnimation: initAuthorCardAnimation,
 };
+
+// ===== Code Block Horizontal Scroll (鼠标滚轮横向滚动代码) =====
+function initCodeBlockScroll() {
+  // 获取所有可能产生横向滚动的代码区域（兼容 Hexo 表格高亮和普通 pre 高亮）
+  const codeBlocks = document.querySelectorAll(
+    "figure.highlight .code pre, .post-content pre",
+  );
+
+  codeBlocks.forEach((block) => {
+    block.addEventListener(
+      "wheel",
+      function (e) {
+        // 如果按住了 Shift 键，系统默认就会横向滚动，不干预
+        if (e.shiftKey) return;
+
+        // 如果用户使用的是触摸板本身的横向滑动，不干预
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+        // 检查当前代码块是否真的有横向超出范围的内���
+        const isScrollable = this.scrollWidth > this.clientWidth;
+        if (!isScrollable) return;
+
+        // 计算是否已经滚到了最左边缘或最右边缘
+        const atLeftEdge = this.scrollLeft <= 0;
+        // 容错处理：向上取整解决缩放导致的小数点像素误差
+        const atRightEdge =
+          Math.ceil(this.scrollLeft + this.clientWidth) >= this.scrollWidth;
+
+        // e.deltaY > 0 表示滚轮向下滚 -> 映射为向右滚动代码
+        if (e.deltaY > 0 && !atRightEdge) {
+          e.preventDefault(); // 阻止页面整体向下滚动
+          this.scrollLeft += e.deltaY;
+        }
+        // e.deltaY < 0 表示滚轮向上滚 -> 映射为向左滚动代码
+        else if (e.deltaY < 0 && !atLeftEdge) {
+          e.preventDefault(); // 阻止页面整体向上滚动
+          this.scrollLeft += e.deltaY;
+        }
+      },
+      { passive: false },
+    ); // 必须设置为 false 才能使用 e.preventDefault()
+  });
+}

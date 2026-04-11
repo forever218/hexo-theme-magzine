@@ -85,12 +85,22 @@ html(lang=config.language)
         != item
 
   body
+    //- ★★★ 新增：通过配置文件判断是否开启封面 ★★★
+    if theme.cover && theme.cover.enable
+      != partial('_partial/cover')
     #app
       != partial('_partial/header')
+      //- ★★★ 新增：在这里引入刚写好的右上角色卡 ★★★
+      != partial('_partial/color-picker')
       != partial('_partial/search')
 
       main.main
         != body
+
+      //- ★★★ 新增：通过配置文件判断是否开启 Sakana ★★★
+      if theme.sakana && theme.sakana.enable
+        != partial('_partial/sakana')
+
 
       //- ★★★ 新增：波浪效果容器 (紧贴 Footer 上方) ★★★
       #waves-container
@@ -104,7 +114,7 @@ html(lang=config.language)
             use(xlink:href="#gentle-wave", x="48", y="7")
 
       != partial('_partial/footer')
-
+      
     // 立即应用暗色模式，避免页面闪烁
     if theme.features && theme.features.dark_mode
       script.

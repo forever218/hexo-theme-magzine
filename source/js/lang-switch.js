@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   // 1. 定义翻译字典
   const translations = {
-    //大家请注意:左侧中文不能随意修改,需要和about.pug,about.yml,还有_config.yml里的字符串保持完全一致
-    // 右侧英文是翻译结果可以随便写不限于英语
-    //大家不用担心这个会影响到文章内容,这个只是一些主题自带的固定文本的翻译,文章内容是独立的完全不受影响,所以大家可以放心修改右侧的英文翻译结果😄😄
+    //大家请注意:左侧中文不能随意修改,需要和about.pug,about.yml,还有_config.yml等等里的字符串保持完全一致
+    //大家不用担心这个会影响到文章内容,这个只是一些主题自带的固定文本的翻译,文章markdown内容是独立的完全不受影响,所以大家可以放心修改右侧的英文翻译结果😄😄
+
+    //主界面(请在_config.yml里修改左侧内容后,再来这里修改左右侧的翻译内容,保持一一对应关系)
     然: "Ran",
     "人生而自由，却无往不在枷锁之中":
       "Man is born free, and everywhere he is in chains.",
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     首页: "Home",
     "© 2025 李思然. 保留所有权利.": "© 2025 Lisiran. All rights reserved.",
 
-    // 关于
+    // 关于(请在themes\magzine\layout\about.pug里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
     暂无数据: "No Data",
     关于: "About",
     称呼: "Name",
@@ -27,13 +28,32 @@ document.addEventListener("DOMContentLoaded", function () {
     大四在读: "Senior Year Student",
     程序员: "Programmer",
 
-    //联系方式
     联系方式: "Contact",
     邮箱: "Email",
     哔哩哔哩: "Bilibili",
     凛冬亦夏: "Lindong Yixia",
 
-    //卡片文字
+    兴趣点: "Interests",
+    摄影: "Photography",
+    羽毛球: "Badminton",
+    油画: "Oil Painting",
+    设计: "Design",
+    代码: "Coding",
+    哲学: "Philosophy",
+    生活: "Life",
+    艺术: "Art",
+    运动: "Sports",
+    创造: "Creation",
+    游戏: "Gaming",
+    阅读: "Reading",
+    骑行: "Cycling",
+    爬山: "Hiking",
+    长跑: "Running",
+    旅行: "Traveling",
+
+    自我介绍: "Self Introduction",
+
+    //卡片文字(请在themes\magzine\source\_data\about.yml里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
     "享受生活中的每一个瞬间，发现平凡中的美好":
       "Enjoy every moment of life and discover beauty in the ordinary",
     "探索美食、旅行、摄影，记录生活的点点滴滴":
@@ -62,12 +82,15 @@ document.addEventListener("DOMContentLoaded", function () {
       "Dive into the ocean of books and converse with great minds",
     "文学、历史、科技，通过阅读拓展视野和思维":
       "Literature, history, and technology—expand your horizons and thinking through reading",
-    // 归档
+
+    // 归档(不要更改,blog预设内容)
     归档: "Archives",
+
+    //其他(请在_config.yml里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
     网站: "Site",
     示例网站: "Example Site",
 
-    // 分类
+    // 分类(不要更改,blog预设内容)
     分类: "Categories",
     所有分类: "All Categories",
     暂无分类: "No Categories",
@@ -79,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     相关分类: "Category",
     返回所有分类: "Back to All Categories",
 
-    // 标签
+    // 标签(不要更改,blog预设内容)
     标签: "Tags",
     暂无标签: "No Tags",
     开始为您的文章添加标签: "Start Adding Tags to Your Posts",
@@ -87,8 +110,10 @@ document.addEventListener("DOMContentLoaded", function () {
     相关的所有文章: "related posts",
     返回所有标签: "Back to All Tags",
 
-    // 友链
+    //不要更改(blog预设内容)
     友链: "Links",
+
+    //友链内容(请在"themes\magzine\layout\link.pug里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
     友情链接: "Friend Links",
     胡杨怕火: "Huyangpahuo",
     "传递笑容魔法的Ciallo～(∠・ω< )⌒☆":
@@ -112,29 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "You may use the template below and leave a comment to apply:",
     "我会常去串门的😊~": "I'll drop by your site from time to time 😊~",
 
-    // 技能or爱好
-    兴趣点: "Interests",
-    摄影: "Photography",
-    羽毛球: "Badminton",
-    油画: "Oil Painting",
-    设计: "Design",
-    代码: "Coding",
-    哲学: "Philosophy",
-    生活: "Life",
-    艺术: "Art",
-    运动: "Sports",
-    创造: "Creation",
-    游戏: "Gaming",
-    阅读: "Reading",
-    骑行: "Cycling",
-    爬山: "Hiking",
-    长跑: "Running",
-    旅行: "Traveling",
-
-    // 自我介绍
-    自我介绍: "Self Introduction",
-
-    // 评论区
+    // 评论区(不要更改,blog预设内容)
     评论区: "Comments",
     昵称: "Nickname",
     网址: "URL",
@@ -145,23 +148,25 @@ document.addEventListener("DOMContentLoaded", function () {
     没有评论: "No Comments",
     Twikoo评论加载成功: "Twikoo comments loaded successfully",
 
-    // 隐藏内容
+    // 隐藏内容(不要更改,blog预设内容)
     点击查看隐藏内容: "Click to reveal hidden content",
     " (点击恢复)": " (Click to hide again)",
 
-    // AI摘要
+    // AI摘要(请在_config.yml里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
     "然-AI": "Ran-AI",
-    介绍自己: "Introduce",
-    来点灵感: "Inspiration",
-    生成AI简介: "Generate Summary",
     "我是文章辅助AI: 然-AI，一个基于deepseek的强大语言模型，有什么可以帮到您？😊":
       "Hello! I'm Ran-AI, your article assistant AI, a powerful language model based on DeepSeek.How can I assist you today? 😊",
-    "生成中. . .": "Generating...",
-    "请等待. . .": "Please wait...",
     "Ran-AI请求AI出错了，请稍后再试。":
       "Ran-AI encountered an error while requesting AI. Please try again later.",
 
-    // 文章
+    //不要更改(blog预设内容)
+    "生成中. . .": "Generating...",
+    "请等待. . .": "Please wait...",
+    介绍自己: "Introduce",
+    来点灵感: "Inspiration",
+    生成AI简介: "Generate Summary",
+
+    // 文章(不要更改,blog预设内容)
     "点击阅读->": "Click to Read ->",
     目录: "Directory",
     无目录: "No Directory",
@@ -174,19 +179,19 @@ document.addEventListener("DOMContentLoaded", function () {
     分钟: "min",
     字: "words",
 
-    // 搜索
+    // 搜索(不要更改,blog预设内容)
     "搜索文章...": "Search Articles...",
     搜索索引未加载: "Search index not loaded",
     没有找到相关结果: "No results found",
 
-    // 图片
+    // 图片(不要更改,blog预设内容)
     上一张: "Previous",
     下一张: "Next",
     "旋转90°": "Rotate 90°",
     锁定方向: "Lock Orientation",
     保存图片: "Save Image",
 
-    // 分享文章
+    // 分享文章(不要更改,blog预设内容)
     分享这篇文章到: "Share this article",
     推特: "Twitter",
     脸书: "Facebook",
@@ -200,12 +205,16 @@ document.addEventListener("DOMContentLoaded", function () {
     '打开微信，点击底部的"发现"，使用"扫一扫"即可将网页分享至朋友圈。':
       "Open WeChat, tap 'Discover', use 'Scan' to share this page to Moments.",
 
-    // 代码折叠
+    // 代码折叠(不要更改,blog预设内容)
     展开代码: "Expand Code",
     折叠代码: "Collapse Code",
     复制成功: "Copy successful!",
     复制失败: "Copy failed",
     未找到代码内容: "Code content not found",
+
+    //封面(请在 themes\magzine\layout\_partial\cover.pug 里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
+    欢迎来到我的奇妙世界: "Welcome to my wonderful world",
+    开始你的旅行: "Start Your Journey",
   };
 
   // ==========================================
@@ -328,6 +337,8 @@ document.addEventListener("DOMContentLoaded", function () {
         translateNode(node);
       }
     },
+    // ★★★ 新增：将日期翻译函数也暴露出来供外部调用 ★★★
+    translateDates: translateDates,
   };
 
   function translatePage() {

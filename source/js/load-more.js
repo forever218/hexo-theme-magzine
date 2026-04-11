@@ -156,7 +156,7 @@ function initLoadMore() {
           const currentCount =
             articlesGrid.querySelectorAll(".article-card").length;
 
-          // 准备��个数组来存放真正要插入的（去重后的）新文章元素
+          // 准备一个数组来存放真正要插入的（去重后的）新文章元素
           const articlesToInsert = [];
 
           // ★★★ 核心去重 ★★★
@@ -227,6 +227,10 @@ function initLoadMore() {
             isEnglish()
           ) {
             window.i18n.translateNode(articlesGrid);
+            // ★★★ 新增：调用日期翻译函数，处理新加载文章的日期 ★★★
+            if (typeof window.i18n.translateDates === "function") {
+              window.i18n.translateDates();
+            }
           }
         } else {
           btn.innerHTML = getText("noMore");

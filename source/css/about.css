@@ -30,7 +30,7 @@
 
 .shape {
   position: absolute;
-  background: rgba(255, 107, 107, 1);
+  background: var(--accent-color);
   border: none;
 }
 
@@ -74,7 +74,7 @@
 
 .about-avatar:hover {
   transform: scale(1.1) rotate(5deg);
-  border-color: #ff6b6b;
+  border-color: var(--accent-color);
 }
 
 .about-avatar img {
@@ -243,7 +243,7 @@
   overflow: hidden;
   transition: max-height 0.4s ease;
   font-size: 0.9rem;
-  color: #ff6b6b;
+  color: var(--accent-color);
   margin-top: 0;
 }
 
@@ -352,7 +352,7 @@
   box-sizing: border-box;
 }
 
-/* 贴纸卡片样式：���色模式 (磨砂白) */
+/* 贴纸卡片样式：亮色模式 (磨砂白) */
 .profile-item {
   background: rgba(255, 255, 255, 0.75);
   /* 更不透明一点，保证文字清晰 */
@@ -400,11 +400,11 @@
 /* 悬停效果：保持粉色，文字变白 */
 .profile-item:hover {
   transform: scale(1.15) rotate(0deg) !important;
-  background: #ff6b6b !important;
-  border-color: #ff6b6b !important;
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
   color: #fff !important;
   z-index: 10;
-  box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3) !important;
+  box-shadow: 0 15px 30px color-mix(in srgb, var(--accent-color) 30%, transparent) !important;
 }
 
 .profile-item:hover::before {
@@ -459,8 +459,7 @@ html[data-theme='dark'] .profile-item::before {
 /* 6. 悬停效果在暗色下微调 (可选，防止粉色太刺眼，或者保持原样) */
 html.dark-mode .profile-item:hover,
 html[data-theme='dark'] .profile-item:hover {
-  background: rgba(255, 107, 107, 0.85) !important;
-  /* 稍微透明一点的粉色 */
+  background: color-mix(in srgb, var(--accent-color) 85%, transparent) !important;
   color: #fff !important;
 }
 
@@ -496,14 +495,9 @@ html[data-theme='dark'] .profile-item:hover {
 
 .tag:hover {
   transform: scale(1.15) rotate(-2deg);
-  /* 【关键修改】粉色背景方块，30%透明度
-     rgba(255, 107, 107, 0.3)
-  */
-  background-color: rgba(255, 107, 107, 0.3) !important;
+  background-color: color-mix(in srgb, var(--accent-color) 30%, transparent) !important;
   color: #000;
-  /* 悬停时文字变黑，增加对比度 */
   text-shadow: none;
-  /* 移除阴影，保持干净 */
   z-index: 10;
 }
 
@@ -588,16 +582,17 @@ html[data-theme='dark'] .profile-item:hover {
   transition: all 0.3s ease;
 }
 
+/* 搜索 .contact-item 悬停边框及图标颜色 */
 .contact-item:hover {
   background: rgba(125, 125, 125, 0.1);
   transform: translateY(-3px);
-  border-color: #ff6b6b;
+  border-color: var(--accent-color);
 }
 
 .contact-item i {
   font-size: 1.5rem;
   margin-right: 15px;
-  color: #ff6b6b;
+  color: var(--accent-color);
 }
 
 .contact-label {
@@ -665,7 +660,6 @@ html[data-theme='dark'] .tag {
 /* 暗色模式下的悬停背景也要调整一下，防止太亮 */
 html.dark-mode .tag:hover,
 html[data-theme='dark'] .tag:hover {
-  background-color: rgba(255, 107, 107, 0.2) !important;
-  /* 稍微再淡一点 */
+  background-color: color-mix(in srgb, var(--accent-color) 20%, transparent) !important;
   color: #fff !important;
 }
