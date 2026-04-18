@@ -1,0 +1,226 @@
+//- 博客全屏启动流体封面组件 (WebGL水波纹 + 波形文字 + 轮播)
+if theme.cover && theme.cover.enable
+  #blog-cover.blog-cover
+    //- WebGL 水波纹画布底层
+    .cover-bg#cover-bg-container
+      canvas#refraction-canvas-1.bg-slide.active
+      canvas#refraction-canvas-2.bg-slide
+      .cover-overlay
+
+    //- 居中文字层 (禁用指针事件，让鼠标能够穿透文字拨动水波纹)
+    .cover-content
+      h1.cover-title#animated-title
+      p.cover-author#animated-author 
+
+    //- 底部跳动的按钮区域
+    .cover-start-btn#start-journey
+      span#start-journey-text 
+      i.fas.fa-chevron-down.bouncing-arrow
+
+  //- ★★★ 关键修复：同步阻塞脚本，防止 iframe/模态窗口中出现封面 ★★★
+  script.
+    (function() {
+      var cover = document.getElementById('blog-cover');
+      if (!cover) return;
+      
+      // 如果当前是在 iframe/模态窗口中，或者用户已经点过“开始旅行”了
+      if (window.self !== window.top || sessionStorage.getItem('hasSeenCover') === 'true') {
+        // 立即隐藏，避免任何闪烁和遮挡
+        cover.style.display = 'none';
+      } else {
+        // 否则锁定背景滚动，等待动画模块加载
+        document.body.style.overflow = 'hidden';
+      }
+    })();
+
+  style.
+    .blog-cover {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 9999999; display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1); 
+      overflow: hidden; background: #000;
+    }
+    .blog-cover.slide-up { transform: translateY(-100%); }
+
+    .cover-bg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+    }
+
+    .bg-slide {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0; transition: opacity 1.5s ease-in-out; 
+    }
+    .bg-slide.active { opacity: 1; }
+
+    .cover-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4); z-index: 2; pointer-events: none;
+    }
+
+    .cover-content { text-align: center; z-index: 10; pointer-events: none; }
+
+    .cover-title, .cover-author {
+      font-family: var(--font-secondary, 'Playfair Display', serif);
+      margin: 0;
+      color: var(--accent-color, #ff6b6b);
+      text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    .cover-title { font-size: 4rem; letter-spacing: 5px; font-weight: 800; }
+    .cover-author { font-size: 2rem; letter-spacing: 3px; font-weight: 500; margin-top: 25px; }
+
+    .pop-wrapper {
+      display: inline-block; opacity: 0; transform: scale(0.3) translateY(30px);
+      animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    .wave-inner {
+      display: inline-block;
+      animation: wave-jitter 2.5s ease-in-out infinite;
+    }
+
+    .cover-start-btn {
+      position: absolute; bottom: 50px; display: flex; flex-direction: column;
+      align-items: center; color: #fff; cursor: pointer; z-index: 10;
+      transition: color 0.3s ease, transform 0.3s ease; pointer-events: auto;
+      padding: 10px 20px;
+    }
+    .cover-start-btn:hover { color: var(--accent-color, #ff6b6b); transform: scale(1.05); }
+    .cover-start-btn span {
+      font-size: 1.2rem; margin-bottom: 10px; font-weight: 500;
+      letter-spacing: 2px; text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+    .bouncing-arrow { font-size: 2.5rem; animation: float-bounce 2s infinite; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6)); }
+
+    @keyframes pop-in { to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes wave-jitter {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(-12px); opacity: 0.35; }
+    }
+    @keyframes float-bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-15px); }
+      60% { transform: translateY(-7px); }
+    }
+
+    /* ★★★ 手机端适配修改 ★★★ */
+    @media (max-width: 768px) {
+      .cover-title { font-size: 2rem; letter-spacing: 2px; }
+      .cover-author { font-size: 1.2rem; margin-top: 15px; }
+      .bouncing-arrow { font-size: 2rem; }
+      
+      .cover-start-btn { 
+        bottom: 12vh; /* 调高按钮，防止被手机浏览器底部导航栏遮挡 */
+        padding: 20px 40px; /* 增大点击热区 */
+      }
+      .cover-start-btn span { font-size: 1rem; }
+    }
+
+  script(type="module").
+    // 只有当封面没有被前置脚本 display: none 掉时，才加载沉重的 WebGL 引擎
+    const cover = document.getElementById('blog-cover');
+    if (cover && cover.style.display !== 'none') {
+      const startBtn = document.getElementById('start-journey');
+      
+      import('https://cdn.jsdelivr.net/npm/threejs-components@0.0.30/build/backgrounds/liquid1.min.js').then((module) => {
+        const LiquidBackground = module.default;
+
+        //更换封面图片列表，支持多图轮播（至少需要两张图才能轮播）
+        const coverImages = ['/images/10.png', '/images/14.png', '/images/15.png', '/images/13.jpg'];
+        
+        const canvas1 = document.getElementById('refraction-canvas-1');
+        const canvas2 = document.getElementById('refraction-canvas-2');
+        
+        const setupApp = (canvas) => {
+          const app = LiquidBackground(canvas);
+          app.liquidPlane.material.metalness = 0.35;
+          app.liquidPlane.material.roughness = 0.45;
+          app.liquidPlane.uniforms.displacementScale.value = 2;
+          app.setRain(false);
+          return app;
+        }
+
+        const app1 = setupApp(canvas1);
+        const app2 = setupApp(canvas2);
+
+        let currentSlide = 0;
+        let activeApp = 1;
+        
+        app1.loadImage(coverImages[0]);
+        if (coverImages.length > 1) app2.loadImage(coverImages[1]);
+
+        let slideTimer = null;
+        if (coverImages.length > 1) {
+          slideTimer = setInterval(() => {
+            const nextSlide = (currentSlide + 1) % coverImages.length;
+            
+            if (activeApp === 1) {
+              canvas1.classList.remove('active');
+              canvas2.classList.add('active');
+              activeApp = 2;
+              setTimeout(() => app1.loadImage(coverImages[(nextSlide + 1) % coverImages.length]), 1500);
+            } else {
+              canvas2.classList.remove('active');
+              canvas1.classList.add('active');
+              activeApp = 1;
+              setTimeout(() => app2.loadImage(coverImages[(nextSlide + 1) % coverImages.length]), 1500);
+            }
+            currentSlide = nextSlide;
+          }, 5000); 
+        }
+
+        // 绑定关闭封面的事件 (兼容电脑点击和手机触摸)
+        const closeCover = (e) => {
+          if (e && e.cancelable) e.preventDefault();
+          cover.classList.add('slide-up');
+          sessionStorage.setItem('hasSeenCover', 'true');
+          document.body.style.overflow = '';
+          
+          setTimeout(() => {
+            cover.style.display = 'none';
+            if (slideTimer) clearInterval(slideTimer);
+            if (app1.dispose) app1.dispose();
+            if (app2.dispose) app2.dispose();
+          }, 800);
+        };
+
+        startBtn.addEventListener('click', closeCover);
+        startBtn.addEventListener('touchstart', closeCover, { passive: false });
+      });
+
+      // =======================
+      // ★ 翻译处理：向全局 lang-switch 请求数据 ★
+      // =======================
+      const splitAndAnimateText = (text, container, popBaseDelay = 0) => {
+        container.innerHTML = ''; // 清空内容
+        text.split('').forEach((char, index) => {
+          if (char === ' ') {
+            const space = document.createElement('span');
+            space.innerHTML = '&nbsp;';
+            container.appendChild(space);
+            return;
+          }
+          const wrapper = document.createElement('span');
+          wrapper.className = 'pop-wrapper';
+          wrapper.style.animationDelay = `${popBaseDelay + index * 0.05}s`;
+          
+          const inner = document.createElement('span');
+          inner.textContent = char;
+          inner.className = 'wave-inner';
+          inner.style.animationDelay = `${index * 0.15}s`; 
+          
+          wrapper.appendChild(inner);
+          container.appendChild(wrapper);
+        });
+      };
+
+      // 稍微延迟 100ms 等待 lang-switch 注册好全局 window.i18n
+      setTimeout(() => {
+        const titleStr = (window.i18n && window.i18n.get) ? window.i18n.get("欢迎来到我的奇妙世界") : "欢迎来到我的奇妙世界";
+        const authorStr = (window.i18n && window.i18n.get) ? window.i18n.get("胡杨怕火") : "胡杨怕火";
+        const btnStr = (window.i18n && window.i18n.get) ? window.i18n.get("开始你的旅行") : "开始你的旅行";
+
+        document.getElementById('start-journey-text').textContent = btnStr;
+        splitAndAnimateText(titleStr, document.getElementById('animated-title'), 0);
+        splitAndAnimateText(authorStr, document.getElementById('animated-author'), 0.5);
+      }, 100);
+    }

@@ -882,6 +882,10 @@ p {
   font-size: 1.125rem;
   line-height: 1.8;
   margin-bottom: var(--spacing-2xl);
+
+  /* 新增：强制长单词或链接换行 */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .post-content a {
@@ -890,6 +894,9 @@ p {
   transition: color var(--transition-fast);
   position: relative;
   padding-bottom: 2px;
+
+  /* 新增：允许长链接在任意字母间换行 */
+  word-break: break-all;
 }
 
 .post-content a::after {
@@ -943,6 +950,11 @@ p {
 .post-content table td {
   border: none;
   padding: var(--spacing-sm) var(--spacing-md);
+
+  /* 新增：确保表格内的长文本自动换行 */
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .post-content table th {
@@ -960,6 +972,10 @@ p {
   margin: var(--spacing-lg) 0;
   font-style: italic;
   color: var(--secondary-color);
+
+  /* 新增：处理引用内的长文本 */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .post-content code {
@@ -1360,6 +1376,10 @@ p {
   font-size: 1.25rem;
   white-space: nowrap;
   z-index: 10;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none !important;
+  user-select: none !important;
 }
 
 
@@ -2068,7 +2088,6 @@ html.dark-mode,
 body.dark-mode {
   --primary-color: #e0e0e0;
   --secondary-color: #b0b0b0;
-  --accent-color: #ff6b6b;
   --background-color: #1a1a1a;
   --text-color: #e0e0e0;
   --overlay-color: rgba(0, 0, 0, 0.8);
@@ -2116,7 +2135,8 @@ body.dark-mode .header.navbar-bubble {
   body.dark-mode .toc-content a:hover,
   body.dark-mode .toc-content a.active {
     color: var(--accent-color);
-    background-color: rgba(255, 107, 107, 0.1);
+    /* 替换为动态主题色，暗黑模式下透明度给 15% 比较合适 */
+    background-color: color-mix(in srgb, var(--accent-color) 15%, transparent);
   }
 }
 
@@ -2227,7 +2247,7 @@ body.dark-mode .post-content blockquote {
 
 body.dark-mode .post-content code {
   background-color: #2a2a2a;
-  color: #ff6b6b;
+  color: var(--accent-color);
 }
 
 body.dark-mode .post-content pre {
@@ -2387,6 +2407,8 @@ body.dark-mode .notification-error {
   padding: 0 4px;
   border-bottom: 1px dashed var(--accent-color);
   transition: all var(--transition-normal);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .hide-inline:hover {
@@ -2905,7 +2927,8 @@ body.dark-mode #article-container pre::-webkit-scrollbar-thumb:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(225, 96, 96, 0.85);
+  /* 修改这里，使用 color-mix 来实现带有 85% 透明度的主题色 */
+  background-color: color-mix(in srgb, var(--accent-color) 85%, transparent);
   /* 225, 96, 96 半透明 */
   display: flex;
   justify-content: center;
@@ -2942,21 +2965,25 @@ body.dark-mode #article-container pre::-webkit-scrollbar-thumb:hover {
   transform: scale(0.9);
   transition: transform 0.2s ease;
   -webkit-user-select: none;
-  user-select: none;
+  user-select: none !important;
 }
 
 /* 5. 文字出现的动画 (随遮罩层出现时稍微放大) */
 .article-image:hover .read-text {
   transform: scale(1);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* 6. 鼠标碰到文字时的调皮抖动动画 */
 .read-text:hover {
   animation: playfulShake 0.5s ease-in-out infinite;
   background: white;
-  color: #e16060;
+  color: var(--accent-color);
   /* 悬停文字变色 */
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none !important;
 }
 
 /* 7. 定义抖动关键帧 */
@@ -3024,34 +3051,32 @@ body.dark-mode #article-container pre::-webkit-scrollbar-thumb:hover {
    3. 亮色模式 (Light Mode) - 白底 + 淡粉波浪
    ========================================= */
 
-/* 第一层（最远）：淡粉色 (255, 214, 214) */
+/* 第一层（最远）：主题色 30% 透明度 */
 .parallax>use:nth-child(1) {
   animation-delay: -2s;
   animation-duration: 7s;
-  fill: rgba(255, 214, 214, 0.7);
+  fill: color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
-/* 第二层：半透明白色 (用来间隔，制造层次) */
+/* 第二层：主题色 20% 透明度 */
 .parallax>use:nth-child(2) {
   animation-delay: -3s;
   animation-duration: 10s;
-  fill: rgba(255, 214, 214, 0.5);
+  fill: color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
-/* 第三层：较深的粉色，或者是半透明的白色覆盖在粉色上 */
+/* 第三层：主题色 10% 透明度 */
 .parallax>use:nth-child(3) {
   animation-delay: -4s;
   animation-duration: 13s;
-  /* 这里用稍深一点点的粉或者保持淡粉，增加厚度感 */
-  fill: rgba(255, 214, 214, 0.3);
+  fill: color-mix(in srgb, var(--accent-color) 10%, transparent);
 }
 
-/* 第四层（最底）：【关键】必须是白色，以衔接页脚 */
+/* 第四层（最底）：纯白色 */
 .parallax>use:nth-child(4) {
   animation-delay: -5s;
   animation-duration: 20s;
   fill: #ffffff;
-  /* 纯白色 */
 }
 
 /* --- 亮色模式 Footer 设置 --- */
@@ -3080,12 +3105,13 @@ body.dark-mode #article-container pre::-webkit-scrollbar-thumb:hover {
    4. 暗色模式 (Dark Mode) - 保持原样 (深邃黑)
    ========================================= */
 
+/* 暗色模式 Footer 波浪 */
 body.dark-mode .parallax>use:nth-child(1) {
-  fill: rgba(255, 107, 107, 0.1);
+  fill: color-mix(in srgb, var(--accent-color) 15%, transparent);
 }
 
 body.dark-mode .parallax>use:nth-child(2) {
-  fill: rgba(255, 107, 107, 0.05);
+  fill: color-mix(in srgb, var(--accent-color) 8%, transparent);
 }
 
 body.dark-mode .parallax>use:nth-child(3) {
@@ -3120,4 +3146,11 @@ body.dark-mode .footer a {
     height: 60px;
     min-height: 60px;
   }
+}
+
+/* 修复文章内嵌 iframe HTML 动画的问题 */
+.post-content iframe {
+  max-width: 100%;
+  background: #ffffff;
+  /* 给动画一个干净的白色底色，防止其被全黑环境干扰 */
 }

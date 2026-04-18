@@ -61,13 +61,13 @@
 
 .toc-content a:hover {
   color: var(--accent-color);
-  background-color: rgba(255, 107, 107, 0.1);
+  background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
 }
 
 .toc-content a.active {
   color: var(--accent-color);
   font-weight: 500;
-  background-color: rgba(255, 107, 107, 0.1);
+  background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
   border-left: 3px solid var(--accent-color);
 }
 
@@ -141,47 +141,48 @@
 
 }
 
-  .mobile-toc-panel {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 80%;
-    max-width: 300px;
-    background-color: white;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
-    padding: 20px;
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform var(--transition-normal);
-    visibility: hidden;
-  }
+.mobile-toc-panel {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 80%;
+  max-width: 300px;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform var(--transition-normal);
+  visibility: hidden;
+}
 
-  .mobile-toc-panel.active {
-    transform: translateX(0);
-    visibility: visible;
-  }
+.mobile-toc-panel.active {
+  transform: translateX(0);
+  visibility: visible;
+}
 
-  .mobile-toc-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-  }
+.mobile-toc-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
 
-  .mobile-toc-overlay.active {
-    display: block;
-  }
+.mobile-toc-overlay.active {
+  display: block;
+}
 
 
 @media (min-width: 1025px) {
+
   .mobile-toc-toggle,
   .mobile-toc-panel,
   .mobile-toc-overlay {
