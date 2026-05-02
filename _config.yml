@@ -94,6 +94,20 @@ cover:
 sakana:
   enable: true
 
+# Music Player (悬浮音乐播放器)
+music_player:
+  enable: true  # 是否启用音乐播放器
+  style: "pill"  # 播放器形态: "pill" (圆条型) 或 "card" (卡片型)
+  autoplay: false  # 是否自动播放（注意：现代浏览器通常阻止自动播放）
+  default_cover: /images/0.webp  # 默认封面图片
+  opacity: 0.80  # 播放器不透明度（0 ~ 1），默认 0.85
+
+  songs:
+    # 示例歌曲，请替换为实际音乐文件路径
+    # - title: "示例歌曲"
+    #   artist: "示例艺术家"
+    #   src: /music/music/demo.mp3
+    #   cover: /music/cover/demo.jpg
 
 # Features (功能)
 features:

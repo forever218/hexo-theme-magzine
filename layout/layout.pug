@@ -58,6 +58,7 @@ html(lang=config.language)
     != css('css/ai-theme')
     != css('css/loading-animation')
     != css('css/article-modal')
+    != css('css/music-player')
     // 条件加载关于页面样式
     if page.path === 'about/index.html'
       != css('css/about')
@@ -114,7 +115,10 @@ html(lang=config.language)
             use(xlink:href="#gentle-wave", x="48", y="7")
 
       != partial('_partial/footer')
-      
+
+    if theme.music_player && theme.music_player.enable
+      != partial('_partial/music-player')
+
     // 立即应用暗色模式，避免页面闪烁
     if theme.features && theme.features.dark_mode
       script.
@@ -152,6 +156,7 @@ html(lang=config.language)
     != js('js/ai-theme')
     != js('js/loading-animation')
     != js('js/article-modal')
+    != js('js/music-player')
 
     //- Theme configuration for JavaScript
     script.
