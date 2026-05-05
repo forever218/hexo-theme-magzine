@@ -165,8 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
     介绍自己: "Introduce",
     来点灵感: "Inspiration",
     生成AI简介: "Generate Summary",
-    "请先在 _config.yml 中配置 api_url 和 model 选项。":
-      "Please first configure the api_url and model options in _config.yml.",
 
     // 文章(不要更改,blog预设内容)
     "点击阅读->": "Click to Read ->",
@@ -229,6 +227,8 @@ document.addEventListener("DOMContentLoaded", function () {
     列表循环: "Loop List",
     单曲循环: "Loop One",
     "播放/暂停": "Play/Pause",
+    未在播放: "Not Playing",
+    "请在 _config.yml 中配置歌曲": "Please configure songs in _config.yml",
   };
 
   // ==========================================
