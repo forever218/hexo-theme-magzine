@@ -65,35 +65,107 @@ body:not(.dark-mode) .btn-newspaper span {
 }
 
 /* Color variations */
-.btn-newspaper.blue { background-color: #3498db; }
-.btn-newspaper.blue:hover { background-color: #2980b9; }
-.btn-newspaper.blue.outline { border-color: #3498db; color: #3498db; }
-.btn-newspaper.blue.outline:hover { background-color: #3498db; }
+.btn-newspaper.blue {
+  background-color: #3498db;
+}
 
-.btn-newspaper.pink { background-color: #ff6b9d; }
-.btn-newspaper.pink:hover { background-color: #ff5288; }
-.btn-newspaper.pink.outline { border-color: #ff6b9d; color: #ff6b9d; }
-.btn-newspaper.pink.outline:hover { background-color: #ff6b9d; }
+.btn-newspaper.blue:hover {
+  background-color: #2980b9;
+}
 
-.btn-newspaper.red { background-color: #e74c3c; }
-.btn-newspaper.red:hover { background-color: #c0392b; }
-.btn-newspaper.red.outline { border-color: #e74c3c; color: #e74c3c; }
-.btn-newspaper.red.outline:hover { background-color: #e74c3c; }
+.btn-newspaper.blue.outline {
+  border-color: #3498db;
+  color: #3498db;
+}
 
-.btn-newspaper.purple { background-color: #9b59b6; }
-.btn-newspaper.purple:hover { background-color: #8e44ad; }
-.btn-newspaper.purple.outline { border-color: #9b59b6; color: #9b59b6; }
-.btn-newspaper.purple.outline:hover { background-color: #9b59b6; }
+.btn-newspaper.blue.outline:hover {
+  background-color: #3498db;
+}
 
-.btn-newspaper.orange { background-color: #f39c12; }
-.btn-newspaper.orange:hover { background-color: #d68910; }
-.btn-newspaper.orange.outline { border-color: #f39c12; color: #f39c12; }
-.btn-newspaper.orange.outline:hover { background-color: #f39c12; }
+.btn-newspaper.pink {
+  background-color: #ff6b9d;
+}
 
-.btn-newspaper.green { background-color: #2ecc71; }
-.btn-newspaper.green:hover { background-color: #27ae60; }
-.btn-newspaper.green.outline { border-color: #2ecc71; color: #2ecc71; }
-.btn-newspaper.green.outline:hover { background-color: #2ecc71; }
+.btn-newspaper.pink:hover {
+  background-color: #ff5288;
+}
+
+.btn-newspaper.pink.outline {
+  border-color: #ff6b9d;
+  color: #ff6b9d;
+}
+
+.btn-newspaper.pink.outline:hover {
+  background-color: #ff6b9d;
+}
+
+.btn-newspaper.red {
+  background-color: #e74c3c;
+}
+
+.btn-newspaper.red:hover {
+  background-color: #c0392b;
+}
+
+.btn-newspaper.red.outline {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.btn-newspaper.red.outline:hover {
+  background-color: #e74c3c;
+}
+
+.btn-newspaper.purple {
+  background-color: #9b59b6;
+}
+
+.btn-newspaper.purple:hover {
+  background-color: #8e44ad;
+}
+
+.btn-newspaper.purple.outline {
+  border-color: #9b59b6;
+  color: #9b59b6;
+}
+
+.btn-newspaper.purple.outline:hover {
+  background-color: #9b59b6;
+}
+
+.btn-newspaper.orange {
+  background-color: #f39c12;
+}
+
+.btn-newspaper.orange:hover {
+  background-color: #d68910;
+}
+
+.btn-newspaper.orange.outline {
+  border-color: #f39c12;
+  color: #f39c12;
+}
+
+.btn-newspaper.orange.outline:hover {
+  background-color: #f39c12;
+}
+
+.btn-newspaper.green {
+  background-color: #2ecc71;
+}
+
+.btn-newspaper.green:hover {
+  background-color: #27ae60;
+}
+
+.btn-newspaper.green.outline {
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+.btn-newspaper.green.outline:hover {
+  background-color: #2ecc71;
+}
 
 /* Note Tag */
 .note {
@@ -132,12 +204,29 @@ body:not(.dark-mode) .btn-newspaper span {
   padding: 0;
 }
 
-.note.default { border-color: #777; }
-.note.primary { border-color: #3498db; }
-.note.info { border-color: #5bc0de; }
-.note.success { border-color: #2ecc71; }
-.note.warning { border-color: #f39c12; }
-.note.danger { border-color: #e74c3c; }
+.note.default {
+  border-color: #777;
+}
+
+.note.primary {
+  border-color: #3498db;
+}
+
+.note.info {
+  border-color: #5bc0de;
+}
+
+.note.success {
+  border-color: #2ecc71;
+}
+
+.note.warning {
+  border-color: #f39c12;
+}
+
+.note.danger {
+  border-color: #e74c3c;
+}
 
 
 /* 为不同类型的modern样式note标签添加背景颜色 */
@@ -317,8 +406,13 @@ img.inline {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* ===== Tags Page Styles ===== */
@@ -675,7 +769,7 @@ img.inline {
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .post-list {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
@@ -687,14 +781,53 @@ img.inline {
   .post-item--large {
     grid-row: span 1;
   }
-  
+
   .tags-cloud {
     gap: 0.75rem;
   }
-  
+
   .tag-cloud-item {
     padding: 0.75rem;
   }
+}
+
+/* ===== Category Back Button Styles (添加到 tags.css 中) ===== */
+.category-back a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  color: var(--primary-color) !important;
+  /* 强制在亮色模式下显示主文本颜色 */
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.category-back a:hover {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  /* 强制悬浮时文字为白色，防止被覆盖 */
+}
+
+.category-back a i {
+  margin-right: 0.5rem;
+}
+
+/* 修复 Tag 和 Category 返回按钮在暗色模式下的颜色 */
+body.dark-mode .tag-back a,
+body.dark-mode .category-back a {
+  background-color: rgba(255, 255, 255, 0.1);
+  /* 暗色模式下使用半透明白色背景 */
+  color: #eeeeee !important;
+  /* 暗色模式下使用浅色文字 */
+}
+
+body.dark-mode .tag-back a:hover,
+body.dark-mode .category-back a:hover {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+  /* 悬浮时保持纯白文字 */
 }
 
 /* 平板设备的响应式调整 */

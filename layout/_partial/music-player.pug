@@ -1,0 +1,58 @@
+// 悬浮音乐播放器
+if theme.music_player && theme.music_player.enable
+  - var playerStyle = theme.music_player.style || 'pill'
+  - var playerOpacity = theme.music_player.opacity !== undefined ? theme.music_player.opacity : 0.85
+  - var pcPosition = theme.music_player.pc_position || 'floating'
+  - var songs = theme.music_player.songs || []
+  - var songsJson = JSON.stringify(songs.map(function(s) { return { title: s.title, artist: s.artist || '', src: url_for(s.src), cover: s.cover ? url_for(s.cover) : url_for(theme.music_player.default_cover || '/images/0.webp') }; }))
+  .music-player(
+    data-autoplay=theme.music_player.autoplay ? "true" : "false",
+    data-songs=songsJson,
+    data-style=playerStyle,
+    data-pc-position=pcPosition,
+    style="--player-opacity: " + playerOpacity,
+    class="style-" + playerStyle
+  )
+    button.music-player-toggle(data-title="展开播放器")
+      i.fas.fa-music
+
+    // 卡片型播放器
+    .music-player-mini.music-player-card
+      .music-player-cover
+        img(src=url_for(theme.music_player.default_cover || '/images/0.webp'), alt="Cover")
+      .music-player-info
+        .music-player-title 未在播放
+        .music-player-artist -
+      .music-player-controls
+        button.music-player-btn.music-player-prev(data-title="上一首")
+          i.fas.fa-step-backward
+        button.music-player-btn.music-player-play(data-title="播放/暂停")
+          i.fas.fa-play
+        button.music-player-btn.music-player-next(data-title="下一首")
+          i.fas.fa-step-forward
+        button.music-player-btn.music-player-loop(data-title="列表循环")
+          i.fas.fa-retweet
+        button.music-player-btn.music-player-collapse(data-title="收起播放器")
+          i.fas.fa-chevron-left
+
+    // 圆条型播放器
+    .music-player-mini.music-player-pill
+      .music-player-pill-inner
+        button.music-player-btn.music-player-pill-collapse(data-title="收起播放器")
+          i.fas.fa-chevron-left
+        .music-player-pill-cover
+          img(src=url_for(theme.music_player.default_cover || '/images/0.webp'), alt="Cover")
+        .music-player-pill-info
+          .music-player-pill-title 未在播放
+          .music-player-pill-artist -
+        .music-player-pill-divider
+        button.music-player-btn.music-player-prev(data-title="上一首")
+          i.fas.fa-step-backward
+        button.music-player-btn.music-player-play(data-title="播放/暂停")
+          i.fas.fa-play
+        button.music-player-btn.music-player-next(data-title="下一首")
+          i.fas.fa-step-forward
+        button.music-player-btn.music-player-loop(data-title="列表循环")
+          i.fas.fa-retweet
+
+  audio.music-player-audio(preload="metadata")

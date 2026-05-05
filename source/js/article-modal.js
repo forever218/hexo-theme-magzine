@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalClose = modal.querySelector(".article-modal-close");
     const modalIframe = modal.querySelector(".article-modal-iframe");
 
+    // 获取音乐播放器元素
+    const musicPlayer = document.querySelector(".music-player");
+
     // 辅助函数：更新模态框标题
     function updateModalTitleFromIframe() {
       try {
@@ -69,6 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
         iframeStyle.innerHTML = `
           .header, header, .navbar { display: none !important; } 
           .footer, footer { display: none !important; }
+
+          /* ★★★ 杀死 iframe 内部重复加载的悬浮组件 ★★★ */
+          .music-player { display: none !important; }
+          .theme-color-picker-container { display: none !important; }
+
+           /* 调整主体间距防止顶部留白 */
           .post-wrapper, .article-container, main { margin-top: 0 !important; padding-top: 20px !important; }
           body { overflow-x: hidden; }
         `;
@@ -131,6 +140,16 @@ document.addEventListener("DOMContentLoaded", function () {
           // 显示模态窗口
           modal.classList.add("active");
           document.body.style.overflow = "hidden";
+
+          // ★★★ 激活音乐播放器的垂直模式 ★★★
+          if (musicPlayer) {
+            // 将播放器从 header 中强制拔出，放到 body 下，突破层级限制
+            document.body.appendChild(musicPlayer);
+            musicPlayer.classList.add("in-modal-mode");
+
+            // 确保进入模态框时它是展开状态，体验更好
+            musicPlayer.classList.remove("collapsed");
+          }
         });
       });
     }
@@ -168,6 +187,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 300);
       document.body.style.overflow = ""; // 恢复背景滚动
       modalTitle.textContent = "";
+
+      // ★★★ 取消音乐播放器的垂直模式，恢复原状 ★★★
+      if (musicPlayer) {
+        musicPlayer.classList.remove("in-modal-mode");
+        // 如果原本是 header 模式，将其放回导航栏中
+        if (musicPlayer.classList.contains("in-header")) {
+          const navLogo = document.querySelector(".nav-logo");
+          if (navLogo) {
+            navLogo.insertAdjacentElement("afterend", musicPlayer);
+          }
+          // ★★★ 新增：Header 模式不支持折叠状态，强制展开，防止隐身 ★★★
+          musicPlayer.classList.remove("collapsed");
+        }
+      }
     }
 
     // 点击关闭按钮

@@ -23,6 +23,12 @@ html(lang=config.language)
           }
         })();
 
+    //- ★★★ 新增：检测当前页面是否在 iframe (模态窗口) 中运行，提前打上标签防止闪烁 ★★★
+    script.
+      if (window.parent !== window) {
+        document.documentElement.classList.add('is-iframe');
+      }
+
     //- Fonts
     link(rel="preconnect", href="https://fonts.googleapis.com")
     link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
@@ -58,6 +64,7 @@ html(lang=config.language)
     != css('css/ai-theme')
     != css('css/loading-animation')
     != css('css/article-modal')
+    != css('css/music-player')
     // 条件加载关于页面样式
     if page.path === 'about/index.html'
       != css('css/about')
@@ -90,8 +97,11 @@ html(lang=config.language)
       != partial('_partial/cover')
     #app
       != partial('_partial/header')
-      //- ★★★ 新增：在这里引入刚写好的右上角色卡 ★★★
-      != partial('_partial/color-picker')
+
+      //- ★★★ 修改为：通过配置文件判断是否开启右上角色卡 ★★★
+      if theme.color_picker && theme.color_picker.enable
+        != partial('_partial/color-picker')
+        
       != partial('_partial/search')
 
       main.main
@@ -114,6 +124,9 @@ html(lang=config.language)
             use(xlink:href="#gentle-wave", x="48", y="7")
 
       != partial('_partial/footer')
+
+    if theme.music_player && theme.music_player.enable
+      != partial('_partial/music-player')
       
     // 立即应用暗色模式，避免页面闪烁
     if theme.features && theme.features.dark_mode
@@ -152,6 +165,7 @@ html(lang=config.language)
     != js('js/ai-theme')
     != js('js/loading-animation')
     != js('js/article-modal')
+    != js('js/music-player')
 
     //- Theme configuration for JavaScript
     script.

@@ -1289,13 +1289,47 @@ p {
   color: var(--secondary-color);
   border: 1px solid var(--border-color);
   transition: all var(--transition-fast);
+  position: relative;
+  overflow: visible !important;
 }
 
+/* 1. 修复社交按钮悬停时图标消失的问题 */
 .social-link:hover {
-  color: var(--accent-color);
+  color: #ffffff;
+  /* 关键修复：悬停时让图标变成白色 */
   background-color: var(--accent-color);
   border-color: var(--accent-color);
   transform: translateY(-3px);
+}
+
+/* 2. 为社交按钮添加 Tooltip (悬浮提示) 效果 */
+
+.social-link::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 10010;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  line-height: normal;
+}
+
+.social-link:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+  bottom: 115%;
 }
 
 .footer-bottom {
@@ -1376,7 +1410,6 @@ p {
   font-size: 1.25rem;
   white-space: nowrap;
   z-index: 10;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none !important;
   user-select: none !important;
