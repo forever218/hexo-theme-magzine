@@ -216,10 +216,10 @@ document.addEventListener("DOMContentLoaded", function () {
     欢迎来到我的奇妙世界: "Welcome to my wonderful world",
     开始你的旅行: "Start Your Journey",
 
-    //调色盘
+    //调色盘(不要更改,blog预设内容)
     自定义主题色: "Custom Theme Color",
 
-    // 音乐播放器
+    // 音乐播放器(不要更改,blog预设内容)
     展开播放器: "Expand Player",
     收起播放器: "Collapse Player",
     上一首: "Previous",
@@ -229,6 +229,9 @@ document.addEventListener("DOMContentLoaded", function () {
     "播放/暂停": "Play/Pause",
     未在播放: "Not Playing",
     "请在 _config.yml 中配置歌曲": "Please configure songs in _config.yml",
+
+    //sakana小人(不要更改,blog预设内容)
+    切换角色: "Switch Character",
   };
 
   // ==========================================
