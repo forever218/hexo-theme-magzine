@@ -98,8 +98,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 为主页文章链接添加点击事件的函数
     function addClickEventToLinks() {
+      // ★★★ 新增：加入了 .search-result-link 选择器 ★★★
       const articleLinks = document.querySelectorAll(
-        ".article-title a, .article-image a, .read-more",
+        ".article-title a, .article-image a, .read-more, .search-result-link",
       );
 
       articleLinks.forEach((link) => {
@@ -114,9 +115,22 @@ document.addEventListener("DOMContentLoaded", function () {
           const articleUrl = this.getAttribute("href");
 
           // 设置初始标题 (作为加载时的占位符)
-          // 1. 如果点击的是标题链接，直接取自己的文本
           let initialTitle = "加载中...";
-          if (this.parentElement.classList.contains("article-title")) {
+
+          // ★★★ 新增：如果点击的是搜索结果链接 ★★★
+          if (this.classList.contains("search-result-link")) {
+            const searchTitle = this.querySelector(".search-result-title");
+            if (searchTitle) {
+              initialTitle = searchTitle.textContent.trim();
+            }
+            // 点击搜索结果后，自动关闭搜索遮罩层
+            const searchOverlay = document.querySelector(".search-overlay");
+            if (searchOverlay) {
+              searchOverlay.classList.remove("active");
+            }
+          }
+          // 1. 如果点击的是标题链接，直接取自己的文本
+          else if (this.parentElement.classList.contains("article-title")) {
             initialTitle = this.textContent.trim();
           } else {
             // 2. 向上找到共同的卡片容器
@@ -172,9 +186,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 开始观察 articles-grid 的变化，而不是 body，性能更好
     const grid = document.querySelector(".articles-grid");
+    const searchResults = document.querySelector(".search-results"); // ★★★ 新增：获取搜索结果容器 ★★★
+
     if (grid) {
       observer.observe(grid, { childList: true, subtree: true });
-    } else {
+    }
+    // ★★★ 新增：监听搜索结果的 DOM 变化 ★★★
+    if (searchResults) {
+      observer.observe(searchResults, { childList: true, subtree: true });
+    }
+    // 如果都没有，才观察 body
+    if (!grid && !searchResults) {
       observer.observe(document.body, { childList: true, subtree: true });
     }
 
