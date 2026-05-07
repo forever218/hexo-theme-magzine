@@ -1802,6 +1802,7 @@ p {
 }
 
 .author-card {
+  position: relative;
   background-color: var(--background-color);
   border-radius: var(--radius-lg);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -1814,6 +1815,17 @@ p {
   text-align: center;
   border: 1px solid var(--border-color);
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.author-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px;
+  height: 20px;
+  background: transparent;
+  z-index: -1;
 }
 
 .author-card--with-bg {
