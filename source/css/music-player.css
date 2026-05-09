@@ -382,9 +382,22 @@ body.dark-mode .music-player.in-modal-mode .music-player-mini {
     border-color: #333333 !important;
 }
 
-.music-player.in-modal-mode .music-player-title,
-.music-player.in-modal-mode .music-player-pill-title {
-    color: var(--primary-color) !important;
+/* 找到这部分并进行修改： */
+.music-player.in-modal-mode .music-player-pill-info {
+    text-align: center !important;
+    /* 将原本的 max-width: 90px 改为用 em 单位限制为大约3个字的宽度 */
+    max-width: 3.5em !important;
+    margin: 0 !important;
+}
+
+
+/* 添加针对标题和歌手的严格单行截断（继承省略号属性） */
+.music-player.in-modal-mode .music-player-pill-title,
+.music-player.in-modal-mode .music-player-pill-artist {
+    width: 100% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
 body.dark-mode .music-player.in-modal-mode .music-player-title,
@@ -439,11 +452,7 @@ body.dark-mode .music-player.in-modal-mode .music-player-pill-title {
     margin: 4px 0 !important;
 }
 
-.music-player.in-modal-mode .music-player-pill-info {
-    text-align: center !important;
-    max-width: 90px !important;
-    margin: 0 !important;
-}
+
 
 /* =========================================================
    ★★★ 优化竖直模式下的展开/收起动画 ★★★ 
