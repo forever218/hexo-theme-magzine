@@ -73,15 +73,48 @@
       }
     }
 
+    // ----- 边界限制 Logic -----
+    function enforceBoundaries() {
+      if (
+        !player.classList.contains("is-floating") ||
+        player.classList.contains("in-header")
+      )
+        return;
+
+      const rect = player.getBoundingClientRect();
+      let pWidth = rect.width;
+      let pHeight = rect.height;
+
+      // ★★★ 修复折叠状态下绝对定位导致的父容器宽高塌陷为0的问题 ★★★
+      if (player.classList.contains("collapsed") && toggleBtn) {
+        pWidth = Math.max(pWidth, toggleBtn.offsetWidth);
+        pHeight = Math.max(pHeight, toggleBtn.offsetHeight);
+      }
+
+      const maxLeft = document.documentElement.clientWidth - pWidth;
+      const maxTop = window.innerHeight - pHeight;
+
+      let currentLeft = player.offsetLeft;
+      let currentTop = player.offsetTop;
+
+      // 修正溢出
+      if (currentLeft > maxLeft)
+        player.style.left = Math.max(0, maxLeft) + "px";
+      if (currentTop > maxTop) player.style.top = Math.max(0, maxTop) + "px";
+      if (currentLeft < 0) player.style.left = "0px";
+      if (currentTop < 0) player.style.top = "0px";
+    }
+
+    // 监听窗口大小变化
+    window.addEventListener("resize", enforceBoundaries);
+
     function togglePlayer() {
-      // 头部模式并且不在文章模态框内时不允许折叠
       if (
         player.classList.contains("in-header") &&
         !player.classList.contains("in-modal-mode")
       )
         return;
 
-      const rectBefore = player.getBoundingClientRect();
       player.classList.toggle("collapsed");
       updateIcons();
 
@@ -90,23 +123,8 @@
         !player.classList.contains("in-modal-mode")
       ) {
         setTimeout(() => {
-          const rectAfter = player.getBoundingClientRect();
-
-          // ★★★ 移除原先的高宽差补偿计算，彻底解决斜向跳动 ★★★
-          // 只在展开（变大）时进行边界安全检测，防止右侧和底部溢出
-          if (!player.classList.contains("collapsed")) {
-            const maxLeft =
-              document.documentElement.clientWidth - rectAfter.width;
-            const maxTop = window.innerHeight - rectAfter.height;
-
-            if (player.offsetLeft > maxLeft) {
-              player.style.left = Math.max(0, maxLeft) + "px";
-            }
-            if (player.offsetTop > maxTop) {
-              player.style.top = Math.max(0, maxTop) + "px";
-            }
-          }
-        }, 10);
+          enforceBoundaries();
+        }, 350);
       }
 
       try {
@@ -217,7 +235,6 @@
             ? '<i class="fas fa-retweet"></i>'
             : '<i class="fas fa-repeat"></i><span style="font-size:10px;font-weight:bold;margin-left:-6px;">1</span>';
 
-        // ★★★ 这里把 title 换成了 setAttribute("data-title") ★★★
         loopBtn.setAttribute(
           "data-title",
           loopMode === "list" ? "列表循环" : "单曲循环",
@@ -280,17 +297,22 @@
         pos2 = 0,
         pos3 = 0,
         pos4 = 0;
-      const handle = el.querySelector(".music-player-mini");
-      const toggleHandle = el.querySelector(".music-player-toggle");
 
-      if (handle) handle.onmousedown = dragMouseDown;
-      if (toggleHandle) toggleHandle.onmousedown = dragMouseDown;
+      el.onmousedown = dragMouseDown;
 
       function dragMouseDown(e) {
-        if (el.classList.contains("in-modal-mode")) return;
+        if (
+          !el.classList.contains("is-floating") ||
+          el.classList.contains("in-modal-mode")
+        )
+          return;
 
         e = e || window.event;
-        if (e.target.closest(".music-player-btn") && e.target !== toggleHandle)
+
+        if (
+          e.target.closest(".music-player-btn") &&
+          !e.target.closest(".music-player-toggle")
+        )
           return;
 
         if (!e.target.closest(".music-player-toggle")) {
@@ -314,9 +336,21 @@
         let newTop = el.offsetTop - pos2;
         let newLeft = el.offsetLeft - pos1;
 
-        // ★★★ 修改点 3：使用 clientWidth 排除滚动条，并精确限制最大宽高 ★★★
-        const maxLeft = document.documentElement.clientWidth - el.offsetWidth;
-        const maxTop = window.innerHeight - el.offsetHeight;
+        const rect = el.getBoundingClientRect();
+        let pWidth = rect.width;
+        let pHeight = rect.height;
+
+        // ★★★ 修复折叠状态下拖拽时，绝对定位导致的父容器宽高塌陷问题 ★★★
+        if (el.classList.contains("collapsed")) {
+          const tBtn = el.querySelector(".music-player-toggle");
+          if (tBtn) {
+            pWidth = Math.max(pWidth, tBtn.offsetWidth);
+            pHeight = Math.max(pHeight, tBtn.offsetHeight);
+          }
+        }
+
+        const maxLeft = document.documentElement.clientWidth - pWidth;
+        const maxTop = window.innerHeight - pHeight;
 
         if (newTop < 0) newTop = 0;
         if (newLeft < 0) newLeft = 0;
