@@ -3199,3 +3199,25 @@ body.dark-mode .footer a {
   background: #ffffff;
   /* 给动画一个干净的白色底色，防止其被全黑环境干扰 */
 }
+
+/* ===== 修复 HTML 代码块标签被渲染成按钮的类名冲突 ===== */
+.post-content pre .tag,
+figure.highlight .tag {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  display: inline !important;
+  font-size: inherit !important;
+  color: #e06c75 !important; /* 恢复标签正常的红色高亮 */
+}
+
+/* 抵消悬停时的按钮特效 */
+.post-content pre .tag:hover,
+figure.highlight .tag:hover {
+  background: transparent !important;
+  border: none !important;
+  color: #e06c75 !important;
+  transform: none !important;
+}
