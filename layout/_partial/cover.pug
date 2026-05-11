@@ -124,8 +124,8 @@ if theme.cover && theme.cover.enable
       import('https://cdn.jsdelivr.net/npm/threejs-components@0.0.30/build/backgrounds/liquid1.min.js').then((module) => {
         const LiquidBackground = module.default;
 
-        //更换封面图片列表，支持多图轮播（至少需要两张图才能轮播）
-        const coverImages = ['/images/10.png', '/images/14.png', '/images/15.png', '/images/13.jpg'];
+        // ★★★ 动态读取配置文件中的轮播图数组，如果没配提供默认图 ★★★
+        const coverImages = !{JSON.stringify(theme.cover.images || ['/images/10.png', '/images/14.png'])};
         
         const canvas1 = document.getElementById('refraction-canvas-1');
         const canvas2 = document.getElementById('refraction-canvas-2');
@@ -145,8 +145,12 @@ if theme.cover && theme.cover.enable
         let currentSlide = 0;
         let activeApp = 1;
         
-        app1.loadImage(coverImages[0]);
-        if (coverImages.length > 1) app2.loadImage(coverImages[1]);
+        if (coverImages.length > 0) {
+          app1.loadImage(coverImages[0]);
+        }
+        if (coverImages.length > 1) {
+          app2.loadImage(coverImages[1]);
+        }
 
         let slideTimer = null;
         if (coverImages.length > 1) {
@@ -213,11 +217,16 @@ if theme.cover && theme.cover.enable
         });
       };
 
+      // ★★★ 从配置文件动态获取文字 (依然保留原先的语言翻译支持机制) ★★★
+      const configTitle = !{JSON.stringify(theme.cover.title || "欢迎来到我的奇妙世界")};
+      const configAuthor = !{JSON.stringify(theme.cover.author || "胡杨怕火")};
+      const configBtn = !{JSON.stringify(theme.cover.btn_text || "开始你的旅行")};
+
       // 稍微延迟 100ms 等待 lang-switch 注册好全局 window.i18n
       setTimeout(() => {
-        const titleStr = (window.i18n && window.i18n.get) ? window.i18n.get("欢迎来到我的奇妙世界") : "欢迎来到我的奇妙世界";
-        const authorStr = (window.i18n && window.i18n.get) ? window.i18n.get("胡杨怕火") : "胡杨怕火";
-        const btnStr = (window.i18n && window.i18n.get) ? window.i18n.get("开始你的旅行") : "开始你的旅行";
+        const titleStr = (window.i18n && window.i18n.get) ? window.i18n.get(configTitle) : configTitle;
+        const authorStr = (window.i18n && window.i18n.get) ? window.i18n.get(configAuthor) : configAuthor;
+        const btnStr = (window.i18n && window.i18n.get) ? window.i18n.get(configBtn) : configBtn;
 
         document.getElementById('start-journey-text').textContent = btnStr;
         splitAndAnimateText(titleStr, document.getElementById('animated-title'), 0);

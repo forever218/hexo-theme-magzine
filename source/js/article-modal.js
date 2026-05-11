@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalClose = modal.querySelector(".article-modal-close");
     const modalIframe = modal.querySelector(".article-modal-iframe");
 
+    // 获取音乐播放器元素
+    const musicPlayer = document.querySelector(".music-player");
+
     // 辅助函数：更新模态框标题
     function updateModalTitleFromIframe() {
       try {
@@ -69,16 +72,54 @@ document.addEventListener("DOMContentLoaded", function () {
         iframeStyle.innerHTML = `
           .header, header, .navbar { display: none !important; } 
           .footer, footer { display: none !important; }
+
+          /* ★★★ 杀死 iframe 内部重复加载的悬浮组件 ★★★ */
+          .music-player { display: none !important; }
+          .theme-color-picker-container { display: none !important; }
+
+           /* 调整主体间距防止顶部留白 */
           .post-wrapper, .article-container, main { margin-top: 0 !important; padding-top: 20px !important; }
           body { overflow-x: hidden; }
         `;
         iframeDoc.head.appendChild(iframeStyle);
 
-        // 4. ★★★ 关键：监听 iframe 内部的链接点击 ★★★
-        // 这样可以让 iframe 内部的跳转也能触发标题更新
-        // 注意：这只对同源域名有效，跨域无法监听
+        // =================================================================
+        // ★ 核心修复：监听 iframe 内部的点击，并手动通知父窗口（解决桌宠菜单关不掉）
+        // =================================================================
+        const notifyParent = (e) => {
+          if (!e) return;
+
+          // 获取 iframe 在父窗口中的相对位置
+          const iframeRect = modalIframe.getBoundingClientRect();
+
+          // 计算鼠标在父级窗口中的真实坐标
+          // 兼容 touchstart 的 touches
+          let clientX = e.clientX;
+          let clientY = e.clientY;
+
+          if (e.touches && e.touches.length > 0) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+          }
+
+          // 加上 iframe 的偏移量
+          const parentX = clientX + iframeRect.left;
+          const parentY = clientY + iframeRect.top;
+
+          // 伪造一个 mousedown 事件派发给父窗口，并带上准确的坐标
+          const event = new MouseEvent("mousedown", {
+            bubbles: true,
+            cancelable: true,
+            view: window.parent,
+            clientX: parentX,
+            clientY: parentY,
+          });
+          window.parent.document.dispatchEvent(event);
+        };
+
+        iframeDoc.addEventListener("mousedown", notifyParent);
+        iframeDoc.addEventListener("touchstart", notifyParent);
       } catch (e) {
-        // 跨域限制 (Cross-origin) 会导致无法访问 iframe 内容
         console.warn("无法访问iframe内容 (可能是跨域限制):", e);
       }
     }
@@ -89,8 +130,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 为主页文章链接添加点击事件的函数
     function addClickEventToLinks() {
+      // ★★★ 新增：加入了 .search-result-link 选择器 ★★★
       const articleLinks = document.querySelectorAll(
-        ".article-title a, .article-image a, .read-more",
+        ".article-title a, .article-image a, .read-more, .search-result-link",
       );
 
       articleLinks.forEach((link) => {
@@ -105,9 +147,22 @@ document.addEventListener("DOMContentLoaded", function () {
           const articleUrl = this.getAttribute("href");
 
           // 设置初始标题 (作为加载时的占位符)
-          // 1. 如果点击的是标题链接，直接取自己的文本
           let initialTitle = "加载中...";
-          if (this.parentElement.classList.contains("article-title")) {
+
+          // ★★★ 新增：如果点击的是搜索结果链接 ★★★
+          if (this.classList.contains("search-result-link")) {
+            const searchTitle = this.querySelector(".search-result-title");
+            if (searchTitle) {
+              initialTitle = searchTitle.textContent.trim();
+            }
+            // 点击搜索结果后，自动关闭搜索遮罩层
+            const searchOverlay = document.querySelector(".search-overlay");
+            if (searchOverlay) {
+              searchOverlay.classList.remove("active");
+            }
+          }
+          // 1. 如果点击的是标题链接，直接取自己的文本
+          else if (this.parentElement.classList.contains("article-title")) {
             initialTitle = this.textContent.trim();
           } else {
             // 2. 向上找到共同的卡片容器
@@ -131,6 +186,16 @@ document.addEventListener("DOMContentLoaded", function () {
           // 显示模态窗口
           modal.classList.add("active");
           document.body.style.overflow = "hidden";
+
+          // ★★★ 激活音乐播放器的垂直模式 ★★★
+          if (musicPlayer) {
+            // 将播放器从 header 中强制拔出，放到 body 下，突破层级限制
+            document.body.appendChild(musicPlayer);
+            musicPlayer.classList.add("in-modal-mode");
+
+            // 确保进入模态框时它是展开状态，体验更好
+            musicPlayer.classList.remove("collapsed");
+          }
         });
       });
     }
@@ -153,9 +218,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 开始观察 articles-grid 的变化，而不是 body，性能更好
     const grid = document.querySelector(".articles-grid");
+    const searchResults = document.querySelector(".search-results"); // ★★★ 新增：获取搜索结果容器 ★★★
+
     if (grid) {
       observer.observe(grid, { childList: true, subtree: true });
-    } else {
+    }
+    // ★★★ 新增：监听搜索结果的 DOM 变化 ★★★
+    if (searchResults) {
+      observer.observe(searchResults, { childList: true, subtree: true });
+    }
+    // 如果都没有，才观察 body
+    if (!grid && !searchResults) {
       observer.observe(document.body, { childList: true, subtree: true });
     }
 
@@ -168,6 +241,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 300);
       document.body.style.overflow = ""; // 恢复背景滚动
       modalTitle.textContent = "";
+
+      // ★★★ 取消音乐播放器的垂直模式，恢复原状 ★★★
+      if (musicPlayer) {
+        musicPlayer.classList.remove("in-modal-mode");
+        // 如果原本是 header 模式，将其放回导航栏中
+        if (musicPlayer.classList.contains("in-header")) {
+          const navLogo = document.querySelector(".nav-logo");
+          if (navLogo) {
+            navLogo.insertAdjacentElement("afterend", musicPlayer);
+          }
+          // ★★★ 新增：Header 模式不支持折叠状态，强制展开，防止隐身 ★★★
+          musicPlayer.classList.remove("collapsed");
+        }
+      }
     }
 
     // 点击关闭按钮

@@ -42,7 +42,7 @@
             
         //- 【安全检查】字数统计
         - var hasWordCount = typeof wordcount === 'function';
-        if hasWordCount
+        if theme.wordcount && theme.wordcount.enable && hasWordCount
           .post-wordcount
             i.fas.fa-file-word(style="margin-right: 5px")
             //- 修改前: span= wordcount(page.content) + ' 字'
@@ -52,7 +52,7 @@
         
         //- 【安全检查】阅读时长
         - var hasMin2Read = typeof min2read === 'function';
-        if hasMin2Read
+         if theme.wordcount && theme.wordcount.enable && hasMin2Read
           .post-readtime
             i.fas.fa-clock(style="margin-right: 5px")
             //- 修改前: span= min2read(page.content) + ' 分钟'

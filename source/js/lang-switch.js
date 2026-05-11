@@ -212,9 +212,26 @@ document.addEventListener("DOMContentLoaded", function () {
     复制失败: "Copy failed",
     未找到代码内容: "Code content not found",
 
-    //封面(请在 themes\magzine\layout\_partial\cover.pug 里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
+    //封面(请在_config.yml里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
     欢迎来到我的奇妙世界: "Welcome to my wonderful world",
     开始你的旅行: "Start Your Journey",
+
+    //调色盘(不要更改,blog预设内容)
+    自定义主题色: "Custom Theme Color",
+
+    // 音乐播放器(不要更改,blog预设内容)
+    展开播放器: "Expand Player",
+    收起播放器: "Collapse Player",
+    上一首: "Previous",
+    下一首: "Next",
+    列表循环: "Loop List",
+    单曲循环: "Loop One",
+    "播放/暂停": "Play/Pause",
+    未在播放: "Not Playing",
+    "请在 _config.yml 中配置歌曲": "Please configure songs in _config.yml",
+
+    //sakana小人(不要更改,blog预设内容)
+    切换角色: "Switch Character",
   };
 
   // ==========================================

@@ -1,0 +1,712 @@
+/*=====Music Player Styles=====*/
+.music-player {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 999;
+    font-family: var(--font-primary);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 旋转动画相关 */
+@keyframes spin-cover {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.music-player-cover img,
+.music-player-pill-cover img {
+    border-radius: 50%;
+    animation: spin-cover 8s linear infinite;
+    animation-play-state: paused;
+}
+
+.music-player.playing .music-player-cover img,
+.music-player.playing .music-player-pill-cover img {
+    animation-play-state: running;
+}
+
+
+/* ===== UI 定位：嵌入 Header ===== */
+.music-player.in-header {
+    position: relative;
+    left: auto !important;
+    bottom: auto !important;
+    top: auto !important;
+    right: auto !important;
+    margin-left: 20px;
+    z-index: 10;
+}
+
+.music-player.in-header .music-player-toggle,
+.music-player.in-header .music-player-collapse,
+.music-player.in-header .music-player-pill-collapse {
+    display: none !important;
+}
+
+.music-player.in-header .music-player-mini {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+
+.music-player.in-header .music-player-title,
+.music-player.in-header .music-player-pill-title {
+    color: var(--text-color);
+}
+
+/* ===== UI 定位：自由浮动 ===== */
+.music-player.is-floating {
+    bottom: auto;
+    right: auto;
+    cursor: move;
+}
+
+
+/* ===== Card Player (卡片型样式) ===== */
+.music-player-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(var(--card-bg-rgb, 255, 255, 255), var(--player-opacity, 0.85));
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-normal);
+    max-width: 380px;
+}
+
+.music-player-card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+    transform: translateY(-2px);
+}
+
+.music-player.is-floating .music-player-card:hover,
+.music-player.is-floating .music-player-pill:hover {
+    transform: none;
+}
+
+.music-player-cover {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.music-player-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.music-player-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.music-player-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+}
+
+.music-player-artist {
+    font-size: 0.75rem;
+    color: var(--secondary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+}
+
+.music-player-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.music-player-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--primary-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    font-size: 0.875rem;
+    flex-shrink: 0;
+    /* ★★★ 添加相对定位供 Tooltip 使用 ★★★ */
+    position: relative;
+}
+
+.music-player-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.music-player-play {
+    width: 36px;
+    height: 36px;
+    background: var(--accent-color);
+    color: white;
+    font-size: 0.875rem;
+}
+
+.music-player-play:hover {
+    background: var(--accent-color);
+    filter: brightness(1.1);
+}
+
+/* ===== Pill Player (圆条型样式) ===== */
+.music-player-pill {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    background: rgba(var(--card-bg-rgb, 255, 255, 255), var(--player-opacity, 0.85));
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-normal);
+}
+
+.music-player-pill:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+    transform: translateY(-2px);
+}
+
+.music-player-pill-inner {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.music-player-pill .music-player-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+}
+
+.music-player-pill .music-player-play {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-color);
+    color: white;
+}
+
+.music-player-pill-cover {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.music-player-pill-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.music-player-pill-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border-color);
+    margin: 0 6px;
+    flex-shrink: 0;
+}
+
+.music-player-pill-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 120px;
+    margin-right: 2px;
+}
+
+.music-player-pill-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.music-player-pill-artist {
+    font-size: 0.7rem;
+    color: var(--secondary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.music-player.style-card .music-player-pill {
+    display: none;
+}
+
+.music-player.style-pill .music-player-card {
+    display: none;
+}
+
+.music-player-audio {
+    display: none;
+}
+
+/* ===== Dark Mode ===== */
+body.dark-mode .music-player-card,
+body.dark-mode .music-player-pill {
+    background: rgba(38, 38, 38, var(--player-opacity, 0.85));
+    border-color: #333333;
+}
+
+body.dark-mode .music-player.in-header .music-player-title,
+body.dark-mode .music-player.in-header .music-player-pill-title {
+    color: #eee;
+}
+
+body.dark-mode .music-player.in-header .music-player-card,
+body.dark-mode .music-player.in-header .music-player-pill {
+    background: transparent;
+    border: none;
+}
+
+body.dark-mode .music-player-pill-divider {
+    background: #444444;
+}
+
+/* ===== Collapsed State (Default) ===== */
+.music-player.collapsed .music-player-mini {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -24px;
+}
+
+.music-player-toggle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-color);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-normal);
+    z-index: 1000;
+    font-size: 1.1rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+}
+
+.music-player-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+}
+
+.music-player-toggle:active {
+    transform: scale(0.95);
+}
+
+.music-player.collapsed .music-player-toggle {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+body.dark-mode .music-player-toggle {
+    background: var(--accent-color);
+}
+
+
+/* =========================================================
+   ★★★ 强制模态模式 (完全覆盖内联与原有样式) ★★★ 
+========================================================= */
+
+.music-player.in-modal-mode {
+    position: fixed !important;
+    right: 20px !important;
+    left: auto !important;
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    z-index: 2000 !important;
+    cursor: default !important;
+    transition: right 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+}
+
+body.dark-mode .music-player.in-modal-mode .music-player-mini {
+    background: rgba(38, 38, 38, var(--player-opacity, 0.85)) !important;
+    border-color: #333333 !important;
+}
+
+/* 找到这部分并进行修改： */
+.music-player.in-modal-mode .music-player-pill-info {
+    text-align: center !important;
+    /* 将原本的 max-width: 90px 改为用 em 单位限制为大约3个字的宽度 */
+    max-width: 3.5em !important;
+    margin: 0 !important;
+}
+
+
+/* 添加针对标题和歌手的严格单行截断（继承省略号属性） */
+.music-player.in-modal-mode .music-player-pill-title,
+.music-player.in-modal-mode .music-player-pill-artist {
+    width: 100% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+body.dark-mode .music-player.in-modal-mode .music-player-title,
+body.dark-mode .music-player.in-modal-mode .music-player-pill-title {
+    color: #eee !important;
+}
+
+.music-player.in-modal-mode .music-player-toggle,
+.music-player.in-modal-mode .music-player-collapse,
+.music-player.in-modal-mode .music-player-pill-collapse {
+    display: flex !important;
+}
+
+/* ★★★ 修改点 1：只旋转里面的 i 图标，不旋转整个按钮，防止文字跟着颠倒 ★★★ */
+.music-player.in-modal-mode .music-player-collapse i,
+.music-player.in-modal-mode .music-player-pill-collapse i {
+    transform: rotate(180deg) !important;
+}
+
+.music-player.in-modal-mode .music-player-card {
+    flex-direction: column !important;
+    padding: 15px 12px !important;
+    width: auto !important;
+    min-width: 120px !important;
+    max-width: 140px !important;
+    gap: 12px !important;
+}
+
+.music-player.in-modal-mode .music-player-controls {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+}
+
+.music-player.in-modal-mode .music-player-info {
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.music-player.in-modal-mode .music-player-pill {
+    padding: 15px 10px !important;
+    border-radius: 40px !important;
+}
+
+.music-player.in-modal-mode .music-player-pill-inner {
+    flex-direction: column !important;
+    gap: 10px !important;
+}
+
+.music-player.in-modal-mode .music-player-pill-divider {
+    width: 30px !important;
+    height: 1px !important;
+    margin: 4px 0 !important;
+}
+
+
+
+/* =========================================================
+   ★★★ 优化竖直模式下的展开/收起动画 ★★★ 
+========================================================= */
+
+/* 面板展开时的初始与过渡状态 */
+.music-player.in-modal-mode .music-player-mini {
+    background: rgba(var(--card-bg-rgb, 255, 255, 255), var(--player-opacity, 0.85)) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+
+    /* 使用更顺滑的弹性曲线 */
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease,
+        visibility 0.3s !important;
+
+    /* 缩放中心依然对准右侧边缘，但我们结合平移 */
+    transform-origin: right center !important;
+    transform: translateX(0) scale(1) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 面板收起时的状态：向右稍微滑出并轻微缩小，同时渐隐 */
+/* 覆盖默认的 absolute 塌陷 */
+.music-player.in-modal-mode.collapsed .music-player-mini {
+    /* 强制相对定位，保留其占据的宽高空间，避免外层容器失去高度中心点乱跳 */
+    position: relative !important;
+
+    /* 结合我们刚才优化的动画 */
+    transform: translateX(30px) scale(0.85) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* 圆形呼出按钮的过渡动画 */
+.music-player.in-modal-mode .music-player-toggle {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 50% !important;
+    bottom: auto !important;
+    margin-top: 0 !important;
+
+    /* 展开时（按钮隐藏）：向左侧位移并缩小，避免瞬间消失 */
+    transform: translateY(-50%) translateX(-20px) scale(0.5) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease,
+        visibility 0.3s !important;
+}
+
+/* 圆形呼出按钮收起时的状态：复位并显示，带轻微的旋转效果增加灵动感 */
+.music-player.in-modal-mode.collapsed .music-player-toggle {
+    transform: translateY(-50%) translateX(0) scale(1) rotate(0deg) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================================================
+   ★★★ Tooltip 悬浮文字美化 ★★★ 
+========================================================= */
+.music-player-btn::after,
+.music-player-toggle::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: 135%;
+    /* 放在按钮正上方 */
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    /* 居中且稍微缩小 */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 10010;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    line-height: normal;
+    font-family: var(--font-primary, sans-serif);
+}
+
+.music-player-btn:hover::after,
+.music-player-toggle:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+    bottom: 115%;
+}
+
+/* 调整展开按钮的间距 */
+.music-player-toggle::after {
+    bottom: 120%;
+}
+
+.music-player-toggle:hover::after {
+    bottom: 105%;
+}
+
+/* ★★★ 在竖直状态下（in-modal-mode）将气泡改为向左弹出 ★★★ */
+.music-player.in-modal-mode .music-player-btn::after,
+.music-player.in-modal-mode .music-player-toggle::after {
+    bottom: 50%;
+    left: auto;
+    right: 135%;
+    transform: translateY(50%) scale(0.8);
+}
+
+.music-player.in-modal-mode .music-player-btn:hover::after,
+.music-player.in-modal-mode .music-player-toggle:hover::after {
+    transform: translateY(50%) scale(1);
+    bottom: 50%;
+    right: 115%;
+    left: auto;
+}
+
+/* ★★★ 修改点 2：加上 :not 排除竖直模式，确保竖直模式下(无论是否在Header中)气泡统一向左 ★★★ */
+.music-player.in-header:not(.in-modal-mode) .music-player-btn::after,
+.music-player.in-header:not(.in-modal-mode) .music-player-toggle::after {
+    bottom: auto;
+    top: 135%;
+}
+
+.music-player.in-header:not(.in-modal-mode) .music-player-btn:hover::after,
+.music-player.in-header:not(.in-modal-mode) .music-player-toggle:hover::after {
+    top: 115%;
+    bottom: auto;
+}
+
+
+/* ===== Responsive (Mobile) ===== */
+@media (max-width: 768px) {
+
+    /* 移动端不显示悬浮提示，防止触屏残留 */
+    .music-player-btn::after,
+    .music-player-toggle::after {
+        display: none !important;
+    }
+
+    .music-player,
+    .music-player.in-modal-mode {
+        position: fixed !important;
+        top: auto !important;
+        left: 10px !important;
+        bottom: 10px !important;
+        right: auto !important;
+        margin: 0 !important;
+        transform: none !important;
+        z-index: 2000 !important;
+    }
+
+    .music-player.collapsed .music-player-toggle {
+        position: relative !important;
+        transform: scale(1) !important;
+    }
+
+    .music-player.in-modal-mode .music-player-card,
+    .music-player.in-modal-mode .music-player-pill,
+    .music-player.in-modal-mode .music-player-pill-inner {
+        flex-direction: row !important;
+    }
+
+    .music-player.in-modal-mode .music-player-collapse,
+    .music-player.in-modal-mode .music-player-pill-collapse {
+        display: none !important;
+    }
+
+    .music-player.in-modal-mode .music-player-pill-divider {
+        width: 1px !important;
+        height: 20px !important;
+        margin: 0 6px !important;
+    }
+
+    .music-player.in-modal-mode .music-player-info,
+    .music-player.in-modal-mode .music-player-pill-info {
+        text-align: left !important;
+    }
+
+    .music-player.in-modal-mode.collapsed .music-player-mini {
+        transform: scale(0.8) !important;
+    }
+
+    .music-player-card {
+        padding: 8px 10px;
+        gap: 8px;
+        max-width: 280px !important;
+    }
+
+    .music-player-cover {
+        width: 36px;
+        height: 36px;
+    }
+
+    .music-player-title {
+        font-size: 0.8rem;
+    }
+
+    .music-player-artist {
+        font-size: 0.7rem;
+    }
+
+    .music-player-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .music-player-play {
+        width: 30px;
+        height: 30px;
+    }
+
+    .music-player-pill {
+        padding: 5px 8px !important;
+    }
+
+    .music-player-pill .music-player-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+
+    .music-player-pill .music-player-play {
+        width: 28px;
+        height: 28px;
+    }
+
+    .music-player-pill-cover {
+        width: 26px;
+        height: 26px;
+    }
+
+    .music-player-pill-info {
+        max-width: 90px;
+    }
+
+    .music-player-pill-title {
+        font-size: 0.75rem;
+    }
+
+    .music-player-pill-artist {
+        font-size: 0.65rem;
+    }
+
+    .music-player-toggle {
+        width: 42px;
+        height: 42px;
+    }
+}

@@ -1,58 +1,7 @@
 //- Link Page Layout
 //- 友链页面设计，展示友情链接
 
-main.link-page
-  .link-header
-    h1 友情链接
-    p.link-description 春江潮水连海平，海上明月共潮生
-
-  .link-categories
-    if site.data.link
-      .link-grid
-        each item in site.data.link
-          .link-card
-            .link-avatar
-              img(src=item.avatar, alt=item.name)
-            .link-info
-              h3.link-name
-                a(href=item.link, target="_blank")= item.name
-            .link-tooltip
-              .tooltip-content
-                h4= item.name
-                p= item.description
-    else
-      .no-links
-        p 暂无友链数据，请在 source/_data/link.yml 中添加友链信息
-
-    // 添加友链板块
-    .add-link-section
-      .add-link-card
-        h3.add-link-title 添加友链
-        .add-link-content
-          p 欢迎互换友链！您需要遵循以下规则：
-          ol.add-link-rules
-            li 已在贵站添加我的友链，信息：
-            pre.code-block
-              code.
-                - name: 未来的回忆
-                  link: https://2am.top
-                  avatar: https://2am.top/images/0.gif
-                  description: 人生而自由，却无往不在枷锁之中
-            li 贵站没有违法内容
-            li 您可以使用以下模板在评论区申请：
-            pre.code-block
-              code.
-                - name: 
-                  link: 
-                  avatar: 
-                  description: 
-          p 我会常去串门的😊~
-
-    // 评论区域
-    .comments-section
-      include _partial/comments
-
-// 友链页面样式
+//- ★★★ 修复核心 1：将样式块移到所有结构的最前面，确保优先加载，杜绝闪烁 ★★★
 style.
   .link-page {
     max-width: var(--max-width);
@@ -140,8 +89,6 @@ style.
   .link-name a:hover {
     color: var(--accent-color);
   }
-
-
 
   .link-tooltip {
     position: absolute;
@@ -308,3 +255,55 @@ style.
     }
   }
 
+//- 页面主结构开始
+main.link-page
+  .link-header
+    h1 友情链接
+    p.link-description 春江潮水连海平，海上明月共潮生
+
+  .link-categories
+    if site.data.link
+      .link-grid
+        each item in site.data.link
+          .link-card
+            //- ★★★ 修复核心 2：使用内联样式(style属性)强制锁定宽高和圆角，作为双重保险 ★★★
+            .link-avatar(style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex-shrink: 0;")
+              img(src=item.avatar, alt=item.name, width="60", height="60", style="width: 100%; height: 100%; object-fit: cover;")
+            .link-info
+              h3.link-name
+                a(href=item.link, target="_blank")= item.name
+            .link-tooltip
+              .tooltip-content
+                h4= item.name
+                p= item.description
+    else
+      .no-links
+        p 暂无友链数据，请在 source/_data/link.yml 中添加友链信息
+
+    // 添加友链板块
+    .add-link-section
+      .add-link-card
+        h3.add-link-title 添加友链
+        .add-link-content
+          p 欢迎互换友链！您需要遵循以下规则：
+          ol.add-link-rules
+            li 已在贵站添加我的友链，信息：
+            pre.code-block
+              code.
+                - name: 未来的回忆
+                  link: https://2am.top
+                  avatar: https://2am.top/images/0.gif
+                  description: 人生而自由，却无往不在枷锁之中
+            li 贵站没有违法内容
+            li 您可以使用以下模板在评论区申请：
+            pre.code-block
+              code.
+                - name: 
+                  link: 
+                  avatar: 
+                  description: 
+          p 我会常去串门的😊~
+
+    // 评论区域
+    .comments-section
+      include _partial/comments

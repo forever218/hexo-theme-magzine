@@ -1289,13 +1289,47 @@ p {
   color: var(--secondary-color);
   border: 1px solid var(--border-color);
   transition: all var(--transition-fast);
+  position: relative;
+  overflow: visible !important;
 }
 
+/* 1. 修复社交按钮悬停时图标消失的问题 */
 .social-link:hover {
-  color: var(--accent-color);
+  color: #ffffff;
+  /* 关键修复：悬停时让图标变成白色 */
   background-color: var(--accent-color);
   border-color: var(--accent-color);
   transform: translateY(-3px);
+}
+
+/* 2. 为社交按钮添加 Tooltip (悬浮提示) 效果 */
+
+.social-link::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 10010;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  line-height: normal;
+}
+
+.social-link:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+  bottom: 115%;
 }
 
 .footer-bottom {
@@ -1376,7 +1410,6 @@ p {
   font-size: 1.25rem;
   white-space: nowrap;
   z-index: 10;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none !important;
   user-select: none !important;
@@ -1769,6 +1802,7 @@ p {
 }
 
 .author-card {
+  position: relative;
   background-color: var(--background-color);
   border-radius: var(--radius-lg);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -1781,6 +1815,17 @@ p {
   text-align: center;
   border: 1px solid var(--border-color);
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.author-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px;
+  height: 20px;
+  background: transparent;
+  z-index: -1;
 }
 
 .author-card--with-bg {
@@ -3153,4 +3198,26 @@ body.dark-mode .footer a {
   max-width: 100%;
   background: #ffffff;
   /* 给动画一个干净的白色底色，防止其被全黑环境干扰 */
+}
+
+/* ===== 修复 HTML 代码块标签被渲染成按钮的类名冲突 ===== */
+.post-content pre .tag,
+figure.highlight .tag {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  display: inline !important;
+  font-size: inherit !important;
+  color: #e06c75 !important; /* 恢复标签正常的红色高亮 */
+}
+
+/* 抵消悬停时的按钮特效 */
+.post-content pre .tag:hover,
+figure.highlight .tag:hover {
+  background: transparent !important;
+  border: none !important;
+  color: #e06c75 !important;
+  transform: none !important;
 }
