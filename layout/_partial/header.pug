@@ -10,6 +10,9 @@ header.header(class=navbarStyle === 'bubble' ? 'navbar-bubble' : '')
       .nav-menu
         - var menu = theme.menu || {}
         each path, title in menu
+          //- 跳过碎碎念菜单项（如果未启用）
+          if title === '碎碎念' && !(theme.murmur && theme.murmur.enable)
+            - continue
           if typeof path === 'object'
             .nav-item.has-submenu
               span.nav-link= title

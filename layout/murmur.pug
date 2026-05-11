@@ -1,0 +1,335 @@
+//- Murmur Page Layout
+//- 碎碎念页面，记录短随记
+-
+  var murmurCfg = theme.murmur || {}
+  var bannerCfg = murmurCfg.banner || {}
+  var bannerOn = bannerCfg.enable !== false
+  var avatarSrc = theme.author_card && theme.author_card.avatar ? theme.author_card.avatar : '/images/0.webp'
+  var bannerText = theme.hero && theme.hero.typing_text ? theme.hero.typing_text : '逆水行舟，不进则退'
+
+main.murmur-page
+  //- 顶部横幅
+  if bannerOn
+    .murmur-banner
+      .murmur-banner-bg
+        img(src=url_for(bannerCfg.background_image || '/images/1.webp'), alt="Banner", onerror="this.style.display='none'")
+        .banner-gradient
+      .murmur-banner-title
+        h1 碎碎念
+      .murmur-banner-meta
+        .murmur-banner-avatar
+          img(src=url_for(avatarSrc), alt="Avatar")
+        .murmur-banner-text
+          p= bannerText
+
+  //- 碎碎念内容区
+  .murmur-container
+    if site.data.murmur && site.data.murmur.length
+      .murmur-waterfall
+        each item in site.data.murmur
+          .murmur-card
+            .murmur-card-content
+              if item.content
+                p.murmur-text!= item.content
+              if item.images && item.images.length
+                .murmur-images(class=item.images.length > 1 ? 'murmur-images-grid' : 'murmur-images-single')
+                  each img, idx in item.images
+                    img.murmur-img(src=url_for(img), alt="图片 " + (idx + 1), loading="lazy")
+              if item.video
+                .murmur-video
+                  iframe(src=item.video, frameborder="0", allowfullscreen, title="嵌入视频")
+            .murmur-card-footer
+              span.murmur-date
+                i.far.fa-clock
+                = item.date
+              if item.location
+                span.murmur-location
+                  i.fas.fa-map-marker-alt
+                  = item.location
+    else
+      .murmur-empty
+        p 暂无碎碎念，去记录点什么吧~
+
+// 碎碎念页面样式
+style.
+  .murmur-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    padding-top: calc(var(--header-height, 60px) + 20px);
+  }
+
+  /* === 顶部横幅 === */
+  .murmur-banner {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .murmur-banner-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .murmur-banner-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .murmur-banner:hover .murmur-banner-bg img {
+    transform: scale(1.05);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+    z-index: 2;
+  }
+
+  .murmur-banner-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    text-align: center;
+  }
+
+  .murmur-banner-title h1 {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    letter-spacing: 8px;
+  }
+
+  .murmur-banner-meta {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .murmur-banner-meta .murmur-banner-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .murmur-banner-meta .murmur-banner-avatar:hover {
+    transform: scale(1.1);
+  }
+
+  .murmur-banner-meta .murmur-banner-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .murmur-banner-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  /* === 瀑布流布局 === */
+  .murmur-container {
+    width: 100%;
+  }
+
+  .murmur-waterfall {
+    column-count: 3;
+    column-gap: 20px;
+  }
+
+  @media (max-width: 992px) {
+    .murmur-waterfall {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .murmur-waterfall {
+      column-count: 1;
+    }
+
+    .murmur-banner {
+      height: 200px;
+    }
+
+    .murmur-banner-title h1 {
+      font-size: 2rem;
+      letter-spacing: 4px;
+    }
+  }
+
+  /* === 卡片样式 === */
+  .murmur-card {
+    break-inside: avoid;
+    margin-bottom: 20px;
+    background: var(--card-background-color, #ffffff);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
+
+  .murmur-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .murmur-card-content {
+    padding: 20px;
+  }
+
+  .murmur-text {
+    margin: 0 0 12px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-color, #333);
+    word-break: break-word;
+  }
+
+  .murmur-text a {
+    color: var(--accent-color, #1c96d0);
+    text-decoration: none;
+  }
+
+  .murmur-text a:hover {
+    text-decoration: underline;
+  }
+
+  /* === 图片样式 === */
+  .murmur-images {
+    margin-top: 12px;
+  }
+
+  .murmur-images-single img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .murmur-images-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .murmur-images-grid img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .murmur-images-grid img:first-child:last-child,
+  .murmur-images-grid img:only-child {
+    grid-column: 1 / -1;
+    height: 180px;
+  }
+
+  /* === 视频样式 === */
+  .murmur-video {
+    margin-top: 12px;
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .murmur-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    border: 0;
+  }
+
+  /* === 卡片底部 === */
+  .murmur-card-footer {
+    padding: 12px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.8rem;
+    color: var(--secondary-color, #666);
+  }
+
+  .murmur-date,
+  .murmur-location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .murmur-date i,
+  .murmur-location i {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  /* === 空状态 === */
+  .murmur-empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--secondary-color, #666);
+  }
+
+  .murmur-empty p {
+    font-size: 1.1rem;
+  }
+
+  /* === 暗色模式适配 === */
+  html.dark-mode .murmur-card,
+  html[data-theme='dark'] .murmur-card {
+    background: #1e1e1e;
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  html.dark-mode .murmur-card:hover,
+  html[data-theme='dark'] .murmur-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  html.dark-mode .murmur-text,
+  html[data-theme='dark'] .murmur-text {
+    color: #ddd;
+  }
+
+  html.dark-mode .murmur-card-footer,
+  html[data-theme='dark'] .murmur-card-footer {
+    color: #888;
+    border-top-color: rgba(255, 255, 255, 0.06);
+  }

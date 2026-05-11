@@ -131,6 +131,12 @@ music_player:
     #   src: "https://pixabay.com/music/corporate-royalty-free-music-513424/" # 外链支持
     #   cover: "https://p1.music.126.net/6y-UleORITEDbvrwqo3uHA==/5639395138885805.jpg"
 
+# 碎碎念页面配置
+murmur:
+  enable: true  # 是否开启碎碎念页面
+  banner:
+    enable: true  # 是否显示顶部横幅
+    background_image: /images/1.webp  # 横幅背景图
 
 # Features (功能)
 features:
