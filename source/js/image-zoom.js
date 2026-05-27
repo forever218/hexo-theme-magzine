@@ -207,9 +207,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  viewImage.addEventListener(
+  // Touch listeners on the overlay so pan/pinch-zoom works even when
+  // fingers start on the dark background outside the image (mirrors mermaid.js).
+  imageViewer.addEventListener(
     "touchstart",
     (e) => {
+      if (e.target.closest(".viewer-toolbar, .close-btn, .nav-btn")) return;
       if (e.touches.length === 1) {
         lastTouchX = e.touches[0].clientX;
         lastTouchY = e.touches[0].clientY;
@@ -221,9 +224,10 @@ document.addEventListener("DOMContentLoaded", function () {
     { passive: false },
   );
 
-  viewImage.addEventListener(
+  imageViewer.addEventListener(
     "touchmove",
     (e) => {
+      if (e.target.closest(".viewer-toolbar, .close-btn, .nav-btn")) return;
       e.preventDefault();
       if (e.touches.length === 1) {
         const dx = e.touches[0].clientX - lastTouchX;
