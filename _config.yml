@@ -154,7 +154,7 @@ features:
   dark_mode: true # 是否开启暗黑模式
   smooth_scroll: true
   back_to_top: true # 是否开启返回顶部按钮
-  loading_animation: false # 是否开启加载动画，默认关闭,如果你喜欢可以改为true开启,但是会增加页面加载时间
+  loading_animation: true # 是否开启加载动画，默认关闭,如果你喜欢可以改为true开启,但是会增加页面加载时间
 
 # Code Block Settings (代码高亮)
 code_block:
