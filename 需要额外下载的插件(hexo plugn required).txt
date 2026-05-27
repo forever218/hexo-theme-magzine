@@ -5,13 +5,38 @@ hexo根目录下载
 
 npm install hexo-wordcount --save
 
-② 图片自动压缩 (压缩用时约1~2分钟)
+② 图片自动压缩 (经实验1500张共1.25G的图片压缩至450MB用时约2~3分钟)
+触发操作有两种(1)hexo clean + hexo generate + hexo generate + hexo deploy (只压缩 部署)
+(2)hexo clean + hexo generate + hexo server + hexo deploy(压缩 预览 加部署)
 
 npm install sharp --save
 
 ③ 搜索功能
 
 npm install hexo-generator-search@^2.4.3 --save	
+
+然后在hexo根目录的_config.yml底部粘贴如下内容
+------------------------------------------------
+# Search
+search:
+  path: search.json
+  field: post
+  content: true
+  format: html
+------------------------------------------------
+
+④ mermaid图
+
+npm install hexo-filter-mermaid-diagrams --save
+
+然后在hexo根目录的_config.yml底部粘贴如下内容
+------------------------------------------------
+# mermaid
+mermaid:
+  enable: true
+  version: "10.6.1"
+
+------------------------------------------------
 
 ④ 使用img标签来插入图片	(谨慎下载,因为下载之后Markdown自带的插入图片语法会失效,只能使用img标签语法)
 

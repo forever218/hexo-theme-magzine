@@ -583,6 +583,9 @@ function initCodeBlockFolding() {
   }
 
   codeBlocks.forEach((block) => {
+    // ★★★ Skip mermaid blocks — mermaid.js handles their collapsing ★★★
+    if (block.classList.contains("mermaid")) return;
+
     // Check if code block height exceeds max height
     if (block.offsetHeight > maxHeight) {
       // Create wrapper div

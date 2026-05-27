@@ -1,0 +1,584 @@
+/* =====================================================================
+   table.css — Table wrapper, toolbar, collapse, fullscreen viewer styles
+   ===================================================================== */
+
+/* ── Wrapper: horizontal scroll container ──────────────────────────── */
+.table-wrapper {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: visible;
+  margin: 0 0 1.25rem;
+  border-radius: 0 0 var(--radius-md, 8px) var(--radius-md, 8px);
+  scroll-behavior: smooth;
+}
+
+.table-wrapper.table-collapsed {
+  max-height: 240px;
+  overflow: hidden;
+}
+
+.table-wrapper.table-collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: linear-gradient(transparent, var(--background-color, #fff));
+  pointer-events: none;
+  border-radius: 0 0 var(--radius-md, 8px) var(--radius-md, 8px);
+  transition: background 0.3s;
+}
+
+.dark-mode .table-wrapper.table-collapsed::after,
+body.dark-mode .table-wrapper.table-collapsed::after {
+  background: linear-gradient(transparent, #191919);
+}
+
+.table-wrapper.table-expanded {
+  max-height: none;
+  overflow-x: auto;
+}
+
+.table-wrapper table {
+  width: 100%;
+  min-width: max-content;
+  table-layout: auto;
+  white-space: normal;
+  word-break: break-word;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+/* 单元格超过约 20 个字自动折行 */
+.table-wrapper table th,
+.table-wrapper table td {
+  max-width: 20em;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ── Toolbar ────────────────────────────────────────────────────────── */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;
+  height: 2.15em;
+  background: var(--hl-bg, #2a2a2a);
+  color: var(--hltools-color, #8f93a2);
+  font-size: 0.9rem;
+  border-radius: var(--radius-md, 8px) var(--radius-md, 8px) 0 0;
+  padding: 0 0.5rem 0 1rem;
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+  margin-bottom: 0;
+}
+
+html:not(.dark-mode) .table-toolbar,
+body:not(.dark-mode) .table-toolbar {
+  background: var(--hltools-bg, #f1f3f5);
+  color: var(--hltools-color, var(--text-color, #333));
+}
+
+.table-toolbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  background: var(--border-color, rgba(0, 0, 0, 0.08));
+  opacity: 0.5;
+}
+
+.table-toolbar::before {
+  content: 'TABLE';
+  position: absolute;
+  left: 1rem;
+  font-size: 0.78rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--hltools-color, #8f93a2);
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html:not(.dark-mode) .table-toolbar::before,
+body:not(.dark-mode) .table-toolbar::before {
+  color: var(--hltools-color, var(--text-color, #333));
+}
+
+.table-toolbar-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--hltools-color, #8f93a2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2em;
+  height: 100%;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.table-toolbar-btn:hover {
+  color: var(--accent-color, #ff6b6b);
+}
+
+.table-toolbar-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.table-copy-notice {
+  font-size: 0.78rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  padding-right: 0.4rem;
+  color: var(--hltools-color, #8f93a2);
+}
+
+/* ── 展开表格 toggle ─────────────────────────────────────────────── */
+.table-toggle {
+  display: block;
+  margin: 0.35rem 0 0.6rem auto;
+  padding: 0.22rem 0.85rem;
+  background: transparent;
+  color: var(--accent-color, #ff6b6b);
+  border: 1px solid var(--accent-color, #ff6b6b);
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+
+.table-toggle:hover {
+  background: var(--accent-color, #ff6b6b);
+  color: #111;
+  transform: translateY(-1px);
+}
+
+/* ── Toolbar button tooltips ─────────────────────────────────────── */
+.table-toolbar-btn[data-title] {
+  position: relative;
+}
+
+.table-toolbar-btn[data-title]::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s, transform 0.18s, bottom 0.18s;
+  z-index: 10020;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  line-height: 1.4;
+  font-family: sans-serif;
+  font-weight: normal;
+}
+
+.table-toolbar-btn[data-title]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+  bottom: 120%;
+}
+
+/* ── Fullscreen viewer overlay ───────────────────────────────────── */
+.table-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 9999;
+  /* No flex centering — stage is centered via absolute + translate in JS */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow: hidden;
+  cursor: default;
+}
+
+.table-viewer.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Stage — absolutely positioned, centered by translate(-50%,-50%) baked
+   into the JS transform.  No size constraints, no overflow — JS scales
+   the content down to fit the viewport via transform:scale(fitScale). */
+.table-viewer-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-block;
+  background: var(--background-color, #fff);
+  border-radius: 12px;
+  cursor: grab;
+  transform-origin: center center;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .table-viewer-stage {
+  background: var(--background-color, #191919);
+}
+
+.table-viewer-stage:active {
+  cursor: grabbing;
+}
+
+/* Table inside the viewer */
+.table-viewer-content {
+  padding: 1.4rem 1.8rem;
+}
+
+.table-viewer-content table {
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  color: var(--text-color, #333);
+  table-layout: auto;
+  /* No word-break here — inheriting break-word sets min-content cell width
+     to 1 character, collapsing every column to a single-char-wide strip. */
+}
+
+.table-viewer-content th,
+.table-viewer-content td {
+  border: 1px solid var(--border-color, #ddd);
+  padding: 0.45rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+  /* Floor: prevents column collapsing to 1-char width */
+  min-width: 5em;
+  /* Ceiling: ~20 characters before wrapping */
+  max-width: 20em;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.table-viewer-content th {
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+.table-viewer-content tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+body.dark-mode .table-viewer-content th,
+body.dark-mode .table-viewer-content td {
+  border-color: #333;
+  color: #e0e0e0;
+}
+
+body.dark-mode .table-viewer-content th {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+body.dark-mode .table-viewer-content tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Close button */
+.table-viewer-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 38px;
+  line-height: 1;
+  padding-bottom: 4px;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  z-index: 10005;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 50%;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.table-viewer-close:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: rotate(90deg);
+}
+
+/* Toolbar */
+.table-viewer-toolbar {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  z-index: 10002;
+  /* 👇 新增：平滑过渡动画 */
+  transition: background 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+/* 👇 新增：鼠标悬浮时工具栏变黑、增加阴影并上浮 */
+.table-viewer-toolbar:hover {
+  background: rgba(0, 0, 0, 0.85);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* Viewer toolbar buttons */
+.table-viewer-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  /* 👇 优化：将原本针对按钮整体的 transform 移除，改为针对背景和颜色的柔和过渡 */
+  transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+}
+
+.table-viewer-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.table-viewer-btn:hover {
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+.table-viewer-btn::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.85);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 10010;
+}
+
+.table-viewer-btn:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+}
+
+.table-viewer-btn[data-title="放大"]:hover svg {
+  transform: scale(1.25);
+}
+
+.table-viewer-btn[data-title="缩小"]:hover svg {
+  transform: scale(0.8);
+}
+
+.table-viewer-btn[data-title="重置"]:hover svg {
+  transform: rotate(180deg);
+}
+
+.table-viewer-btn[data-title*="复制"]:hover svg {
+  transform: translateY(-3px);
+}
+
+.table-viewer-btn:active svg {
+  transform: scale(0.85) !important;
+}
+
+/* 复制成功时的“果冻弹跳”反馈 */
+
+
+.table-toolbar-btn:active svg {
+  transform: scale(0.85);
+}
+
+.table-viewer-btn[data-title^="已复制"] svg {
+  animation: jellyPop 0.5s ease-in-out;
+  color: #4cd964;
+}
+
+/* 如果你的 table.css 底部没有这个动画，请补上这几行 👇 */
+@keyframes jellyPop {
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(1.4) rotate(-8deg);
+  }
+
+  50% {
+    transform: scale(0.9) rotate(5deg);
+  }
+
+  70% {
+    transform: scale(1.1) rotate(-2deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* Divider between button groups */
+.table-viewer-toolbar-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* "Copied" flash notice */
+.table-viewer-copy-notice {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-left: -4px;
+  margin-right: 2px;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* ── Suppress desktop-only elements ───────────────────────────── */
+  .table-toolbar-btn[data-title]::after,
+  .table-viewer-btn::after {
+    display: none;
+  }
+
+  /* ── Overlay: flex-centering container, matches image-zoom ─────── */
+  /* The overlay becomes a full-viewport flex container so the stage
+     is centered by CSS — no JS translate(-50%,-50%) needed. */
+  .table-viewer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: none;
+  }
+
+  /* Inner container that fills the overlay and flex-centers the stage,
+     matching image-zoom's .image-viewer-container layout. */
+  .table-viewer-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+
+  /* ── Stage: CSS-centered, JS-scaled to fit ────────────────────── */
+  /* Remove the desktop absolute positioning; the flex container
+     centers it. No overflow clipping — JS fitScale shrinks the
+     entire table to fit the viewport, same as the desktop model. */
+  .table-viewer-stage {
+    position: static;
+    top: auto;
+    left: auto;
+    overflow: visible;
+  }
+
+  /* ── Toolbar: image-zoom style ──────────────────────────────────── */
+  /* Matches .viewer-toolbar in image-zoom.css exactly:
+     bottom pill, frosted glass, space-between layout, 90% width. */
+  .table-viewer-toolbar {
+    bottom: 20px;
+    padding: 8px 25px;
+    width: 90%;
+    gap: 0;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+  }
+
+  /* Hover lift animation disabled on mobile — static on touch */
+  .table-viewer-toolbar:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+    transform: translateX(-50%);
+  }
+
+  /* Buttons: 45×45px matching image-zoom's .toolbar-btn */
+  .table-viewer-btn {
+    width: 45px;
+    height: 45px;
+  }
+
+  .table-viewer-btn svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Lock active state (red, dark bg) matching image-zoom's .toolbar-btn.active */
+  .table-viewer-btn.active {
+    color: #ff6b6b;
+    background: rgba(0, 0, 0, 0.65);
+  }
+
+  /* ── Close button ─────────────────────────────────────────────── */
+  .table-viewer-close {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+  }
+
+  .table-toggle {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.7rem;
+  }
+}

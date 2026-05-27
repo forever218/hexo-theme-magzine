@@ -1,0 +1,10 @@
+- title: 工作细胞第一季
+  cover: https://i1.hdslb.com/bfs/bangumi/f5d5f51b941c01f8b90b361b412dc75ecc2608d3.png@660w_884h.webp
+  bangumi_url: "https://bangumi.tv/subject/235612"
+  sources:
+    - name: "BiliBili"
+      player_api: ""
+      episodes:
+        - title: "1"
+          url: "https://www.bilibili.com/bangumi/play/ep232465"
+    

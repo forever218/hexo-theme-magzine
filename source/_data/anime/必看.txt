@@ -1,0 +1,18 @@
+# - title: 咒术回战 (多源示例)
+#   cover: https://i1.hdslb.com/bfs/bangumi/image/69683aa3df3dbfc946afc0526296e8c80dfdfed3.png@660w_884h.webp
+#   bangumi_url: https://bangumi.tv/subject/472741
+#   sources:
+#     - name: "直链播放(超清)"
+#       player_api: "" # 置空表示直接使用原链接
+#       episodes:
+#         - title: "第1集 (头条源直链)"
+#           url: "https://v16.toutiao50.com/85944663c03fe54ed36eff7cddb70e1f/6a056624/video/tos/alisg/tos-alisg-ve-0051c001-sg/o44CEHheefJPLDAogFVobyqGAIGGgWAsCVvYSH/"
+#         - title: "第2集 (假设直链)"
+#           url: "https://example.com/video2.mp4"
+#     - name: "B站源"
+#       player_api: "https://player.bilibili.com/player.html?bvid=" # 使用全局/局部API
+#       episodes:
+#         - title: "第1集"
+#           url: "BV1..."
+#         - title: "第2集"
+#           url: "BV2..."

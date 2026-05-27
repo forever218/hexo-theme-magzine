@@ -3210,7 +3210,8 @@ figure.highlight .tag {
   border-radius: 0 !important;
   display: inline !important;
   font-size: inherit !important;
-  color: #e06c75 !important; /* 恢复标签正常的红色高亮 */
+  color: #e06c75 !important;
+  /* 恢复标签正常的红色高亮 */
 }
 
 /* 抵消悬停时的按钮特效 */
@@ -3220,4 +3221,156 @@ figure.highlight .tag:hover {
   border: none !important;
   color: #e06c75 !important;
   transform: none !important;
+}
+
+/* ===== 桌面宠物右键菜单 UI ===== */
+#pet-sound-menu {
+  position: fixed;
+  z-index: 999999;
+  display: none;
+  background: rgba(var(--card-bg-rgb, 255, 255, 255), 0.85);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font-family: var(--font-primary);
+  color: var(--text-color);
+  min-width: 180px;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+#pet-sound-menu.menu-show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.dark-mode #pet-sound-menu {
+  background: rgba(38, 38, 38, 0.85);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+#pet-sound-menu .pet-menu-label {
+  font-size: 0.75rem;
+  color: var(--secondary-color);
+  margin-bottom: 6px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#pet-sound-menu .pet-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-color);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+#pet-sound-menu .pet-menu-btn:hover {
+  background: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+#pet-sound-menu input[type=range] {
+  width: 100%;
+  accent-color: var(--accent-color);
+  cursor: pointer;
+  margin-bottom: 12px;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  outline: none;
+  appearance: none;
+}
+
+#pet-sound-menu input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+.pet-menu-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 12px 0;
+}
+
+/* ===== MathJax 3 公式溢出修复与排版优化 ===== */
+
+/* 1. 修复块级公式（单独成行）溢出，采用横向滚动 */
+mjx-container[display="true"] {
+  max-width: 100% !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  /* 底部增加内边距，防止部分浏览器的横向滚动条遮挡公式下半部分 */
+  padding-bottom: 0.5em;
+  margin-bottom: var(--spacing-md);
+}
+
+/* 为块级公式定制轻量级滚动条（与代码块滚动体验一致） */
+@supports (scrollbar-width: thin) {
+  mjx-container[display="true"] {
+    scrollbar-width: thin;
+    /* Firefox: 滑块使用主题色，轨道透明 */
+    scrollbar-color: var(--accent-color) transparent;
+  }
+}
+
+mjx-container[display="true"]::-webkit-scrollbar {
+  height: 6px;
+}
+
+mjx-container[display="true"]::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+mjx-container[display="true"]::-webkit-scrollbar-thumb {
+  /* WebKit: 滑块默认使用调色盘主题色 */
+  background: var(--accent-color);
+  border-radius: 3px;
+}
+
+mjx-container[display="true"]::-webkit-scrollbar-thumb:hover {
+  /* 悬停时，使用 color-mix 让主题色稍微加深一点点增加交互感 */
+  background: color-mix(in srgb, var(--accent-color) 80%, black);
+}
+
+/* 暗色模式滚动条适配 (如果暗色模式下也想跟随调色盘，可以去掉这段；
+   如果暗色模式想保持低调的深灰色，则保留这段) */
+body.dark-mode mjx-container[display="true"]::-webkit-scrollbar-thumb {
+  /* 如果你想暗黑模式也用主题色，把这里的 #444 改成 var(--accent-color) */
+  background: var(--accent-color);
+}
+
+body.dark-mode mjx-container[display="true"]::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent-color) 80%, white);
+}
+
+/* 2. 修复行内公式换行问题，允许长行内公式跟随文本自然折行 */
+mjx-container:not([display="true"]) {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }

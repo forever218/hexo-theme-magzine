@@ -4,8 +4,75 @@
   var murmurCfg = theme.murmur || {}
   var bannerCfg = murmurCfg.banner || {}
   var bannerOn = bannerCfg.enable !== false
-  var avatarSrc = theme.author_card && theme.author_card.avatar ? theme.author_card.avatar : '/images/0.webp'
-  var bannerText = theme.hero && theme.hero.typing_text ? theme.hero.typing_text : '逆水行舟，不进则退'
+  var avatarSrc = theme.author_card && theme.author_card.avatar ? theme.author_card.avatar : '/images/0.gif'
+  var bannerText = theme.hero && theme.hero.typing_text ? theme.hero.typing_text : '人生而自由，却无往不在枷锁之中'
+
+  // 将 video.js 的解析逻辑完美植入 Pug 模板
+  function parseMurmurVideo(url) {
+    if (!url) return null;
+    let src = '';
+    let isVertical = false;
+    let isTwitter = false;
+
+    if (url.includes('bilibili.com')) {
+      const m = url.match(/BV([a-zA-Z0-9]+)/);
+      if (m) src = `//player.bilibili.com/player.html?bvid=BV${m[1]}&page=1&autoplay=0&high_quality=1&danmaku=0`;
+    } else if (url.includes('acfun.cn')) {
+      const m = url.match(/ac=(\d+)/) || url.match(/ac(\d+)/);
+      if (m) src = `https://www.acfun.cn/player/ac${m[1]}`;
+    } else if (url.includes('ixigua.com')) {
+      const m = url.match(/\/(\d+)\/?/);
+      if (m) src = `https://www.ixigua.com/iframe/${m[1]}?autoplay=0`;
+    } else if (url.includes('huya.com')) {
+      const m = url.match(/huya\.com\/(\d+)/) || url.match(/huya\.com\/([a-zA-Z0-9]+)/);
+      if (m) src = `https://liveshare.huya.com/iframe/${m[1]}`;
+    } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      let videoId = '';
+      if (url.includes('shorts/')) {
+        const m = url.match(/shorts\/([a-zA-Z0-9_-]+)/);
+        if (m) { videoId = m[1]; isVertical = true; }
+      } else if (url.includes('v=')) {
+        const m = url.match(/v=([a-zA-Z0-9_-]+)/);
+        if (m) videoId = m[1];
+      } else if (url.includes('youtu.be/')) {
+        const m = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+        if (m) videoId = m[1];
+      }
+      if (videoId) src = `https://www.youtube.com/embed/${videoId}?autoplay=0`;
+    } else if (url.includes('twitter.com') || url.includes('x.com')) {
+      isTwitter = true;
+      src = `https://twitframe.com/show?url=${encodeURIComponent(url)}`;
+    } else if (url.includes('tiktok.com')) {
+      const m = url.match(/video\/(\d+)/);
+      if (m) { src = `https://www.tiktok.com/embed/v2/${m[1]}`; isVertical = true; }
+    } else if (url.includes('instagram.com')) {
+      let cleanUrl = url.split('?')[0].replace(/\/$/, "");
+      src = `${cleanUrl}/embed/`;
+      isVertical = true; 
+    } else if (url.includes('twitch.tv')) {
+      let videoId = '', channel = '';
+      if (url.includes('/videos/')) {
+         const m = url.match(/videos\/(\d+)/);
+         if (m) videoId = m[1];
+         src = `https://player.twitch.tv/?video=${videoId}&parent=localhost&autoplay=false`;
+      } else {
+         const m = url.match(/twitch\.tv\/([a-zA-Z0-9_]+)/);
+         if (m) channel = m[1];
+         src = `https://player.twitch.tv/?channel=${channel}&parent=localhost&autoplay=false`;
+      }
+    } else if (url.includes('facebook.com') || url.includes('fb.watch')) {
+      src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0&width=560`;
+    } else if (url.includes('vimeo.com')) {
+      const m = url.match(/vimeo\.com\/(\d+)/);
+      if (m) src = `https://player.vimeo.com/video/${m[1]}`;
+    } else if (url.includes('nicovideo.jp')) {
+      const m = url.match(/watch\/(sm\d+|so\d+)/);
+      if (m) src = `https://embed.nicovideo.jp/watch/${m[1]}`;
+    }
+    
+    // 如果没有匹配上，则将原链接当做 src 处理（作为 Fallback）
+    return src ? { src, isVertical, isTwitter } : { src: url, isVertical: false, isTwitter: false };
+  }
 
 main.murmur-page
   //- 顶部横幅
@@ -35,9 +102,13 @@ main.murmur-page
                 .murmur-images(class=item.images.length > 1 ? 'murmur-images-grid' : 'murmur-images-single')
                   each img, idx in item.images
                     img.murmur-img(src=url_for(img), alt="图片 " + (idx + 1), loading="lazy")
+              
               if item.video
-                .murmur-video
-                  iframe(src=item.video, frameborder="0", allowfullscreen, title="嵌入视频")
+                - var vData = parseMurmurVideo(item.video)
+                - var videoClass = vData.isVertical ? 'murmur-video-vertical' : (vData.isTwitter ? 'murmur-video-twitter' : 'murmur-video-normal')
+                .murmur-video(class=videoClass)
+                  iframe(src=vData.src, frameborder="0", allowfullscreen, allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", title="嵌入视频")
+            
             .murmur-card-footer
               span.murmur-date
                 i.far.fa-clock
@@ -175,11 +246,9 @@ style.
     .murmur-waterfall {
       column-count: 1;
     }
-
     .murmur-banner {
       height: 200px;
     }
-
     .murmur-banner-title h1 {
       font-size: 2rem;
       letter-spacing: 4px;
@@ -255,14 +324,38 @@ style.
     height: 180px;
   }
 
-  /* === 视频样式 === */
+  /* ================================ */
+  /* === 增强版视频自适应响应式样式 === */
+  /* ================================ */
   .murmur-video {
     margin-top: 12px;
     position: relative;
-    padding-bottom: 56.25%;
     height: 0;
     border-radius: 12px;
     overflow: hidden;
+    background-color: #000; /* 加载时防白屏 */
+  }
+
+  /* 横屏 16:9 视频 */
+  .murmur-video-normal {
+    padding-bottom: 56.25%;
+    width: 100%;
+  }
+
+  /* 竖屏 9:16 视频 (TikTok / Shorts / Ins) */
+  .murmur-video-vertical {
+    padding-bottom: 177.77%;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* 正方形 1:1 或推特自适应视频 */
+  .murmur-video-twitter {
+    padding-bottom: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .murmur-video iframe {
@@ -271,7 +364,6 @@ style.
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 12px;
     border: 0;
   }
 

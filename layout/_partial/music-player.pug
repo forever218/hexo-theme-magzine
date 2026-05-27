@@ -3,7 +3,7 @@ if theme.music_player && theme.music_player.enable
   - var playerStyle = theme.music_player.style || 'pill'
   - var playerOpacity = theme.music_player.opacity !== undefined ? theme.music_player.opacity : 0.85
   - var pcPosition = theme.music_player.pc_position || 'floating'
-  - var songs = theme.music_player.songs || []
+  - var songs = (site.data && site.data.music) ? site.data.music : (theme.music_player.songs || [])
   - var songsJson = JSON.stringify(songs.map(function(s) { return { title: s.title, artist: s.artist || '', src: url_for(s.src), cover: s.cover ? url_for(s.cover) : url_for(theme.music_player.default_cover || '/images/0.webp') }; }))
   .music-player(
     data-autoplay=theme.music_player.autoplay ? "true" : "false",

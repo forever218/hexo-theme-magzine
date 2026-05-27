@@ -1,0 +1,286 @@
+//- ========================================
+//- 桌面宠物 - Hexo 主题内置插件 (Pug 模板)
+//- ========================================
+
+//- ========== CSS 样式 ==========
+style.
+  /* ===== 根容器 ===== */
+  #pet-root {
+    position: fixed;
+    z-index: 99999;
+    top: 0; left: 0;
+    width: 0; height: 0;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  /* ===== 调试检测区域 ===== */
+  #pet-debug-zone {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  /* ===== 内部容器 ===== */
+  .pet-inner {
+    position: absolute;
+    top: 0; left: 0;
+    transform-origin: top center;
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+  }
+  .pet-inner:active { cursor: grabbing; }
+
+  /* ===== 精灵图 ===== */
+  .pet-sprite {
+    position: absolute;
+    z-index: 40;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom center;
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+
+  /* ===== 头发画布 ===== */
+  #pet-hair-canvas {
+    position: absolute;
+    z-index: 30;
+    pointer-events: none;
+    image-rendering: pixelated;
+  }
+
+  /* ===== 光环 ===== */
+  .pet-halo {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+    image-rendering: pixelated;
+  }
+
+  /* ===== 影子 ===== */
+  .pet-shadow {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    image-rendering: pixelated;
+  }
+
+  /* ===== 汗水容器 ===== */
+  #pet-sweat-container {
+    position: absolute;
+    z-index: 40;
+    pointer-events: none;
+    width: 0; height: 0;
+  }
+
+  /* ===== 烟雾容器 ===== */
+  #pet-smoke-container {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    width: 0; height: 0;
+  }
+
+  /* ===== 动画 ===== */
+  @keyframes pet-sweat-anim {
+    0%   { opacity: 0.4; transform: translate(0, 0) scale(0.5); }
+    50%  { opacity: 0.4; transform: translate(var(--spread-x), var(--spread-y)) scale(1.2); }
+    100% { opacity: 0;   transform: translate(calc(var(--spread-x) * 1.5), calc(var(--spread-y) * 0.5)) scale(0.8); }
+  }
+
+  @keyframes pet-smoke-anim {
+    0%   { opacity: var(--smoke-alpha, 0.5); transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--smoke-dx), var(--smoke-dy)) scale(0.3); }
+  }
+
+//- ========== HTML 结构 ==========
+div#pet-root
+  div#pet-debug-zone
+  div.pet-shadow#pet-shadow
+  div#pet-smoke-container
+
+  //- 聊天气泡
+  div#pet-chat-bubble(style="display:none; position:absolute; left:0; transform:translate(-50%, -100%); background:rgba(255,255,255,0.9); color:#333; padding:6px 10px; border-radius:8px; font-size:12px; white-space:nowrap; pointer-events:none; z-index:50; box-shadow:0 2px 5px rgba(0,0,0,0.2); transition: opacity 0.3s;")
+    span#pet-chat-text
+    div(style="position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); border-left:6px solid transparent; border-right:6px solid transparent; border-top:6px solid rgba(255,255,255,0.9);")
+
+  div.pet-inner#pet-inner
+    div.pet-halo#pet-halo
+    canvas#pet-hair-canvas
+    div.pet-sprite#pet-sprite
+
+  div#pet-sweat-container
+
+
+//- ========== 初始化脚本 ==========
+script(type="module").
+  import { PetSprite, State }   from '#{url_for("/js/pet/pet-sprite.js")}';
+  import { PetStateMachine }    from '#{url_for("/js/pet/pet-state.js")}';
+  import { PetHair }            from '#{url_for("/js/pet/pet-hair.js")}';
+  import { PetLayers }          from '#{url_for("/js/pet/pet-layers.js")}';
+  import { PetSound }           from '#{url_for("/js/pet/pet-sound.js")}';
+  import { PetOutline }         from '#{url_for("/js/pet/pet-outline.js")}';
+  import { PetChat }            from '#{url_for("/js/pet/pet-chat.js")}';
+  import { PetMusicPlayer }     from '#{url_for("/js/pet/pet-music.js")}';
+  import { PetPretextInteraction } from '#{url_for("/js/pet/pet-pretext-interaction.js")}';
+
+  function initDesktopPet() {
+    // 1. Iframe 拦截：如果是文章模态窗口，自杀并退出
+    if (window.self !== window.top) {
+      const root = document.getElementById('pet-root');
+      if (root) root.remove();
+      return;
+    }
+
+    // 2. Pjax 拦截：桌宠只初始化一次，后续页面跳转保留原实例！
+    if (window.__PET_IS_RUNNING__) {
+      const roots = document.querySelectorAll('#pet-root');
+      // 删掉由 Pjax 新加载的第二个骨架，保留正在运行的第一个
+      if (roots.length > 1) {
+        roots[roots.length - 1].remove(); 
+      }
+      return; 
+    }
+
+    // 3. 移动端拦截：根据 config.yml 决定是否在手机端加载
+    // 通过屏幕宽度和 User-Agent 双重检测移动端设备
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // 获取 Hexo 注入的配置，如果未配置则默认按 false (不启用) 处理
+    const mobileEnabled = window.theme && window.theme.pet && window.theme.pet.mobile_enable;
+
+    if (isMobile && !mobileEnabled) {
+      const root = document.getElementById('pet-root');
+      if (root) root.remove(); // 销毁 DOM，防止残留不可见的空容器阻挡点击
+      return; // 终止初始化，不执行后续的重度 Canvas 与动画逻辑
+    }
+
+    window.__PET_IS_RUNNING__ = true;
+
+    // ===== 常量与设置 =====
+    const IMG_PATH = '#{url_for("/images/pet/")}';
+    const VISUAL_SCALE = 0.3;
+    const BASE_SCALE   = 4;                    
+    const SCALE        = BASE_SCALE * VISUAL_SCALE; 
+    const RAW_W        = 32;
+    const RAW_H        = 32;
+    const W            = RAW_W * SCALE;         
+    const H            = RAW_H * SCALE;         
+    const MAX_SPEED    = 60;                    
+
+    // ===== DOM 获取与防刷保护 =====
+    const elRoot       = document.getElementById('pet-root');
+    // 【重要】将桌宠根节点挪到 body 最外层，防止它被 Pjax 切页时当成旧内容删掉！
+    if (elRoot && elRoot.parentNode !== document.body) {
+      document.body.appendChild(elRoot);
+    }
+
+    const elInner      = document.getElementById('pet-inner');
+    const elSprite     = document.getElementById('pet-sprite');
+    const elDebugZone  = document.getElementById('pet-debug-zone');
+    const elHalo       = document.getElementById('pet-halo');
+    const elShadow     = document.getElementById('pet-shadow');
+    const elSweat      = document.getElementById('pet-sweat-container');
+    const elSmoke      = document.getElementById('pet-smoke-container');
+    const elHairCanvas = document.getElementById('pet-hair-canvas');
+    const elChatBubble = document.getElementById('pet-chat-bubble'); 
+
+    // ===== 隐形护盾：防止 Iframe 吞噬拖拽事件 =====
+    const dragOverlay = document.createElement('div');
+    dragOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99998;display:none;';
+    document.body.appendChild(dragOverlay);
+
+    // ===== 布局 =====
+    elInner.style.width  = W + 'px';
+    elInner.style.height = H + 'px';
+    elInner.style.left   = (-W / 2) + 'px';
+    elInner.style.top    = (-H) + 'px';
+
+    const HAIR_CANVAS_SIZE = 384;
+    elHairCanvas.style.width  = HAIR_CANVAS_SIZE + 'px';
+    elHairCanvas.style.height = HAIR_CANVAS_SIZE + 'px';
+    elHairCanvas.style.left   = (-(HAIR_CANVAS_SIZE - W) / 2) + 'px';
+    elHairCanvas.style.top    = (-(HAIR_CANVAS_SIZE - H) / 2) + 'px';
+    elChatBubble.style.top = (-H - 10) + 'px';
+
+    // ===== 模块实例化 =====
+    const sprite = new PetSprite(elSprite, IMG_PATH, 12);
+    
+    let isSMReady = false;
+    const stateMachine = new PetStateMachine({
+      rootEl:      elRoot,
+      innerEl:     elInner,
+      spriteEl:    elSprite,
+      debugZoneEl: elDebugZone,
+      sprite:      sprite,
+      spriteW:     W,
+      spriteH:     H,
+      onStateChange: () => {
+        if (!isSMReady) return;
+        // 【核心修复】如果桌宠被拎起来，开启全屏透明护盾，防止 iframe 吃掉鼠标事件
+        if (stateMachine.getState() === State.DRAGGING) {
+          dragOverlay.style.display = 'block';
+        } else {
+          dragOverlay.style.display = 'none';
+        }
+      },
+    });
+    isSMReady = true;
+
+    const hair = new PetHair(elHairCanvas, BASE_SCALE);
+    const layers = new PetLayers({ haloEl: elHalo, shadowEl: elShadow, sweatContainer: elSweat, smokeContainer: elSmoke }, IMG_PATH);
+    const sound = new PetSound(IMG_PATH + 'RunSounds.wav', elInner);
+    const outline = new PetOutline(elInner);
+    const chat = new PetChat(elChatBubble, document.getElementById('pet-chat-text'), elInner);
+    
+   const musicPlayer = new PetMusicPlayer(); // 参数已不需要
+    if (sound.menuEl) { musicPlayer.mountToMenu(sound.menuEl); }
+
+    // 实例化文字避让模块 (只在配置开启时)
+    let pretextInteraction = null;
+    if (window.theme && window.theme.pet && window.theme.pet.pretext_interaction && window.theme.pet.pretext_interaction.enable) {
+      pretextInteraction = new PetPretextInteraction({
+        repelRadius: window.theme.pet.pretext_interaction.repel_radius,
+        throttleMs: window.theme.pet.pretext_interaction.throttle_ms
+      });
+    }
+
+    // ===== 主循环 =====
+    let lastTime = 0;
+    function mainLoop(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+      lastTime = timestamp;
+
+      stateMachine.update(dt);
+      const state       = stateMachine.getState();
+      const pos         = stateMachine.getPos();
+      const velocity    = stateMachine.getVelocity();
+      const facingRight = stateMachine.isFacingRight();
+      const rotation    = stateMachine.getRotation();
+      const spriteOfsY  = stateMachine.getSpriteOffsetY();
+      const fallTargetY = stateMachine.getFallTargetY();
+
+      hair.update(dt, 0, -14 + spriteOfsY, velocity, MAX_SPEED, facingRight, rotation, timestamp);
+      layers.update({ dt, state, facingRight, posX: pos.x, posY: pos.y, spriteOffsetY: spriteOfsY, fallTargetY: fallTargetY, scale: SCALE });
+      sound.update(state);
+      chat.update(dt, state);
+
+       // ★ 在主循环中触发文字避让逻辑
+      if (pretextInteraction) {
+       pretextInteraction.update(pos.x, pos.y, timestamp);
+      }
+
+      requestAnimationFrame(mainLoop);
+    }
+
+    requestAnimationFrame(mainLoop);
+  }
+
+  // 启动桌宠
+  initDesktopPet();

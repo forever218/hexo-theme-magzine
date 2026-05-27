@@ -1,0 +1,269 @@
+/* 照片墙全屏容器 */
+.wall-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 150px);
+    overflow: hidden;
+    background: var(--background-color);
+}
+
+/* 照片墙内容区 */
+.photo-wall-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 80vh;
+}
+
+/* 居中操作区 (包含文字和按钮) */
+.center-action-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 50;
+    /* 确保按钮不会被拖拽的图片完全盖死而无法点击 */
+}
+
+/* 提示文字 */
+.empty-tip {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    font-family: var(--font-secondary);
+    opacity: 0.5;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: opacity 0.3s ease;
+}
+
+/* 留言按钮 */
+.leave-msg-btn {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    background: var(--accent-color);
+    color: white;
+    border-radius: var(--radius-xl);
+    /* 圆角加大更好看 */
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    pointer-events: auto;
+    /* 确保可点击 */
+    transition: all var(--transition-fast);
+}
+
+.leave-msg-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* 拖拽相片卡片 */
+.photo-card {
+    position: absolute;
+    width: 200px;
+    height: 240px;
+    padding: 10px 10px 40px 10px;
+    background: var(--card-background-color);
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: grab;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: transform 0.2s ease, z-index 0s;
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-card:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+.photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+    pointer-events: none;
+    /* 稍微降低图片亮度，让白色文字更清晰 */
+    filter: brightness(0.8); 
+}
+
+/* 留言文字悬浮在照片上的样式 */
+.photo-card .message {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 40px; /* 避开底部作者名字的空间 */
+    padding: 10px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8); /* 加上阴影防止图片背景过白看不清字 */
+    text-align: center;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+    /* Flex 居中文字 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-secondary);
+}
+
+.photo-card .author {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   模态框 (留言板) 美化
+   ========================================= */
+
+.wall-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 隐藏状态 */
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.wall-modal.hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 背景毛玻璃遮罩 */
+.wall-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    /* 增加高级毛玻璃感 */
+}
+
+/* 留言板主容器 */
+.wall-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    background: var(--card-background-color);
+    border-radius: var(--radius-xl);
+    /* 更圆润的边角 */
+    padding: calc(var(--spacing-xl) + 10px) var(--spacing-xl) var(--spacing-xl);
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    /* 弹性弹出动画 */
+    transform: scale(1) translateY(0);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wall-modal.hidden .wall-modal-content {
+    transform: scale(0.95) translateY(20px);
+}
+
+/* 标题美化 */
+.modal-title {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--primary-color);
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-family: var(--font-secondary);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.modal-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+/* 精致的关闭按钮 */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.close-btn:hover {
+    background: var(--accent-color);
+    color: #ffffff;
+    border-color: var(--accent-color);
+    transform: rotate(90deg) scale(1.1);
+    /* 悬停时带旋转和放大特效 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 优化模态框内部的滚动条 */
+.wall-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.wall-modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.wall-modal-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.wall-modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* 暗色模式适配补充 */
+body.dark-mode .wall-modal-overlay {
+    background: rgba(0, 0, 0, 0.6);
+}

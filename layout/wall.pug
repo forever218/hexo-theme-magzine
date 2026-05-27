@@ -1,0 +1,22 @@
+//- 照片墙专属布局
+.wall-wrapper
+  // 照片墙主容器
+  #photo-wall-container.photo-wall-container
+    // 居中操作区
+    .center-action-area
+      .empty-tip#wall-empty-tip 在这里留下你的足迹
+      button#leave-msg-btn.leave-msg-btn
+        i.fas.fa-pen
+        span 留言
+
+  // 居中弹出的留言面板模态框
+  #twikoo-modal.wall-modal.hidden
+    .wall-modal-overlay
+    .wall-modal-content
+      button#close-modal-btn.close-btn
+        i.fas.fa-times
+      h2.modal-title 留言板
+      
+      // ★★★ 直接引入全局评论区组件 ★★★
+      .wall-comments-container
+        include _partial/comments

@@ -86,10 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // 归档(不要更改,blog预设内容)
     归档: "Archives",
 
-    //其他(请在_config.yml里修改左侧内容后,再来这里修改右侧的翻译内容,保持一一对应关系)
-    网站: "Site",
-    示例网站: "Example Site",
-
     // 分类(不要更改,blog预设内容)
     分类: "Categories",
     所有分类: "All Categories",
@@ -123,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "The spring river tide merges seamlessly with the sea;Above the waves, the bright moon rises with the tide.",
     "暂无友链数据，请在 source/_data/link.yml 中添加友链信息":
       "No link data found. Please add entries to source/_data/link.yml",
-    "天接云涛连晓雾, 星河欲转千帆舞。":
+    "天接云涛连晓雾，星河欲转千帆舞":
       "The sky meets rolling clouds and morning mist as one,The Milky Way turns, and a thousand sails dance.",
 
     添加友链: "Add Friend Link",
@@ -148,6 +144,31 @@ document.addEventListener("DOMContentLoaded", function () {
     没有评论: "No Comments",
     Twikoo评论加载成功: "Twikoo comments loaded successfully",
 
+    //追番(不要更改,blog预设内容)
+    追番: "Anime",
+    我的追番: "My Anime List",
+    "暂无追番数据，请确保已在 source/_data/anime/ 目录下创建了 yml 文件":
+      "No anime data found. Please make sure anime.yml exists in source/_data/anime/",
+    已观看: "Watched",
+    点击观看: "Click to Watch",
+    "正在加载...": "Loading...",
+    "选集/换源": "Episodes/Sources",
+    "加载中...": "Loading...",
+    选集: "Episodes",
+    播放列表: "Playlist",
+    登场角色: "Characters",
+
+    "即将自动播放下一集...": "Next episode will play automatically...",
+    "已经是最后一集了~": "This is the last episode~",
+    该源暂无集数数据: "No episode data for this source",
+    "未配置 bangumi_url":
+      "Please configure bangumi_url in source/_data/anime.yml",
+    "无法解析 Bangumi ID":
+      "Failed to parse Bangumi ID. Please check your anime.yml",
+    暂无角色信息: "No character information available",
+    "加载失败，请检查网络":
+      "Failed to load. Please check your network connection",
+
     // 隐藏内容(不要更改,blog预设内容)
     点击查看隐藏内容: "Click to reveal hidden content",
     " (点击恢复)": " (Click to hide again)",
@@ -159,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Ran-AI请求AI出错了，请稍后再试。":
       "Ran-AI encountered an error while requesting AI. Please try again later.",
 
-    //不要更改(blog预设内容)
+    //AI相关(不要更改,blog预设内容)
     "生成中. . .": "Generating...",
     "请等待. . .": "Please wait...",
     介绍自己: "Introduce",
@@ -167,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
     生成AI简介: "Generate Summary",
 
     // 文章(不要更改,blog预设内容)
+    文章: "Writings",
     "点击阅读->": "Click to Read ->",
     目录: "Directory",
     无目录: "No Directory",
@@ -232,6 +254,71 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //sakana小人(不要更改,blog预设内容)
     切换角色: "Switch Character",
+
+    //照片墙(不要更改,blog预设内容)
+    在这里留下你的足迹: "Leave your mark here",
+    留言: "Leave a Message",
+    留言板: "Message Board",
+    照片墙: "PhotoWall",
+
+    //桌宠(不要更改,blog预设内容)
+    //drag
+    "放开我!!!": "Let go of me!!!",
+    "救命啊!!!": "Help!!!",
+    "我讨厌你~呜呜": "I hate you~ boohoo",
+    //click
+    不要老是戳我呀: "Stop poking me",
+    "真讨厌!": "So annoying!",
+    "你又点我了!": "You poked me again!",
+    //rightClick
+    不要右键点我听到没有: "Don't right-click me, got it?",
+    干什么啊: "What are you doing?",
+    //fall
+    哼: "Hmph",
+    哎呀: "Ouch",
+    //idle
+    你怎么不理我了: "Why are you ignoring me?",
+    快点和我说话: "Talk to me!",
+    我好无聊啊: "I'm so bored",
+    老师我想听歌: "Sensei, I want to listen to music",
+    我好困啊: "I'm so sleepy",
+    "可以放首歌吗我想听歌!!!":
+      "Can you play a song? I want to listen to music!!!",
+    不要右键戳我: "Don't right-click me",
+
+    //桌宠设置面板(不要更改,blog预设内容)
+    全局音乐控制: "Global Music Control",
+    未加载音乐: "No music loaded",
+    角色音效: "Character Sound Effects",
+    静音: "Mute",
+    取消静音: "Unmute",
+
+    //mermaid(不要更改,blog预设内容)
+    放大: "Zoom In",
+    缩小: "Zoom Out",
+    重置: "Reset Zoom",
+    复制源码: "Copy Source Code",
+    "已复制 ✓": "Copied ✓",
+    已复制: "Copied",
+    全屏查看: "View Fullscreen",
+    展开图表: "Expand Chart",
+    折叠图表: "Collapse Chart",
+
+    //表格(不要更改,blog预设内容)
+    复制表格: "Copy Table",
+    展开表格: "Expand Table",
+    折叠表格: "Collapse Table",
+
+    //番剧
+    工作细胞第一季: "Cells at Work! Season 1",
+    工作细胞第二季: "Cells at Work! Season 2",
+    "间谍过家家 代号白": "SPY×FAMILY CODE: White",
+    间谍过家家第一季: "SPY×FAMILY Season 1",
+    间谍过家家第二季: "SPY×FAMILY Season 2",
+
+    //碎碎念
+    碎碎念: "Murmur",
+    "暂无碎碎念，去记录点什么吧~": "No murmurs yet, go record something~",
   };
 
   // ==========================================
@@ -284,6 +371,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const dataText = node.getAttribute("data-text");
       if (dataText && translations[dataText]) {
         node.setAttribute("data-text", translations[dataText]);
+      }
+
+      // (F) 翻译 aria-label
+      const ariaLabel = node.getAttribute("aria-label");
+      if (ariaLabel && translations[ariaLabel]) {
+        node.setAttribute("aria-label", translations[ariaLabel]);
       }
 
       // 递归处理子节点
@@ -368,6 +461,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (currentLang !== "en") return;
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
+        // 监听到属性变化时，触发翻译
+        if (mutation.type === "attributes") {
+          translateNode(mutation.target);
+          return;
+        }
+
         mutation.addedNodes.forEach(translateNode);
         if (mutation.type === "characterData") translateNode(mutation.target);
         if (mutation.type === "childList") {
@@ -375,10 +474,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     });
+
     observer.observe(document.body, {
       childList: true,
       subtree: true,
       characterData: true,
+      attributes: true,
+      // 👇 关键修改：把 aria-label 也加入监听阵营！
+      attributeFilter: ["data-title", "aria-label"],
     });
   }
 

@@ -1,7 +1,49 @@
 #碎碎念部分，可以按照此格式填写
 
 #- date: "2024-6-4"
-#  content: "我就是用hexo+anzhiyu主题搭的博客，目前用的是github+vercel的RSS加速"
+#  content: ""
 #  location: ""
 #  images: []
 #  video: ""
+
+# 碎碎念 (Murmur) 数据配置
+# 支持的字段：date (日期), content (内容，支持HTML), location (定位), images (图片数组), video (视频iframe链接)
+
+# 示例 1：纯文本 + 简单定位
+- date: "2024-06-04 10:30"
+  content: "读书使我快乐,但是我更喜欢看动漫 (๑•̀ㅂ•́)و✧"
+  location: "书房"
+
+# 示例 2：富文本内容（支持HTML标签）+ 单张图片
+- date: "2024-06-05 14:20"
+  content: "今天天气真不错，出去散了散步，拍到了一只可爱的流浪猫！<br>如果你也喜欢猫，可以去看看<a href='https://example.com' target='_blank'>这篇关于领养的文章</a>。"
+  location: "楼下公园"
+  images:
+    - "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIHapIeCiwS7x6LmNiUMsGcyA3R8dgs-nSdQ&s"
+
+# 示例 3：多图网格布局（当图片大于1张时会自动触发网格样式）
+- date: "2024-06-06 18:00"
+  content: "周末和朋友去打卡了新开的咖啡店，环境很出片，分享几张美照~ ☕️🍰"
+  images:
+    - "https://picsum.photos/400/300?random=1"
+    - "https://picsum.photos/400/300?random=2"
+    - "https://picsum.photos/400/300?random=3"
+
+# 示例 4：嵌入视频（例如 Bilibili 或 YouTube 的 iframe 链接）
+- date: "2024-06-07 20:15"
+  content: "呜呜呜是花泽香菜🎧"
+  location: "冰岛"
+  video: "https://www.bilibili.com/video/BV1wp411o733?vd_source=8b64ea52b2b8f7ddafd25b28360cd6c0"
+
+# 示例 5：极简记录（只写必须的字段）
+- date: "2024-06-08 09:00"
+  content: "早安！今天也是充满干劲的一天！"
+
+# 示例 6：自定义图片路径
+- date: "2024-6-4"
+  content: "夏天吃西瓜,冬天吃火锅,春天吃面包,秋天吃蛋挞"
+  location: "夏威夷"
+  images:
+    - /images/10.png
+    - /images/11.webp
+  video: "https://youtu.be/3yaab2_EEHM?si=PMZaGyHK6JX98cAJ"

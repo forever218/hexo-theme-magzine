@@ -1,0 +1,553 @@
+/* =====================================================
+   mermaid.css
+   Card, collapsible, fullscreen-trigger button, and
+   self-contained fullscreen viewer overlay.
+   ===================================================== */
+
+/* ---------- Per-theme variables ---------- */
+:root {
+    --mermaid-bg: #f5f5f5;
+    --mermaid-border: #d0d0d0;
+    --mermaid-edge-color: #888888;
+    --mermaid-font: "IBM Plex Mono", "Fira Code", monospace;
+    --mermaid-collapse-h: 360px;
+}
+
+body.dark-mode {
+    --mermaid-bg: #212121;
+    --mermaid-border: #404040;
+    --mermaid-edge-color: #808080;
+}
+
+/* =====================================================
+   Wrapper + card
+   ===================================================== */
+
+.post-content .mermaid-wrapper {
+    position: relative;
+    margin: 1.5em 0;
+}
+
+/* No overflow:hidden here — that would clip the fsBtn tooltip.
+   Clipping is applied only when collapsed (see below). */
+.post-content .mermaid-block {
+    position: relative;
+    background: var(--mermaid-bg);
+    border: 1px solid var(--mermaid-border);
+    border-radius: 6px;
+    padding: 20px 16px 12px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.post-content .mermaid-block svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    font-family: var(--mermaid-font) !important;
+}
+
+/* =====================================================
+   Fullscreen trigger button  (top-right of wrapper)
+   The button is a sibling of .mermaid-block inside
+   .mermaid-wrapper so overflow:hidden on the block
+   never clips its tooltip.
+   ===================================================== */
+
+.mermaid-fullscreen-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-color, #ff6b6b);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* High enough to sit above the card and its content */
+    z-index: 20;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.25s ease, transform 0.25s ease,
+        background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.mermaid-fullscreen-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    pointer-events: none;
+}
+
+/* Reveal on wrapper hover (button is now in the wrapper) */
+.post-content .mermaid-wrapper:hover .mermaid-fullscreen-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.mermaid-fullscreen-btn:hover {
+    background: var(--accent-color, #ff6b6b) !important;
+    filter: brightness(0.85);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transform: scale(1.12) !important;
+}
+
+/* Tooltip — needs its own high z-index and must not be clipped */
+/* Tooltip — 调整为正上方水平居中 */
+.mermaid-fullscreen-btn::after {
+    content: attr(aria-label);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    /* 向上偏移一点点，留出呼吸感 */
+    left: 50%;
+    /* 移动到按钮中点 */
+    right: auto;
+    /* 覆盖掉原有的 right 属性 */
+    background: rgba(0, 0, 0, 0.82);
+    color: #fff;
+    padding: 4px 9px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    /* X轴向左回退自身宽度的一半实现绝对居中，Y轴保持一点向下的偏移用于动画 */
+    transform: translateX(-50%) translateY(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    /* Above everything on the page */
+    z-index: 10000;
+}
+
+.mermaid-fullscreen-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+    /* 悬浮时 Y 轴归零，X 轴的居中必须保持 */
+    transform: translateX(-50%) translateY(0);
+}
+
+/* =====================================================
+   Collapsible — long diagrams
+   ===================================================== */
+
+.post-content .mermaid-wrapper.collapsed .mermaid-block {
+    max-height: var(--mermaid-collapse-h);
+    overflow: hidden;
+}
+
+/* Fade-out gradient at the bottom of a collapsed block */
+.post-content .mermaid-wrapper.collapsed .mermaid-block::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(transparent, var(--mermaid-bg));
+    pointer-events: none;
+    border-radius: 0 0 6px 6px;
+    transition: background 0.3s ease;
+}
+
+/* Toggle button */
+.post-content .mermaid-toggle {
+    display: block;
+    width: 100%;
+    min-height: 36px;
+    padding: 7px 12px;
+    margin-top: 6px;
+    background: transparent;
+    border: 1px dashed var(--mermaid-border);
+    border-radius: 4px;
+    color: var(--mermaid-edge-color);
+    font-size: 13px;
+    line-height: 1.5;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.post-content .mermaid-toggle:hover {
+    color: var(--accent-color, #ff6b6b);
+    border-color: var(--accent-color, #ff6b6b);
+    background: color-mix(in srgb, var(--accent-color, #ff6b6b) 8%, transparent);
+}
+
+.post-content .mermaid-toggle::before {
+    content: attr(data-text);
+}
+
+/* =====================================================
+   Fullscreen viewer overlay
+   ===================================================== */
+
+.mermaid-viewer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    overflow: hidden;
+    cursor: default;
+}
+
+.mermaid-viewer.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Stage — carries the SVG at a concrete pixel size;
+   transform:translate/scale handles all pan/zoom.
+   The card-colour background ensures the diagram reads
+   correctly regardless of the dark overlay behind it. */
+.mermaid-viewer-stage {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--mermaid-bg);
+    border-radius: 12px;
+    padding: 28px 32px;
+    cursor: grab;
+    transform-origin: center center;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+.mermaid-viewer-stage:active {
+    cursor: grabbing;
+}
+
+/* The SVG carries explicit width/height set by JS — no CSS cap needed. */
+.mermaid-viewer-stage svg {
+    display: block;
+    pointer-events: none;
+    overflow: visible;
+    font-family: "IBM Plex Mono", "Fira Code", monospace !important;
+}
+
+/* Close button */
+.mermaid-viewer-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    line-height: 1;
+    padding-bottom: 4px;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    z-index: 10005;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.mermaid-viewer-close:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: rotate(90deg);
+}
+
+/* Toolbar */
+.mermaid-viewer-toolbar {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.15);
+    /* 默认保持半透明 */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    z-index: 10002;
+
+    /* 👇 新增这一行：为背景色、位置和阴影添加平滑过渡动画 */
+    transition: background 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+/* 👇 新增这一段：鼠标悬浮时的黑色背景与上浮动画 */
+.mermaid-viewer-toolbar:hover {
+    background: rgba(0, 0, 0, 0.85);
+    /* 变暗/变黑 */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    /* 添加阴影增加立体感 */
+    /* ⚠️ 关键细节：必须保留 translateX(-50%) 确保水平居中，同时加上 translateY(-4px) 实现向上浮动 */
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Toolbar buttons */
+/* Tooltip above each toolbar button */
+.mermaid-viewer-btn::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.85);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    z-index: 10010;
+}
+
+.mermaid-viewer-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}
+
+.mermaid-viewer-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    /* 👇 优化：让按钮背景色的隐入隐出更有弹性 */
+    transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+}
+
+/* 按钮整体悬浮：底色变亮 */
+.mermaid-viewer-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #111827;
+}
+
+/* 👇 关键核心：给按钮内部的 SVG 图标定义通用的过渡动效 */
+.mermaid-viewer-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    pointer-events: none;
+    /* 预设图标变换的动画曲线，0.3秒，带有一点点回弹 */
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
+/* =====================================================
+   ✨ 专属微交互动画（精准匹配每个功能）
+   ===================================================== */
+
+/* 1. 【放大】按钮：图标往外膨胀 */
+.mermaid-viewer-btn[data-title="放大"]:hover svg {
+    transform: scale(1.25);
+}
+
+/* 2. 【缩小】按钮：图标向内收缩 */
+.mermaid-viewer-btn[data-title="缩小"]:hover svg {
+    transform: scale(0.8);
+}
+
+/* 3. 【重置】按钮：图标顺时针优雅旋转半圈 */
+.mermaid-viewer-btn[data-title="重置"]:hover svg {
+    transform: rotate(180deg);
+}
+
+/* 4. 【复制源码】按钮：悬浮时图标向上微微浮动，点击时触发果冻弹跳 */
+.mermaid-viewer-btn[data-title*="复制"]:hover svg {
+    transform: translateY(-3px);
+}
+
+/* 额外加餐：当鼠标点下按钮的瞬间（:active），图标有一个整体被压扁缩小的物理反馈 */
+.mermaid-viewer-btn:active svg {
+    transform: scale(0.85) !important;
+}
+
+
+/* =====================================================
+   🎉 复制成功时的“成功反馈”动画
+   ===================================================== */
+
+/* 当 mermaid.js 将 data-title 切换为 "已复制 ✓" 时，触发一次性亮眼动画 */
+.mermaid-viewer-btn[data-title^="已复制"] svg {
+    animation: jellyPop 0.5s ease-in-out;
+    color: #4cd964;
+    /* 复制成功瞬间图标变绿 */
+}
+
+@keyframes jellyPop {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(1.4) rotate(-8deg);
+    }
+
+    50% {
+        transform: scale(0.9) rotate(5deg);
+    }
+
+    70% {
+        transform: scale(1.1) rotate(-2deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+/* Divider between button groups */
+.mermaid-viewer-toolbar-divider {
+    width: 1px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
+    margin: 0 2px;
+}
+
+/* "Copied" flash notice */
+.mermaid-viewer-copy-notice {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-left: -4px;
+    margin-right: 2px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    /* ── Suppress desktop-only elements ─────────────────────────── */
+    .mermaid-viewer-btn::after {
+        display: none;
+    }
+
+    /* ── Overlay: flex-centering container, matches image-zoom ──── */
+    /* The overlay becomes a full-viewport flex container so the stage
+       is centered by CSS — no JS translate(-50%,-50%) needed. */
+    .mermaid-viewer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        touch-action: none;
+    }
+
+    /* Inner container that fills the overlay and flex-centers the stage,
+       matching image-zoom's .image-viewer-container layout. */
+    .mermaid-viewer-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
+
+    /* ── Stage: CSS-fitted, not JS-scaled ───────────────────────── */
+    /* Remove the desktop absolute positioning; the flex container
+       centers it. Max sizes leave room for close btn + toolbar. */
+    .mermaid-viewer-stage {
+        position: static;
+        top: auto;
+        left: auto;
+        transform: none;
+        max-width: 90%;
+        max-height: 65vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px;
+    }
+
+    /* SVG fills the stage naturally, constrained by the stage max-size */
+    .mermaid-viewer-stage svg {
+        max-width: 100%;
+        max-height: 65vh;
+        width: auto;
+        height: auto;
+    }
+
+    /* ── Toolbar: image-zoom style ──────────────────────────────── */
+    /* Matches .viewer-toolbar in image-zoom.css exactly:
+       bottom pill, frosted glass, space-between layout, 90% width. */
+    .mermaid-viewer-toolbar {
+        bottom: 20px;
+        padding: 8px 25px;
+        width: 90%;
+        gap: 0;
+        justify-content: space-between;
+        /* Re-assert the frosted-glass pill (same as image-zoom) */
+        background: rgba(255, 255, 255, 0.15);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+    }
+
+    /* Hover lift animation disabled on mobile — static on touch */
+    .mermaid-viewer-toolbar:hover {
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: none;
+        transform: translateX(-50%);
+    }
+
+    /* Buttons: 45×45px matching image-zoom's .toolbar-btn */
+    .mermaid-viewer-btn {
+        width: 45px;
+        height: 45px;
+    }
+
+    .mermaid-viewer-btn svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    /* Lock active state (red, dark bg) matching image-zoom's .toolbar-btn.active */
+    .mermaid-viewer-btn.active {
+        color: #ff6b6b;
+        background: rgba(0, 0, 0, 0.65);
+    }
+
+    /* ── Close button ───────────────────────────────────────────── */
+    .mermaid-viewer-close {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 30px;
+    }
+}

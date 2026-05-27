@@ -1,0 +1,102 @@
+//- 引入 Artplayer 和 HLS 支持 (用于播放直链和 m3u8)
+script(src="https://cdn.jsdelivr.net/npm/hls.js/dist/hls.min.js")
+script(src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js")
+
+//- 页面主体内容
+.article-content(style="max-width: 1200px; margin: 0 auto; padding: 20px;")
+  
+  //- 标题和图标
+  div(style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 1.4rem; font-weight: bold; color: var(--text-color);")
+    svg(xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili")
+      path(stroke="none" d="M0 0h24v24H0z" fill="none")
+      path(d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z")
+      path(d="M8 3l2 3")
+      path(d="M16 3l-2 3")
+      path(d="M9 13v-2")
+      path(d="M15 11v2")
+    span 我的追番
+
+  //- 追番卡片网格
+  .bili-grid
+    //- ★ 新增：数据兼容与扁平化处理
+    -     //- ★ 新增：数据兼容与扁平化处理 (修复 Hexo 子目录解析问题)
+    - var animeList = []
+    - if (site.data) {
+    -   // 1. 兼容旧版：如果还是使用单一的 source/_data/anime.yml
+    -   if (site.data.anime) {
+    -     if (Array.isArray(site.data.anime)) {
+    -       animeList = animeList.concat(site.data.anime);
+    -     } else {
+    -       animeList.push(site.data.anime);
+    -     }
+    -   }
+    -   // 2. 支持文件夹：扫描 source/_data/anime/ 目录下的所有文件
+    -   // Hexo 会把子文件夹下的文件解析成 "anime/文件名" 的形式
+    -   for (var key in site.data) {
+    -     if (key.indexOf('anime/') === 0) { // 找到所有以 anime/ 开头的配置
+    -       var val = site.data[key];
+    -       if (Array.isArray(val)) {
+    -         animeList = animeList.concat(val); // 如果文件里是数组
+    -       } else if (typeof val === 'object' && val !== null) {
+    -         animeList.push(val); // 如果文件里是单个对象
+    -       }
+    -     }
+    -   }
+    - }
+
+    if animeList.length > 0
+      each item in animeList
+        //- ★ 注入 data-sources 和 data-episodes 数据
+        - var sourcesJson = item.sources ? JSON.stringify(item.sources) : "[]";
+        - var episodesJson = item.episodes ? JSON.stringify(item.episodes) : "[]";
+        - var defaultUrl = item.url || "";
+        
+        a.bili-card-wrapper(href="javascript:void(0);" data-url=defaultUrl data-title=item.title data-bangumi=item.bangumi_url data-sources=sourcesJson data-episodes=episodesJson)
+          .bili-card
+            .cover-wrapper
+              img(src=item.cover alt=item.title loading="lazy" referrerpolicy="no-referrer")
+              .watched-badge(style="display:none;") 已观看
+              .play-overlay
+                span.play-text 点击观看
+            h3= item.title
+    else
+      p(style="grid-column: 1 / -1; text-align: center;") 暂无追番数据，请确保已在 source/_data/anime/ 目录下创建了 yml 文件
+
+//- ★ 播放器模态窗口 (更新了UI区)
+#anime-modal.anime-modal
+  .anime-modal-content
+    .anime-modal-header
+      h2#anime-modal-title 正在加载...
+      .anime-modal-tools
+        //- 选集/换源按钮
+        button#anime-episode-btn.anime-tool-btn(style="display:none;")
+          i.fas.fa-list-ul
+          span 选集/换源
+        //- 关闭按钮
+        button#anime-modal-close.anime-modal-close
+          i.fas.fa-times
+          
+    .anime-modal-body
+      //- 原本的 iframe (用于 B站、解析接口等网页)
+      iframe#anime-modal-iframe(src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true")
+      
+      //- ★ 新增：Artplayer 容器
+      #anime-artplayer-container(style="width:100%; height:100%; display:none;")
+      
+      //- ★ 选集侧边栏面板
+      #anime-episode-sidebar.anime-episode-sidebar
+        .sidebar-header
+          h3 播放列表
+          //- ★ 新增：换源下拉菜单
+          select#anime-source-select(style="display:none;")
+          button#sidebar-close-btn
+            i.fas.fa-chevron-right
+        .sidebar-list#anime-episode-list
+          //- JS动态渲染的集数列表
+
+//- 右键角色菜单窗口
+#anime-context-menu.anime-context-menu
+  .context-menu-header
+    span#context-menu-title 登场角色
+    span#context-menu-loading.loading-text(style="display:none;") 加载中...
+  .context-menu-body#context-menu-characters

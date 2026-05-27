@@ -1,11 +1,10 @@
-
 # Site Settings
 favicon: /images/favicon.ico # 网站图标,图标建议尺寸为 64x64 或 32x32 像素,图标名字和格式必须为favicon.ico
-logo: /images/0.gif  # 作者头像,建议尺寸为 200x200 像素,支持png/jpg/jpeg/svg格式
+logo: /images/0.gif # 作者头像,建议尺寸为 200x200 像素,支持png/jpg/jpeg/svg格式
 # 首页图
 # Hero Section
 hero:
-  enable: false  # 是否开启首页图片
+  enable: false # 是否开启首页图片
   background_image: /images/11.webp
   typing_text: 天接云涛连晓雾，星河欲转千帆舞
   typing_speed: 100
@@ -15,25 +14,25 @@ hero:
 
 # Article List 首页文章卡片大小
 article_list:
-  card_size: normal  # normal or large
-  view_mode: "modal"  # 文章浏览方式: "redirect"(跳转模式) 或 "modal"(模态窗口模式)
+  card_size: normal # normal or large
+  view_mode: "modal" # 文章浏览方式: "redirect"(跳转模式) 或 "modal"(模态窗口模式)
 
 # Colors 颜色配置
 colors:
-  primary: '#1a1a1a'
-  secondary: '#666666'
-  accent: '#ff6b6b' # 主题色
-  background: '#ffffff'
-  text: '#333333'
-  overlay: 'rgba(0, 0, 0, 0.7)'
-  tag_background: '#ffffff'  # 首页标签背景色
-  card_background: '#ffffff'  # 首页文章卡片背景色
+  primary: "#1a1a1a"
+  secondary: "#666666"
+  accent: "#ff6b6b" # 主题色
+  background: "#ffffff"
+  text: "#333333"
+  overlay: "rgba(0, 0, 0, 0.7)"
+  tag_background: "#ffffff" # 首页标签背景色
+  card_background: "#ffffff" # 首页文章卡片背景色
 
 # Typography 字体配置
 fonts:
   primary: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-  secondary: 'Playfair Display, Georgia, serif'
-  monospace: 'Fira Code, Monaco, Consolas, monospace'
+  secondary: "Playfair Display, Georgia, serif"
+  monospace: "Fira Code, Monaco, Consolas, monospace"
 
 # Layout 布局配置
 layout:
@@ -44,9 +43,9 @@ layout:
 # Social Links 社交链接
 social:
   github: https://github.com/forever218
-#  twitter: https://twitter.com/yourusername
-#  instagram: https://instagram.com/yourusername
-#  linkedin: https://linkedin.com/in/yourusername
+  #  twitter: https://twitter.com/yourusername
+  #  instagram: https://instagram.com/yourusername
+  #  linkedin: https://linkedin.com/in/yourusername
   email: mailto:3316703158@qq.com
   bilibili: https://space.bilibili.com/82657269
 
@@ -54,19 +53,20 @@ social:
 menu:
   首页: /
   关于: /about/
-  归档: /archives/
-  分类: /categories/
-  标签: /tags/
+  碎碎念: /murmur/
   友链: /link/
+  追番: /anime/
+  照片墙: /wall/
   "Language": "#lang-switch" # 语言切换菜单项
-  网站:
-    示例网站: https://example.com
-
+  文章:
+    归档: /archives/
+    分类: /categories/
+    标签: /tags/
 
 # Header 头部
 # Navigation Bar Style (导航栏样式)
 navbar:
-  style: "bubble"  # "fill" (填充样式) 或 "bubble" (气泡样式，两边不填充，带圆角)
+  style: "bubble" # "fill" (填充样式) 或 "bubble" (气泡样式，两边不填充，带圆角)
 
 # Footer 页脚
 footer:
@@ -74,90 +74,99 @@ footer:
   custom_html: ""
   # Footer centered image with link (页脚居中图片及链接)
   image:
-    enable: true  # 是否显示图片，设为true显示
-    src: "https://s21.ax1x.com/2024/08/23/pAFm0cq.png"  # 图片URL
-    link: "https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"  # 图片链接地址
-    alt: "Footer Image"  # 图片替代文本
+    enable: true # 是否显示图片，设为true显示
+    src: "https://s21.ax1x.com/2024/08/23/pAFm0cq.png" # 图片URL
+    link: "https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" # 图片链接地址
+    alt: "Footer Image" # 图片替代文本
   badges:
-      - link: https://hexo.io/ #徽标指向网站链接
-        shields: https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Frame-Hexo.svg #徽标API
-        message: 博客框架为Hexo_v5.4.0 #徽标提示语  
-      - link: http://creativecommons.org/licenses/by-nc-sa/4.0/
-        shields: https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/Copyright-BY-NC-SA.svg
-        message: 本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可
+    - link: https://hexo.io/ #徽标指向网站链接
+      shields: https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Frame-Hexo.svg #徽标API
+      message: 博客框架为Hexo_v5.4.0 #徽标提示语
+    - link: http://creativecommons.org/licenses/by-nc-sa/4.0/
+      shields: https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/Copyright-BY-NC-SA.svg
+      message: 本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可
 
 # 启动blog封面组件
 cover:
   enable: true
-  title: "欢迎来到我的奇妙世界"   # 封面主标题
-  author: "然"             # 封面副标题 / 作者
-  btn_text: "开始你的旅行"       # 底部按钮文字
-  images:                      # 封面轮播图列表 (按顺序播放，至少两张)
+  title: "欢迎来到我的奇妙世界" # 封面主标题
+  author: "然" # 封面副标题 / 作者
+  btn_text: "开始你的旅行" # 底部按钮文字
+  images: # 封面轮播图列表 (按顺序播放，至少两张)
     - /images/10.png
+    - /images/11.webp
+    - /images/13.jpg
     - /images/14.png
     - /images/15.png
+    - /images/16.png
+    - /images/19.png
+
+# 照片墙留言板配置
+photo_wall:
+  images:
+    - /images/10.png
+    - /images/11.webp
     - /images/13.jpg
+    - /images/14.png
+    - /images/15.png
+    - /images/16.png
+    - /images/19.png
 
 # Sakana 小人摆件组件
 sakana:
-  enable: true  # 是否启用sakana小人摆件组件
+  enable: true # 是否启用sakana小人摆件组件
 
 # 调色板组件 (主题色切换)
 color_picker:
-  enable: true  # 是否开启右上角主题调色板
+  enable: true # 是否开启右上角主题调色板
 
 # 字数统计与阅读时长 (需安装插件: npm install hexo-wordcount)
 wordcount:
-  enable: true  # 是否在文章元数据区域显示字数和预计阅读时间
+  enable: true # 是否在文章元数据区域显示字数和预计阅读时间
 
+# 桌面宠物配置(建议保持当前配置,数值调高浏览器会非常卡顿,甚至崩溃)
+pet:
+  enable: true # 设为 false 即可关闭桌宠
+  mobile_enable: false # 是否在手机移动端启用桌宠 (出于性能考虑，默认建议关闭)
+  pretext_interaction:
+    enable: true # 是否开启文字避让/穿梭效果
+    repel_radius: 60 # 桌宠排斥文字的半径（像素）
+    throttle_ms: 50 # 性能优化：节流时间（毫秒），数值越大越流畅但不够跟手
 
 # Music Player (悬浮音乐播放器)
+#音乐配置文件为music.yml,请前往source/_data/music.yml文件修改
 music_player:
-  enable: true   #是否启用音乐播放器
-  style: "pill"  #播放器形态: "pill" (圆条型) 或 "card" (卡片模式)
-  pc_position: "header" # PC端位置: "header"(塞入导航菜单作者名字右侧) 或 "floating"(悬浮且可以自由拖拽)
-  autoplay: false  # 是否自动播放，默认为false
-  default_cover: /images/0.png  # 默认封面图，建议尺寸为300x300像素
-  opacity: 0.80  # 播放器背景透明度，取值范围0-1，默认0.8
-  songs:
-    # 下面是示例歌曲配置，支持本地文件和外链，封面图可选
-    # - title: "本地歌曲示例"
-    #   artist: "示例艺术家"
-    #   src: /music/demo.mp3  # 本地歌曲
-    #   # cover: /music/cover/demo.jpg
-
-    # - title: "网络歌曲示例"
-    #   artist: "网易云音乐"
-    #   src: "https://pixabay.com/music/corporate-royalty-free-music-513424/" # 外链支持
-    #   cover: "https://p1.music.126.net/6y-UleORITEDbvrwqo3uHA==/5639395138885805.jpg"
+  enable: true #是否启用音乐播放器
+  style: "pill" #播放器形态: "pill" (圆条型) 或 "card" (卡片模式)
+  pc_position: "header" # PC端位置: "header"(塞入导航菜单作者名字右侧) 或 "floating"(默认左上角且自由拖拽)
+  autoplay: false
+  default_cover: /images/0.png
+  opacity: 0.80
 
 # 碎碎念页面配置
 murmur:
-  enable: true  # 是否开启碎碎念页面
   banner:
-    enable: true  # 是否显示顶部横幅
-    background_image: /images/1.webp  # 横幅背景图
+    enable: true # 是否显示顶部横幅
+    background_image: /images/11.webp # 横幅背景图
 
 # Features (功能)
 features:
-  dark_mode: true  # 是否开启暗黑模式
+  dark_mode: true # 是否开启暗黑模式
   smooth_scroll: true
-  back_to_top: true  # 是否开启返回顶部按钮
-  loading_animation: false  # 是否开启加载动画，默认关闭,如果你喜欢可以改为true开启,但是会增加页面加载时间
+  back_to_top: true # 是否开启返回顶部按钮
+  loading_animation: false # 是否开启加载动画，默认关闭,如果你喜欢可以改为true开启,但是会增加页面加载时间
 
 # Code Block Settings (代码高亮)
 code_block:
-  height_limit: 200  # 代码块高度限制，超过此高度显示展开按钮
-  enable_folding: true  # 启用代码折叠功能
-  max_height: 300px  # 代码块最大高度（像素）
-  show_lang: true  # 是否在代码块上方工具栏显示代码语言（默认true）
-
-
+  height_limit: 200 # 代码块高度限制，超过此高度显示展开按钮
+  enable_folding: true # 启用代码折叠功能
+  max_height: 300px # 代码块最大高度（像素）
+  show_lang: true # 是否在代码块上方工具栏显示代码语言（默认true）
 
 # Author Card (作者卡片)
 author_card:
   enable: true
-  avatar:  /images/0.gif
+  avatar: /images/0.gif
   name: 然
   bio: 人生而自由，却无往不在枷锁之中
   button_text: 关于我
@@ -166,26 +175,24 @@ author_card:
   width: large # normal or large
   # 作者卡片背景动画
   background_animation:
-    enable: false  # 默认为false，启用后会在没有背景图片时显示动态背景
-    type: geometric  # 背景动画类型：particles, geometric, gradient
-    color_scheme: auto  # 颜色方案：auto（自动跟随主题）、light、dark
-    interactive: true  # 是否启用鼠标交互效果
-    density: high  # 动画元素密度：low, medium, high
-
-
+    enable: false # 默认为false，启用后会在没有背景图片时显示动态背景
+    type: geometric # 背景动画类型：particles, geometric, gradient
+    color_scheme: auto # 颜色方案：auto（自动跟随主题）、light、dark
+    interactive: true # 是否启用鼠标交互效果
+    density: high # 动画元素密度：low, medium, high
 
 # Comments (optional)
 # 例如twikoo的部署请参考https://twikoo.js.org/quick-start.html
 comments:
   enable: true
-  type: twikoo  # disqus, gitalk, valine, twikoo
+  type: twikoo # disqus, gitalk, valine, twikoo
   shortname:
   # Twikoo configuration
   twikoo:
-    envId:   # Your environment ID
+    envId: # Your environment ID
     region: # Your service region, e.g. ap-guangzhou
-    path: window.location.pathname  # Default is window.location.pathname
-    visitor: true  # Enable visitor count
+    path: window.location.pathname # Default is window.location.pathname
+    visitor: true # Enable visitor count
     option: # Additional options
 
 # Share buttons (optional)
@@ -201,15 +208,23 @@ share:
     weibo: true
     option: # Additional options
 
+# 番剧设置(事实上这个内置了ArtPlayer播放器,所以可以看番,只要你有稳定的视频直链源)
+anime:
+  # 播放器解析接口，如果是B站官方URL，可以用下面这个，或者替换为其他的免费外接源接口
+  # 例如: "https://jx.playerjy.com/?url=" 等全网解析接口
+  #默认使用哔哩哔哩播放源(无需更改,因为配置文件不是这里),请前往source/_data/anime文件添加番剧
+  player_api: "https://player.bilibili.com/player.html?bvid="
+  # 是否开启历史记录功能（在卡片右下角显示"已观看"）
+  history: true
+
 # Theme Configuration
 theme_config:
   # 文章设置
   post:
-    excerpt_length: 200  # 文章摘要长度
-    read_more: "阅读更多"  # 阅读更多按钮文字
-    use_default_cover: true  # 当文章未设置封面时是否使用默认封面
-    default_cover: "/images/19.png"  # 默认封面图片路径
-
+    excerpt_length: 200 # 文章摘要长度
+    read_more: "阅读更多" # 阅读更多按钮文字
+    use_default_cover: true # 当文章未设置封面时是否使用默认封面
+    default_cover: "/images/19.png" # 默认封面图片路径
 
   # 统计分析
   analytics:
@@ -220,20 +235,18 @@ theme_config:
   # 搜索功能,需要安装hexo-generator-search插件,执行npm install hexo-generator-search
   # 然后前往hexo根目录的_config.yml文件(不是你现在看的这个文件)最底部添加以下内容
   #----------------------------
-    #search:
-      #path: search.json 
-      #field: post
-      #content: true
-      #format: html
+  #search:
+  #path: search.json
+  #field: post
+  #content: true
+  #format: html
   #----------------------------
   search:
     enabled: true
-    provider: "local"  # local, algolia
+    provider: "local" # local, algolia
     algolia_app_id: ""
     algolia_api_key: ""
     algolia_index_name: ""
-
-
 
   # 性能优化
   performance:
@@ -248,10 +261,10 @@ theme_config:
 # 注意:触发压缩的方法为先hexo clean清理public文件夹,然后连续执行两次hexo generate命令,第一次是生成图片,第二次才会触发压缩,最后hexo deploy发布
 # 或者执行hexo clean + hexo generate + hexo server命令,在本地预览时触发压缩,然后直接hexo deploy发布
 compress_images:
-  enable: true       # 是否开启图片压缩 (默认开启，改为 false 关闭)
-  min_size: 10240      # 最小压缩大小，小于此大小(10KB)的图片不压缩
-  ignore: []           # 忽略的图片格式，例如: ['.gif', '.svg']
-  quality:             # 各种格式的压缩质量 (0-100)
+  enable: false # 是否开启图片压缩 (默认开启，改为 false 关闭)
+  min_size: 10240 # 最小压缩大小，小于此大小(10KB)的图片不压缩
+  ignore: [] # 忽略的图片格式，例如: ['.gif', '.svg']
+  quality: # 各种格式的压缩质量 (0-100)
     jpeg: 60
     png: 60
     webp: 70
@@ -271,11 +284,11 @@ inject:
     - <script src="/js/ai.js"></script> #ai
     - <script src="/js/postai.js"></script> #ai
     #以下是数学公式支持
-    - <script src="/js/math-support.js"></script>  # 数学公式
+    - <script src="/js/math-support.js"></script> # 数学公式
     #以下是鼠标点击效果,仅可启用一个
     # - <script src="/js/click-heart.js"></script> # 鼠标点击爱心文字特效
     - <script src="/js/click-fireworks.js"></script> # 鼠标点击三角烟花特效
-    
+
     #以下是背景动画特效
     - <script src="/js/falling-leaves.js"></script> # 梧桐落叶特效
     #以下是语言切换支持
@@ -284,21 +297,20 @@ inject:
     # 引入 PJAX 实现无刷新加载(注意：请勿启用此功能，目前为实验功能,很不稳定,会产生各种各样的负面影响)
     # - <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script>
     # - <script src="/js/pjax-init.js"></script>
-    
+
 # 语言切换功能
 #本主题翻译功能不是很成熟,不满足i18n需求,只满足中英转换,请前往themes\magzine\source\js\lang-switch.js自定义翻译文本
 #结合浏览器翻译插件---沉浸式翻译(https://immersivetranslate.com/en/)  体验更佳
 
-
 # AI摘要配置
 ai_summary:
-  enable: true  # 是否启用AI摘要功能，默认关闭
-  api_key: ""  # 这里不要填任何东西,详细部署教程请参考：https://2am.top/2025/12/22/Workers%E5%AE%9E%E7%8E%B0Api%E7%99%BD%E5%90%8D%E5%8D%95/
-  summary_directly: false  # 是否直接生成摘要，默认为false（需要点击按钮生成）
+  enable: true # 是否启用AI摘要功能，默认关闭
+  api_key: "" # 这里不要填任何东西,详细部署教程请参考：https://2am.top/2025/12/22/Workers%E5%AE%9E%E7%8E%B0Api%E7%99%BD%E5%90%8D%E5%8D%95/
+  summary_directly: false # 是否直接生成摘要，默认为false（需要点击按钮生成）
   # 其他可选配置
-  ai_name: "然-AI"  # AI名称
-  ai_introduce: "我是文章辅助AI: 然-AI，一个基于deepseek的强大语言模型，有什么可以帮到您？😊"  # AI介绍语
-  ai_version: "deepseek-v4"  # AI版本显示
+  ai_name: "然-AI" # AI名称
+  ai_introduce: "我是文章辅助AI: 然-AI，一个基于deepseek的强大语言模型，有什么可以帮到您？😊" # AI介绍语
+  ai_version: "deepseek-v4" # AI版本显示
   # 按钮文本
   buttons:
     - "介绍自己"
@@ -307,17 +319,16 @@ ai_summary:
 
 # Categories Page 分类页样式
 categories:
-  layout: accordion  # accordion (展开式) or page (跳转式)
-  accordion_animation: true  # 是否启用展开/折叠动画
-  show_empty_categories: true  # 是否显示没有文章的分类
+  layout: accordion # accordion (展开式) or page (跳转式)
+  accordion_animation: true # 是否启用展开/折叠动画
+  show_empty_categories: true # 是否显示没有文章的分类
 
 # Table of Contents (目录) 设置
 toc:
   # 当没有目录时的显示方式
   # hide: 隐藏目录侧边栏，并调整主内容区域宽度为全屏
   # placeholder: 保持目录侧边栏占位，但隐藏目录内容
-  empty_toc_behavior: placeholder  # hide 或 placeholder
-
+  empty_toc_behavior: placeholder # hide 或 placeholder
 
 CDN:
   # The CDN provider of internal scripts (主题内部 js 的 cdn 配置)
@@ -335,6 +346,5 @@ CDN:
   # Custom format
   # For example: https://cdn.staticfile.org/${cdnjs_name}/${version}/${min_cdnjs_file}
   custom_format: # https://npm.elemecdn.com/${name}@latest/${file}
-
 
   option:

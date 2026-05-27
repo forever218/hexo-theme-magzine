@@ -1,0 +1,19 @@
+# - title: "本地歌曲示例"
+#   artist: "示例艺术家"
+#   src: /music/demo.mp3
+#   cover: /music/cover/demo.jpg
+
+# - title: "网络歌曲示例"
+#   artist: "网易云音乐"
+#   src: "https://pixabay.com/music/corporate-royalty-free-music-513424/" # 外链支持
+#   cover: "https://p1.music.126.net/6y-UleORITEDbvrwqo3uHA==/5639395138885805.jpg"
+
+- title: "unravel"
+  artist: "GARNiDELiA"
+  src: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Tours/Enthusiast/Tours_-_01_-_Enthusiast.mp3"
+  cover: "https://picsum.photos/100/100?random=1"
+
+- title: "Only My Railgun"
+  artist: "fripSide"
+  src: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Algorithms.mp3"
+  cover: "https://picsum.photos/100/100?random=2"

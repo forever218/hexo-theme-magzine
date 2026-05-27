@@ -6,15 +6,20 @@
       inlineMath: [
         ["$", "$"],
         ["\\(", "\\)"],
-      ], // 行内公式格式
+      ],
       displayMath: [
         ["$$", "$$"],
         ["\\[", "\\]"],
-      ], // 块级公式格式
+      ],
       processEscapes: true,
     },
+    // 新增 chtml 配置，控制缩放比例
+    chtml: {
+      scale: 0.9, // 将全局公式渲染大小缩小到 90% (你可以根据视觉效果在 0.85 - 1.0 之间调整)
+      matchFontHeight: true, // 匹配周围文字的 x-height
+    },
     options: {
-      skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"], // 忽略这些标签内的公式
+      skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
     },
     startup: {
       pageReady: () => {
