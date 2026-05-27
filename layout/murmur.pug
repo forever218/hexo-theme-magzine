@@ -118,7 +118,7 @@ main.murmur-page
                 - var vData = parseMurmurVideo(item.video)
                 - var videoClass = vData.isVertical ? 'murmur-video-vertical' : (vData.isTwitter ? 'murmur-video-twitter' : 'murmur-video-normal')
                 .murmur-video(class=videoClass)
-                  iframe(src=vData.src, frameborder="0", allowfullscreen, allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", title="嵌入视频")
+                  iframe(src=vData.src, frameborder="0", allowfullscreen="allowfullscreen", allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen", title="嵌入视频")
             
             .murmur-card-footer
               span.murmur-date
