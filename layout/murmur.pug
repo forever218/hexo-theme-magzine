@@ -37,8 +37,19 @@
       } else if (url.includes('youtu.be/')) {
         const m = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
         if (m) videoId = m[1];
+      } else if (url.includes('embed/')) { // 增强：支持直接粘贴的 embed 链接
+        const m = url.match(/embed\/([a-zA-Z0-9_-]+)/);
+        if (m) videoId = m[1];
+      } else if (url.includes('live/')) { // 增强：支持 YouTube 直播回放链接
+        const m = url.match(/live\/([a-zA-Z0-9_-]+)/);
+        if (m) videoId = m[1];
       }
-      if (videoId) src = `https://www.youtube.com/embed/${videoId}?autoplay=0`;
+      
+      if (videoId) {
+        // 优化 1: 使用 youtube-nocookie 绕过移动端隐私拦截
+        // 优化 2: 添加 playsinline=1 确保 iOS 端可以内联播放
+        src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&playsinline=1`;
+      }
     } else if (url.includes('twitter.com') || url.includes('x.com')) {
       isTwitter = true;
       src = `https://twitframe.com/show?url=${encodeURIComponent(url)}`;
