@@ -40,6 +40,11 @@ style.
   }
 
   .link-card {
+    /* 外层仅保持布局占位，不做 transform，避免悬停边界抖动 */
+    position: relative;
+  }
+
+  .link-card-inner {
     background-color: var(--card-background-color);
     border-radius: var(--radius-md);
     padding: 1.5rem;
@@ -47,10 +52,9 @@ style.
     align-items: center;
     transition: transform var(--transition-normal), box-shadow var(--transition-normal);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    position: relative;
   }
 
-  .link-card:hover {
+  .link-card:hover .link-card-inner {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
@@ -266,12 +270,13 @@ main.link-page
       .link-grid
         each item in site.data.link
           .link-card
-            //- ★★★ 修复核心 2：使用内联样式(style属性)强制锁定宽高和圆角，作为双重保险 ★★★
-            .link-avatar(style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex-shrink: 0;")
-              img(src=item.avatar, alt=item.name, width="60", height="60", style="width: 100%; height: 100%; object-fit: cover;")
-            .link-info
-              h3.link-name
-                a(href=item.link, target="_blank")= item.name
+            .link-card-inner
+              //- ★★★ 修复核心 2：使用内联样式(style属性)强制锁定宽高和圆角，作为双重保险 ★★★
+              .link-avatar(style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex-shrink: 0;")
+                img(src=item.avatar, alt=item.name, width="60", height="60", style="width: 100%; height: 100%; object-fit: cover;")
+              .link-info
+                h3.link-name
+                  a(href=item.link, target="_blank")= item.name
             .link-tooltip
               .tooltip-content
                 h4= item.name
