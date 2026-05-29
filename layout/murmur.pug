@@ -85,54 +85,7 @@
     return src ? { src, isVertical, isTwitter } : { src: url, isVertical: false, isTwitter: false };
   }
 
-main.murmur-page
-  //- 顶部横幅
-  if bannerOn
-    .murmur-banner
-      .murmur-banner-bg
-        img(src=url_for(bannerCfg.background_image || '/images/1.webp'), alt="Banner", onerror="this.style.display='none'")
-        .banner-gradient
-      .murmur-banner-title
-        h1 碎碎念
-      .murmur-banner-meta
-        .murmur-banner-avatar
-          img(src=url_for(avatarSrc), alt="Avatar")
-        .murmur-banner-text
-          p= bannerText
-
-  //- 碎碎念内容区
-  .murmur-container
-    if site.data.murmur && site.data.murmur.length
-      .murmur-waterfall
-        each item in site.data.murmur
-          .murmur-card
-            .murmur-card-content
-              if item.content
-                p.murmur-text!= item.content
-              if item.images && item.images.length
-                .murmur-images(class=item.images.length > 1 ? 'murmur-images-grid' : 'murmur-images-single')
-                  each img, idx in item.images
-                    img.murmur-img(src=url_for(img), alt="图片 " + (idx + 1), loading="lazy")
-              
-              if item.video
-                - var vData = parseMurmurVideo(item.video)
-                - var videoClass = vData.isVertical ? 'murmur-video-vertical' : (vData.isTwitter ? 'murmur-video-twitter' : 'murmur-video-normal')
-                .murmur-video(class=videoClass)
-                  iframe(src=vData.src, frameborder="0", allowfullscreen="allowfullscreen", allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen", title="嵌入视频")
-            
-            .murmur-card-footer
-              span.murmur-date
-                i.far.fa-clock
-                = item.date
-              if item.location
-                span.murmur-location
-                  i.fas.fa-map-marker-alt
-                  = item.location
-    else
-      .murmur-empty
-        p 暂无碎碎念，去记录点什么吧~
-
-// 碎碎念页面样式
+//- ★★★ 样式块前置，确保优先加载，杜绝闪烁 ★★★
 style.
   .murmur-page {
     max-width: 1200px;
@@ -273,12 +226,18 @@ style.
     background: var(--card-background-color, #ffffff);
     border-radius: 16px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.04);
+    /* ★ 修复抖动：仅对视觉层（inner）做 transform，外层保持布局不动 */
   }
 
-  .murmur-card:hover {
+  .murmur-card-inner {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .murmur-card:hover .murmur-card-inner {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
@@ -421,8 +380,8 @@ style.
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   }
 
-  html.dark-mode .murmur-card:hover,
-  html[data-theme='dark'] .murmur-card:hover {
+  html.dark-mode .murmur-card:hover .murmur-card-inner,
+  html[data-theme='dark'] .murmur-card:hover .murmur-card-inner {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
@@ -436,3 +395,52 @@ style.
     color: #888;
     border-top-color: rgba(255, 255, 255, 0.06);
   }
+
+main.murmur-page
+  //- 顶部横幅
+  if bannerOn
+    .murmur-banner
+      .murmur-banner-bg
+        img(src=url_for(bannerCfg.background_image || '/images/1.webp'), alt="Banner", onerror="this.style.display='none'")
+        .banner-gradient
+      .murmur-banner-title
+        h1 碎碎念
+      .murmur-banner-meta
+        .murmur-banner-avatar
+          img(src=url_for(avatarSrc), alt="Avatar")
+        .murmur-banner-text
+          p= bannerText
+
+  //- 碎碎念内容区
+  .murmur-container
+    if site.data.murmur && site.data.murmur.length
+      .murmur-waterfall
+        each item in site.data.murmur
+          .murmur-card
+            .murmur-card-inner
+              .murmur-card-content
+                if item.content
+                  p.murmur-text!= item.content
+                if item.images && item.images.length
+                  .murmur-images(class=item.images.length > 1 ? 'murmur-images-grid' : 'murmur-images-single')
+                    each img, idx in item.images
+                      img.murmur-img(src=url_for(img), alt="图片 " + (idx + 1), loading="lazy")
+                
+                if item.video
+                  - var vData = parseMurmurVideo(item.video)
+                  - var videoClass = vData.isVertical ? 'murmur-video-vertical' : (vData.isTwitter ? 'murmur-video-twitter' : 'murmur-video-normal')
+                  .murmur-video(class=videoClass)
+                    iframe(src=vData.src, frameborder="0", allowfullscreen="allowfullscreen", allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen", title="嵌入视频")
+              
+              .murmur-card-footer
+                span.murmur-date
+                  i.far.fa-clock
+                  = item.date
+                if item.location
+                  span.murmur-location
+                    i.fas.fa-map-marker-alt
+                    = item.location
+    else
+      .murmur-empty
+        p 暂无碎碎念，去记录点什么吧~
+
