@@ -2,37 +2,42 @@
 .archive-container
   .archive-header
     h1.archive-title= page.title || '归档'
-  
-  .archive-content
-    .timeline
-      - var posts = site.posts.sort('-date').toArray()
-      - var currentYear = null
-      
-      each post in posts
-        - var postYear = date(post.date, 'YYYY')
-        
-        if postYear !== currentYear
-          - currentYear = postYear
-          .archive-year
-            h2.year-title= postYear
-        
-        .archive-post
-          .archive-date
-            //- ★★★ 改动：设置格式为 'M月D日' (显示为 2月22日)，并添加标准日期属性供翻译脚本使用
-            time(datetime=date_xml(post.date), data-date-standard=date(post.date, 'YYYY-MM-DD'))= date(post.date, 'M月D日')
-          
-          .archive-info
-            h3.archive-post-title
-              a(href=url_for(post.path))= post.title
-            
-            .archive-meta
-              if post.categories && post.categories.length
-                span.archive-category
-                  each category in post.categories.toArray()
-                    if category && category.path && category.name
-                      a(href=url_for(category.path))= category.name
-              
-              if post.tags.length
-                span.archive-tags
-                  each tag in post.tags.toArray().slice(0, 2)
-                    a.tag(href=url_for(tag.path))= tag.name
+    p.archive-subtitle 共 #{site.posts.length} 篇文章
+
+  .timeline
+    - var posts = site.posts.sort('-date').toArray()
+    - var yearMap = {}
+    - posts.forEach(function(p) { var y = date(p.date, 'YYYY'); yearMap[y] = (yearMap[y] || 0) + 1; })
+    - var currentYear = null
+
+    each post in posts
+      - var postYear = date(post.date, 'YYYY')
+
+      if postYear !== currentYear
+        - currentYear = postYear
+        .archive-year
+          span.year-number= postYear
+          span.year-count= yearMap[postYear] + ' 篇'
+
+      .archive-post
+        .archive-post-marker
+        .archive-post-card
+          .archive-date= date(post.date, 'M月D日')
+          h3.archive-post-title
+            a(href=url_for(post.path))= post.title
+          .archive-meta
+            if post.categories && post.categories.length
+              span.archive-category
+                i.fas.fa-folder-open
+                each category, idx in post.categories.toArray()
+                  if category && category.path && category.name
+                    if idx > 0
+                      | ,
+                    a(href=url_for(category.path))= category.name
+            if post.tags.length
+              span.archive-tags
+                i.fas.fa-tags
+                each tag, idx in post.tags.toArray().slice(0, 3)
+                  if idx > 0
+                    | ·
+                  a.tag(href=url_for(tag.path))= tag.name
