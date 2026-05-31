@@ -720,6 +720,21 @@ p {
   letter-spacing: 0.5px;
 }
 
+.article-sticky {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #e74c3c;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.article-sticky i {
+  font-size: 0.7rem;
+  transform: rotate(-45deg);
+}
+
 .article-date {
   opacity: 0.8;
 }
@@ -2210,6 +2225,10 @@ body.dark-mode .article-title {
 body.dark-mode .article-excerpt,
 body.dark-mode .article-meta {
   color: var(--secondary-color);
+}
+
+body.dark-mode .article-sticky {
+  color: #ff6b6b;
 }
 
 body.dark-mode .footer {
