@@ -25,22 +25,22 @@ if theme.author_card && theme.author_card.enable
           p.author-bio= theme.author_card.bio || "Author bio goes here..."
           .author-social
             if theme.social.github
-              a.social-link(href=theme.social.github, target="_blank", rel="noopener", title="GitHub")
+              a.social-link(href=theme.social.github, target="_blank", rel="noopener", data-title="GitHub")
                 i.fab.fa-github
             if theme.social.twitter
-              a.social-link(href=theme.social.twitter, target="_blank", rel="noopener", title="Twitter")
+              a.social-link(href=theme.social.twitter, target="_blank", rel="noopener", data-title="Twitter")
                 i.fab.fa-twitter
             if theme.social.instagram
-              a.social-link(href=theme.social.instagram, target="_blank", rel="noopener", title="Instagram")
+              a.social-link(href=theme.social.instagram, target="_blank", rel="noopener", data-title="Instagram")
                 i.fab.fa-instagram
             if theme.social.linkedin
-              a.social-link(href=theme.social.linkedin, target="_blank", rel="noopener", title="LinkedIn")
+              a.social-link(href=theme.social.linkedin, target="_blank", rel="noopener", data-title="LinkedIn")
                 i.fab.fa-linkedin
             if theme.social.bilibili
-              a.social-link(href=theme.social.bilibili, target="_blank", rel="noopener", title="Bilibili")
+              a.social-link(href=theme.social.bilibili, target="_blank", rel="noopener", data-title="Bilibili")
                 i.fab.fa-bilibili
             if theme.social.email
-              a.social-link(href="mailto:" + theme.social.email, title="Email")
+              a.social-link(href=theme.social.email, data-title="Email")
                 i.fas.fa-envelope
           if theme.author_card.button_text && theme.author_card.button_link
             .author-cta

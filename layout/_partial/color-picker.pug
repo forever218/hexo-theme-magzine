@@ -1,0 +1,139 @@
+//- 调色板组件 (悬浮在右上角导航栏下方)
+.theme-color-picker-container
+  label(for="theme-color-picker" data-title="自定义主题色")
+    i.fas.fa-palette
+  //- 原生隐藏的颜色输入框
+  input(type="color" id="theme-color-picker" value=theme.colors.accent || '#ff6b6b')
+
+style.
+  .theme-color-picker-container {
+    position: fixed;
+    top: 85px; /* 位于导航栏下方 */
+    right: 20px;
+    z-index: 999;
+    width: 40px;
+    height: 40px;
+    background: var(--card-background-color, #ffffff);
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .theme-color-picker-container:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+  .theme-color-picker-container label {
+    cursor: pointer;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* 为 tooltip 提供定位参照 */
+  }
+
+  /* ★★★ 调色板提示框 (Tooltip) 向左弹出 ★★★ */
+  .theme-color-picker-container label::after {
+    content: attr(data-title);
+    position: absolute;
+    right: 125%; /* 从左侧弹出，避免溢出屏幕右侧 */
+    top: 50%;
+    transform: translateY(-50%) scale(0.8);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 10010;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    line-height: normal;
+    font-family: var(--font-primary, sans-serif);
+  }
+
+  .theme-color-picker-container label:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) scale(1);
+    right: 115%;
+  }
+
+  #theme-color-picker {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+  /* 暗色模式适配 */
+  body.dark-mode .theme-color-picker-container {
+    background: #262626;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  /* 移动端隐藏提示框，防止触屏残留 */
+  @media (max-width: 768px) {
+    .theme-color-picker-container label::after { display: none !important; }
+  }
+
+script.
+  // 1. 立即执行脚本：页面一加载就读取用户保存的颜色，防止颜色闪烁 (FOUC)
+  (function() {
+    var savedColor = localStorage.getItem('custom-accent-color');
+    if (savedColor) {
+      document.documentElement.style.setProperty('--accent-color', savedColor);
+    }
+  })();
+
+  // 2. DOM加载完成后绑定调色板事件
+  document.addEventListener('DOMContentLoaded', function() {
+    const colorPicker = document.getElementById('theme-color-picker');
+    const root = document.documentElement;
+    
+    // 初始化颜色选择器的UI显示值
+    const savedColor = localStorage.getItem('custom-accent-color');
+    if (savedColor) {
+      colorPicker.value = savedColor;
+    }
+
+    // 监听：颜色面板拖动时（实时更新整个网站的颜色）
+    colorPicker.addEventListener('input', function(e) {
+      const newColor = e.target.value;
+      root.style.setProperty('--accent-color', newColor);
+      
+      // ★ 修复 Bug：如果在 iframe 模态框中修改颜色，实时同步给主窗口(父界面)
+      if (window.self !== window.top) {
+        try {
+          window.top.document.documentElement.style.setProperty('--accent-color', newColor);
+          const parentPicker = window.top.document.getElementById('theme-color-picker');
+          if (parentPicker) parentPicker.value = newColor;
+        } catch(err) {
+          // 忽略跨域错误
+        }
+      }
+    });
+
+    // 监听：颜色选择完毕关闭面板时（保存到浏览器缓存，下次打开依然有效）
+    colorPicker.addEventListener('change', function(e) {
+      const newColor = e.target.value;
+      localStorage.setItem('custom-accent-color', newColor);
+    });
+
+    // ★ 修复 Bug：监听 localStorage 变化。如果主页颜色改变，通知到所有开启的模态框 iframe 或者 其他标签页
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'custom-accent-color' && e.newValue) {
+        root.style.setProperty('--accent-color', e.newValue);
+        if (colorPicker) colorPicker.value = e.newValue;
+      }
+    });
+  });

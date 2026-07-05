@@ -1,0 +1,19 @@
+hexo根目录下载
+不下载也没关系不会对Blog产生任何影响,只是会缺失部分额外功能
+
+① 文章字数统计
+
+npm install hexo-wordcount --save
+
+② 图片自动压缩 (压缩用时约1~2分钟)
+
+npm install sharp --save
+
+③ 搜索功能
+
+npm install hexo-generator-search@^2.4.3 --save	
+
+④ 使用img标签来插入图片	(谨慎下载,因为下载之后Markdown自带的插入图片语法会失效,只能使用img标签语法)
+
+npm install hexo-asset-img --save	
+npm install hexo-image-link --save		

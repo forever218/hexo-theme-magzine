@@ -17,24 +17,29 @@ try {
 }
 // ===============================
 
-// === 配置区域 ===
-const CONFIG = {
-  enable: true,
-  ignore: [],
-  quality: {
-    jpeg: 80,
-    png: 80,
-    webp: 80,
-    avif: 80,
-    gif: 80,
-  },
-  minSize: 10240,
-};
-// ================
-
 const EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif", ".svg"];
 
 hexo.extend.filter.register("after_generate", async function () {
+  // ★★★ 从主题配置文件中动态读取配置 ★★★
+  const userConfig = this.theme.config.compress_images || {};
+
+  const CONFIG = {
+    enable: userConfig.enable === true, // 必须在 _config.yml 中显式设置为 true 才开启
+    ignore: userConfig.ignore || [],
+    quality: Object.assign(
+      {
+        jpeg: 80,
+        png: 80,
+        webp: 80,
+        avif: 80,
+        gif: 80,
+      },
+      userConfig.quality || {},
+    ),
+    minSize: userConfig.min_size || 10240,
+  };
+
+  // 如果未开启，则直接跳过
   if (!CONFIG.enable) return;
 
   const publicDir = this.public_dir;
@@ -44,7 +49,7 @@ hexo.extend.filter.register("after_generate", async function () {
   // 如果 sharp 未安装，打印提醒并优雅跳过
   if (!sharp) {
     log.warn(
-      "🔔 [Reminder]: 'sharp' module not found. Image optimization skipped.",
+      "🔔 [Reminder]: 'sharp' module not found. Image optimization skipped. Please run 'npm install sharp' to enable it.",
     );
     return;
   }

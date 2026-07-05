@@ -1,0 +1,286 @@
+/* ===== 404 Page Styles ===== */
+
+/* Override post-container for 404 page - make it full-height centered */
+.page-404 .post-container {
+  max-width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+}
+
+/* Remove default post-content styles on 404 page */
+.page-404 .post-content {
+  font-size: inherit;
+  line-height: inherit;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  margin-bottom: 0;
+}
+
+/* Hide the post header, toc sidebar, and date on 404 page */
+.page-404 .post-header,
+.page-404 .toc-sidebar {
+  display: none;
+}
+
+/* 404 page wrapper */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  width: 100%;
+}
+
+/* Decorative top line */
+.not-found-container::before {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background-color: var(--accent-color);
+  margin-bottom: 3rem;
+  border-radius: 2px;
+}
+
+/* Large 404 number */
+.not-found-number {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 10rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--primary-color);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  position: relative;
+  animation: float404 4s ease-in-out infinite;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Accent underline on 404 */
+.not-found-number::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 4px;
+  background-color: var(--accent-color);
+  border-radius: 2px;
+  animation: underlinePulse 3s ease-in-out infinite;
+}
+
+/* Floating animation for 404 */
+@keyframes float404 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* Pulse animation for the underline */
+@keyframes underlinePulse {
+  0%, 100% {
+    width: 40%;
+    opacity: 1;
+  }
+  50% {
+    width: 60%;
+    opacity: 0.7;
+  }
+}
+
+/* Subtitle message */
+.not-found-message {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+/* Secondary description */
+.not-found-description {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  color: var(--secondary-color);
+  opacity: 0.7;
+  margin-bottom: 3rem;
+  line-height: 1.5;
+}
+
+/* Home button */
+.not-found-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(28, 150, 208, 0.25);
+  letter-spacing: 0.5px;
+}
+
+.not-found-home-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(28, 150, 208, 0.35);
+  color: #ffffff;
+}
+
+.not-found-home-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(28, 150, 208, 0.25);
+}
+
+/* Button icon */
+.not-found-home-btn i {
+  transition: transform 0.3s ease;
+}
+
+.not-found-home-btn:hover i {
+  transform: translateX(-3px);
+}
+
+/* Decorative dots */
+.not-found-dots {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.not-found-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  opacity: 0.3;
+  animation: dotBounce 2s ease-in-out infinite;
+}
+
+.not-found-dots span:nth-child(1) {
+  animation-delay: 0s;
+  opacity: 0.4;
+}
+
+.not-found-dots span:nth-child(2) {
+  animation-delay: 0.3s;
+  opacity: 0.6;
+}
+
+.not-found-dots span:nth-child(3) {
+  animation-delay: 0.6s;
+  opacity: 0.8;
+}
+
+@keyframes dotBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+/* ===== Dark Mode ===== */
+body.dark-mode .not-found-number {
+  color: var(--primary-color);
+}
+
+body.dark-mode .not-found-number::after {
+  background-color: var(--accent-color);
+}
+
+body.dark-mode .not-found-message {
+  color: var(--secondary-color);
+}
+
+body.dark-mode .not-found-description {
+  color: var(--secondary-color);
+}
+
+body.dark-mode .not-found-home-btn {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(28, 150, 208, 0.3);
+}
+
+body.dark-mode .not-found-home-btn:hover {
+  box-shadow: 0 8px 20px rgba(28, 150, 208, 0.4);
+  color: #ffffff;
+}
+
+body.dark-mode .not-found-container::before {
+  background-color: var(--accent-color);
+}
+
+body.dark-mode .not-found-dots span {
+  background-color: var(--accent-color);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .not-found-number {
+    font-size: 6rem;
+  }
+
+  .not-found-message {
+    font-size: 1.25rem;
+  }
+
+  .not-found-description {
+    font-size: 0.875rem;
+  }
+
+  .not-found-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .page-404 .post-container {
+    min-height: 60vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-number {
+    font-size: 4.5rem;
+  }
+
+  .not-found-message {
+    font-size: 1.1rem;
+  }
+
+  .not-found-description {
+    font-size: 0.85rem;
+  }
+
+  .not-found-home-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .not-found-container::before {
+    width: 40px;
+    margin-bottom: 2rem;
+  }
+
+  .not-found-dots {
+    margin-bottom: 2rem;
+  }
+}

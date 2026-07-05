@@ -1,4 +1,3 @@
-
 /* 文章模态窗口样式 */
 .article-modal {
   display: none;
@@ -81,6 +80,31 @@
   width: 100%;
   height: 100%;
   border: none;
+}
+
+
+/* =========================================================
+   ★★★ 新增：iframe 内部专用样式 (配合 layout.pug 防止组件闪烁) ★★★ 
+========================================================= */
+html.is-iframe .header,
+html.is-iframe header,
+html.is-iframe .navbar,
+html.is-iframe .footer,
+html.is-iframe footer,
+html.is-iframe .music-player,
+html.is-iframe .theme-color-picker-container {
+  display: none !important;
+}
+
+html.is-iframe .post-wrapper,
+html.is-iframe .article-container,
+html.is-iframe main {
+  margin-top: 0 !important;
+  padding-top: 20px !important;
+}
+
+html.is-iframe body {
+  overflow-x: hidden !important;
 }
 
 /* 响应式调整 */

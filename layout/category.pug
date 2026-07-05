@@ -2,46 +2,59 @@
 .post-wrapper
   article.post-container
     .post-header
-      h1.post-title= page.title || 'Category'
-      .post-subtitle 探索与 "#{page.category}" 相关的所有文章
+      h1.post-title= page.title || '相关分类'
+      .post-subtitle
+        span 探索与
+        |  "#{page.category}" 
+        span 相关的所有文章
 
     .category-content
       if page.posts && page.posts.length
-        .category-info
-          .category-description 共有 #{page.posts.length} 篇文章
-          .category-back
-            a(href="/categories/")
-              i.fas.fa-arrow-left
-              |  返回所有分类
+        .category-posts
+          .category-header
+            .category-info
+              h2.category-name 
+                i.fas.fa-folder
+                |  #{page.category}
+              .category-description
+                span 共有
+                |  #{page.posts.length} 
+                span 篇文章
+            .category-back
+              a(href="/categories/")
+                i.fas.fa-arrow-left
+                |  返回所有分类
 
-        .post-list
-          each post, index in page.posts.toArray()
-            // 根据索引创建不同大小的卡片
-            - var cardSize = (index % 6 === 0) ? 'large' : (index % 3 === 0) ? 'medium' : 'small'
-            .post-item(class="post-item--" + cardSize)
-              .post-item-inner
-                .post-item-title
-                  a(href=url_for(post.path))= post.title
-                .post-item-excerpt
-                  if post.excerpt
-                    p= post.excerpt
-                  else
-                    // 使用 strip_html 过滤器移除 HTML 标签后再截取文本
-                    p!= strip_html(post.content).substring(0, cardSize === 'large' ? 300 : cardSize === 'medium' ? 200 : 100) + '...'
-                .post-item-meta
-                  .post-meta-left
-                    span.post-date
-                      i.far.fa-calendar
-                      |  #{date(post.date, "YYYY-MM-DD")}
-                    if post.tags && post.tags.length
-                      span.post-tags
-                        i.fas.fa-tags
-                        each tag in post.tags.toArray().slice(0, 2)
-                          a(href=url_for(tag.path))= tag.name
-                  .post-meta-right
-                    a.read-more(href=url_for(post.path))
-                      | 阅读全文
-                      i.fas.fa-arrow-right
+          .post-list
+            each post, index in page.posts.toArray()
+              // 根据索引创建不同大小的卡片
+              - var cardSize = (index % 6 === 0) ? 'large' : (index % 3 === 0) ? 'medium' : 'small'
+              .post-item(class="post-item--" + cardSize)
+                .post-item-inner
+                  .post-item-title
+                    a(href=url_for(post.path))= post.title
+                  .post-item-excerpt
+                    if post.excerpt
+                      p= post.excerpt
+                    else
+                      // 使用 strip_html 过滤器移除 HTML 标签后再截取文本
+                      p!= strip_html(post.content).substring(0, cardSize === 'large' ? 300 : cardSize === 'medium' ? 200 : 100) + '...'
+                  .post-item-meta
+                    .post-meta-left
+                      span.post-date
+                        i.far.fa-calendar
+                        |  #{date(post.date, "YYYY-MM-DD")}
+                      
+                      //- 【确认点】此处已恢复分类按钮，与Tag页布局一致
+                      if post.categories && post.categories.length
+                        span.post-category 
+                          i.fas.fa-folder
+                          a(href=url_for(post.categories.first().path))= post.categories.first().name
+
+                    .post-meta-right
+                      a.read-more(href=url_for(post.path))
+                        | 阅读全文
+                        i.fas.fa-arrow-right
       else
         .no-posts
           .empty-state

@@ -14,12 +14,20 @@ html(lang=config.language)
     if theme.features && theme.features.dark_mode
       script.
         (function() {
-          // 尽早应用暗色模式，防止闪烁
-          var savedDarkMode = localStorage.getItem('darkMode') === 'true';
-          if (savedDarkMode) {
+          // 【修改点 1】头部脚本：如果本地存储为空(从未设置过)，默认开启暗色(true)
+          var savedDarkMode = localStorage.getItem('darkMode');
+          var shouldBeDark = savedDarkMode === null ? true : savedDarkMode === 'true';
+          
+          if (shouldBeDark) {
             document.documentElement.classList.add('dark-mode');
           }
         })();
+
+    //- ★★★ 新增：检测当前页面是否在 iframe (模态窗口) 中运行，提前打上标签防止闪烁 ★★★
+    script.
+      if (window.parent !== window) {
+        document.documentElement.classList.add('is-iframe');
+      }
 
     //- Fonts
     link(rel="preconnect", href="https://fonts.googleapis.com")
@@ -43,7 +51,6 @@ html(lang=config.language)
     != css('css/main')
     != css('css/tags')
     != css('css/categories')
-    != css('css/categories-accordion')
     != css('css/highlight')
     != css('css/toc')
     != css('css/image-zoom')
@@ -56,6 +63,7 @@ html(lang=config.language)
     != css('css/ai-theme')
     != css('css/loading-animation')
     != css('css/article-modal')
+    != css('css/music-player')
     // 条件加载关于页面样式
     if page.path === 'about/index.html'
       != css('css/about')
@@ -83,23 +91,50 @@ html(lang=config.language)
         != item
 
   body
+    //- ★★★ 新增：通过配置文件判断是否开启封面 ★★★
+    if theme.cover && theme.cover.enable
+      != partial('_partial/cover')
     #app
       != partial('_partial/header')
+
+      //- ★★★ 新增：通过配置文件判断是否开启右上角色卡 ★★★
+      if theme.color_picker && theme.color_picker.enable
+        != partial('_partial/color-picker')
       != partial('_partial/search')
 
       main.main
         != body
 
+      //- ★★★ 新增：通过配置文件判断是否开启 Sakana ★★★
+      if theme.sakana && theme.sakana.enable
+        != partial('_partial/sakana')
+
+
+      //- ★★★ 新增：波浪效果容器 (紧贴 Footer 上方) ★★★
+      #waves-container
+        svg.waves(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink", viewBox="0 24 150 28", preserveAspectRatio="none", shape-rendering="auto")
+          defs
+            path#gentle-wave(d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z")
+          g.parallax
+            use(xlink:href="#gentle-wave", x="48", y="0")
+            use(xlink:href="#gentle-wave", x="48", y="3")
+            use(xlink:href="#gentle-wave", x="48", y="5")
+            use(xlink:href="#gentle-wave", x="48", y="7")
+
       != partial('_partial/footer')
+
+    if theme.music_player && theme.music_player.enable
+      != partial('_partial/music-player')
 
     // 立即应用暗色模式，避免页面闪烁
     if theme.features && theme.features.dark_mode
       script.
         (function() {
-          // 检查本地存储中的暗色模式设置
-          const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-          // 如果设置为暗色模式，立即应用到body
-          if (savedDarkMode) {
+          // 【修改点 2】底部脚本：同样逻辑，默认为 true
+          var savedDarkMode = localStorage.getItem('darkMode');
+          var shouldBeDark = savedDarkMode === null ? true : savedDarkMode === 'true';
+
+          if (shouldBeDark) {
             document.body.classList.add('dark-mode');
           }
 
@@ -128,6 +163,7 @@ html(lang=config.language)
     != js('js/ai-theme')
     != js('js/loading-animation')
     != js('js/article-modal')
+    != js('js/music-player')
 
     //- Theme configuration for JavaScript
     script.
