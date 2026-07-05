@@ -52,6 +52,10 @@ section.articles-section
                   span.read-text(data-label="点击阅读->") 点击阅读->
           .article-content
             .article-meta
+              if article.sticky
+                span.article-sticky
+                  i.fas.fa-thumbtack
+                  | 置顶
               if article.categories.length
                 span.article-category
                   a(href=url_for(article.categories.first().path))= article.categories.first().name

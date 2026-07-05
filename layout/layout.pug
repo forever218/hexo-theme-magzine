@@ -51,7 +51,6 @@ html(lang=config.language)
     != css('css/main')
     != css('css/tags')
     != css('css/categories')
-    != css('css/categories-accordion')
     != css('css/highlight')
     != css('css/toc')
     != css('css/image-zoom')
@@ -98,10 +97,9 @@ html(lang=config.language)
     #app
       != partial('_partial/header')
 
-      //- ★★★ 修改为：通过配置文件判断是否开启右上角色卡 ★★★
+      //- ★★★ 新增：通过配置文件判断是否开启右上角色卡 ★★★
       if theme.color_picker && theme.color_picker.enable
         != partial('_partial/color-picker')
-        
       != partial('_partial/search')
 
       main.main
@@ -127,7 +125,7 @@ html(lang=config.language)
 
     if theme.music_player && theme.music_player.enable
       != partial('_partial/music-player')
-      
+
     // 立即应用暗色模式，避免页面闪烁
     if theme.features && theme.features.dark_mode
       script.
